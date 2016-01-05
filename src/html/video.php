@@ -18,10 +18,7 @@ class video {
 .vjs-fullscreen {padding-top: 0px}
 EOF;
         if (!$loaded) {
-            
-            $js = 
             assets::setEndHTML(' <script src="http://vjs.zencdn.net/5.4.4/video.js"></script>');
-            //assets::setRelAsset('js' , 'https://vjs.zencdn.net/5.4.4/video.js');
             assets::setRelAsset('css', 'https://vjs.zencdn.net/5.4.4/video-js.css');
             assets::setStringCss($css, null, array('head' => true));
             $loaded = true;
@@ -42,7 +39,7 @@ EOF;
 <div class="wrapper">
  <div class="videocontent">
 	
-<video id="really-cool-video" class="video-js vjs-default-skin" controls
+<video id="really-cool-video" class="video-js vjs-default-skin" controls ="controls"
  preload="auto" 
  data-setup='{}'>
   <source type="video/mp4" src="$mp4">  
@@ -67,10 +64,12 @@ EOF;
 
         $mp4 = $formats['mp4'];
         $str = <<<EOF
-<video width="100%" controls="true">
+<div class="video">
+<video width="100%" controls="controls">
   <source src="$mp4" type="video/mp4" /> 
   Your browser does not support HTML5 video.
 </video>
+</div>
 EOF;
         return $str;
     }

@@ -18,7 +18,10 @@ class video {
 .vjs-fullscreen {padding-top: 0px}
 EOF;
         if (!$loaded) {
-            assets::setRelAsset('js' , 'https://vjs.zencdn.net/5.4.4/video.js');
+            
+            $js = 
+            assets::setEndHTML(' <script src="http://vjs.zencdn.net/5.4.4/video.js"></script>');
+            //assets::setRelAsset('js' , 'https://vjs.zencdn.net/5.4.4/video.js');
             assets::setRelAsset('css', 'https://vjs.zencdn.net/5.4.4/video-js.css');
             assets::setStringCss($css, null, array('head' => true));
             $loaded = true;

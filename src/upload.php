@@ -201,12 +201,16 @@ class upload {
                       
             // check native
             $res = self::checkUploadNative($filename);
-            if (!$res) return false;
+            if (!$res) { 
+                return false;
+            }
             
             // check mime
             if (isset(self::$options['allow_mime'])) {
                 $res = self::checkAllowedMime($filename);
-                if (!$res) return false;                
+                if (!$res) { 
+                    return false;
+                }
             }
             
             // check maxsize. Note: Will overrule php ini settings
@@ -391,4 +395,3 @@ class upload {
         return $res;
     }   
 }
-

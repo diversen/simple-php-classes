@@ -84,7 +84,7 @@ function prompt_install(){
     cos_install($options);
     
     common::echoMessage("Create a super user",'y');
-    useradd_add();
+    useradd_super();
     
     $login = "http://$server_name/account/login/index";
 

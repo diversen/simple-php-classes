@@ -107,7 +107,7 @@ function heroku_prompt_install () {
     load_db_default();
     common::echoMessage('Installing all modules. This may take a few minutes. Be patient'); 
     install_from_profile(array ('profile' => 'default'));
-    useradd_add();    
+    useradd_super();    
 }
 
 self::setCommand('heroku', array(

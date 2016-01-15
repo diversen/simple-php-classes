@@ -1,6 +1,9 @@
 <?php
 
 namespace diversen\html;
+
+use diversen\html;
+
 /**
  * File containing class for building tables
  * @package html 
@@ -12,37 +15,48 @@ namespace diversen\html;
  */
 class table {
     
-    public static $str;
-    public static function td ($val) {
-        self::$str.= "<td>$val</td>";
-        return new self;
+    /**
+     * Return <td>val</td>
+     * @param string $val
+     * @return string $html
+     */
+    public static function td ($val, $options = array ()) {
+        $extra = html::parseExtra($options);
+        return "<td $extra>$val</td>";
     }
     
-    public static function trBegin () {
-        self::$str.= "<tr>\n";
-        return new self;
+    /**
+     * returns <tr>
+     * @return string $html <tr> begin
+     */
+    public static function trBegin ($options = array ()) {
+        $extra = html::parseExtra($options);
+        return "<tr $extra>\n";
     }
     
+    /**
+     * return </tr>
+     * @return string $html </tr> end 
+     */
     public static function trEnd () {
-        self::$str.= "<tr>\n";
-        return new self;
+        return "</tr>\n";
     }
     
+    /**
+     * Return <table> begin
+     * @param array $options table options
+     * @return string $html <table>
+     */
     public static function tableBegin ($options) {
         $extra = html::parseExtra($options);
-        self::$str.= "<table $extra>\n";
-        return new self;
+        return "<table $extra>\n";
     }
     
+    /**
+     * Return </table>
+     * @return string $html </table>
+     */
     public static function tableEnd () {
-        self::$str.= "<table>\n";
-        return new self;
-    }
-    
-    public static function get () {
-        $str =  self::$str;
-        self::$str = '';
-        return $str;
+        return "</table>\n";
     }
 }
-

@@ -512,9 +512,8 @@ class session {
     }
 
     /**
-     * method for getting users level (null, user, admin, super)
-     * return   mixed   $res null or string if null then user is not logged in
-     *                  if string we get the users highest level, user, admin or super.
+     * Method for getting users level (user, admin, super - or null)
+     * return   null|string   $res null or 'user', 'admin' or 'super'.
      */
     public static function getUserLevel(){
         if (self::isSuper()){

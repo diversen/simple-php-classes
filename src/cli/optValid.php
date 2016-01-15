@@ -4,13 +4,86 @@ namespace diversen\cli;
 
 /**
  * class for validating options
+ * Checks for options using '-' or '--'
+ *  * @example <br />
+ 
+```
+        // A string where we want 
+        $str = "-s -S --cchapters=7 -V geometry:margin=1in -V documentclass=memoir -V lang=danish";
+
+        // Which arguments to allow
+        $allow = array(
+            // Produce typographically correct output, converting straight quotes to curly quotes 
+
+            'S' => null,
+            'smart' => null,
+            // Specify the base level for headers (defaults to 1).
+            'base-header-level' => null,
+            // Produce output with an appropriate header and footer 
+            's' => null,
+            'standalone' => null,
+            // Include an automatically generated table of contents
+            'toc' => null,
+            // Specify the number of section levels to include in the table of contents. The default is 3
+            'toc-depth' => null,
+            
+            // no highlight of language
+            'no-highlight' => null,
+            // Options are pygments (the default), kate, monochrome, espresso, zenburn, haddock, and tango.
+            
+            'highlight-style' => null,
+            // Produce HTML5 instead of HTML4. 
+            'html5' => null,
+            // Treat top-level headers as chapters in LaTeX, ConTeXt, and DocBook output.
+            'chapters' => null,
+            // Number section headings in LaTeX, ConTeXt, HTML, or EPUB output.
+            'N' => null,
+            'number-sections' => null,
+            // Link to a CSS style sheet (for HTML - not allowed). 
+            //'c' => null,
+            //'css' => null,
+            // user template
+            
+            'template' => null,
+            // Use the specified CSS file to style the EPUB
+            'epub-stylesheet' => null,
+            'epub-chapter-level' => '1-6',
+            // epub-embed-font
+            'epub-embed-font' => null,
+            // Specify output format.
+
+            'V' => array(
+                'geometry:margin',
+                'documentclass', 
+                'lang',
+                'fontsize',
+                'mainfont',
+                'sansfont',
+                'monofont',
+                'boldfont',
+                'version',
+                'toc-depth'),
+        );
+
+        $o = new optValid();
+        $ary = $o->split($str);
+        $ary = $o->getAry($ary);
+        $ary = $o->setSubVal($ary);
+        $ok = $o->isValid($ary, $allow);
+        if ($ok) {
+            echo "Seems ok!";
+        } else {
+            echo "there seems to be something wrong";
+        }
+ ```   
  */
+ 
 class optValid {
 
     /**
-     * splits string with -value and --values
-     * @param string $str opt string
-     * @return array $opts
+     * Splits string with '-' and '--' values
+     * @param string $str string commandline options as a string
+     * @return array $opts array of options given
      */
     public function split($str) {
         $str = trim($str);
@@ -22,8 +95,8 @@ class optValid {
     }
 
     /**
-     * from all opts we get a array of arrays with values of
-     * '0' the command '1' the value
+     * From all opts we get an array of arrays with values of
+     * '0' the command '1' the value of the command
      * @param array $opts
      * @return array $ret
      */
@@ -47,8 +120,8 @@ class optValid {
     /**
      * sets an array with sub commands, e.g.
      * -V val=test
-     * @param type $ary
-     * @return type
+     * @param array $ary
+     * @return array
      */
     public function setSubVal ($ary) {
         foreach ($ary as $key => $opt) {
@@ -62,11 +135,18 @@ class optValid {
         return $ary;
     }
     
-    public $errors = array ();
     /**
-     * checks if all commands are valid
+     * Var holding errors
+     * @var array $errors
+     */
+    public $errors = array ();
+    
+    /**
+     * Checks if an error of commands are valid based on an array
+     * of allowed commands
      * @param array $ary
      * @param array $allow
+     * @return boolena $res true if the commands are valid else false
      */
     public function isValid($ary, $allow) {
         foreach ($ary as $key => $val) {

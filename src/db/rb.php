@@ -5,34 +5,30 @@ namespace diversen\db;
 use diversen\conf;
 use Exception;
 use R;
-/**
- * File contains RB (Redbeans) helpers for easy connecting to CosCMS 
- * DB using Redbeans
- * @package db
- */
 
-/**
- * @ignore
- */
 include_once "vendor/diversen/redbean-composer/rb.php";
 
 
 /**
- * class db_rb contains some helpers methods for RB. 
+ * class rb contains some helpers methods for RB. 
  * Methods for connecting, converting array to beans
  * 
- * example: 
- * rb::connect();
- * $bean = rb::getBean('test');
- * $bean = rb::arrayToBean($bean, $_POST);
- * r::store($bean);
- * @package db
+ * In order to use this class you need to do: *composer require diversen/redbean-composer*
  * 
+ * @package main
+ * @example: 
+~~~
+use diversen\rb;
+rb::connect();
+$bean = rb::getBean('test');
+$bean = rb::arrayToBean($bean, $_POST);
+r::store($bean);
+~~~
  */
 class rb {
         
     /**
-     * setup a Redbean instance from CosCMS
+     * Create a db connection with params found in *config.ini*
      */
     public static function connect () {
         static $connected = null;
@@ -53,7 +49,7 @@ class rb {
     }
     
     /**
-     * method for transforming an array into a bean
+     * Method for transforming an array into a bean
      * @param object $bean
      * @param array $ary
      * @param boolean $skip_null if true we skip values that is not set (e.g. null)
@@ -71,7 +67,7 @@ class rb {
     }
     
     /**
-     * update a bean from table, id, values 
+     * Update a bean found by *table* and *id* with *values* 
      * @param string $table
      * @param int $id
      * @param array $values
@@ -85,8 +81,9 @@ class rb {
         return R::store($bean);
     }
     /**
-     * helper function for getting a bean. It searches for an existing bean
-     * if not found it create a new bean
+     * Method for getting a bean. It searches for an existing bean based 
+     * on a *field* and a *value* 
+     * If not found it create a new bean
      * @param string $table
      * @param string $field
      * @param mixed $search
@@ -108,7 +105,7 @@ class rb {
     }
 
     /**
-     * deletes beans with transactions
+     * Shorthand method that will delete a bean with *commit* and *rollback*  transactions
      * @param object $beans 
      */
     public static function deleteBeans ($beans) {

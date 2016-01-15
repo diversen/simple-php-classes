@@ -11,8 +11,36 @@ use diversen\log;
 use diversen\moduleloader;
 use diversen\uri\dispatch;
 
+/**
+ * simple-php-framework *boot* method. 
+ * Will set up complete system, and load all geneeric modules
+ * @example
+~~~
+// default index.php
+use diversen\boot;
+use diversen\conf;
+use diversen\file\path;
+
+if (file_exists('vendor')) {
+    $path = '.';
+    include 'vendor/autoload.php';
+} else {
+    $path = "..";
+    include '../vendor/autoload.php';
+}
+
+$path = path::truepath($path);
+conf::setMainIni('base_path', $path);
+
+$boot = new boot();
+$boot->run();
+~~~
+ */
 class boot {
 
+    /**
+     * Run the system 
+     */
     public function run() {
 
         // Register an autoloader for loading modules from mopdules dir

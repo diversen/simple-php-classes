@@ -14,9 +14,46 @@ use diversen\lang;
 use diversen\log;
 use diversen\moduleloader;
 
+/**
+ * Main cli command for the simple-php-framework
+ * Some base commands and options for extending the framework
+ * 
+ * @package main
+ */
+
 class main extends cli {
+    
+    /**
+     * - Init the CLI command
+     * - Set up autoloading
+     * - Define common
+     * - Set include_path
+     * - Load language
+     * - Set timeezone 
+     * - Load translation
+     * @package main
+     * @example <br />
+~~~
+#!/usr/bin/env php
+<?php
+
+include_once "vendor/autoload.php";
+use diversen\conf;
+use diversen\cli;
+use diversen\cli\main as mainCli;
+
+$path = dirname(__FILE__);
+conf::setMainIni('base_path', $path); 
+
+mainCli::init();
+$ret = mainCli::run();
+exit($ret);
+~~~
+     * 
+     */
     public static function init() {
 
+        
         $m = new modules();
         $m->autoloadRegister();
 
@@ -78,7 +115,7 @@ EOF;
     }
     
     /**
-     * Run the parser
+     * Run the command line
      *                              
      * @return int $ret 0 on success any other int is failure
      */
@@ -95,9 +132,8 @@ EOF;
     }
 
     /**
-     * Do this after the commandline options has been parsed. 
+     * After the commandline options has been parsed. 
      * Examine the --domain flag and the --verbose flag
-     * @param type $result
      */
     public static function afterParse($result) {
         
@@ -133,7 +169,7 @@ EOF;
     }
 
     /**
-     * loads all modules in database
+     * Loads all modules found in database
      */
     public static function loadDbModules (){        
           
@@ -171,7 +207,7 @@ EOF;
     
     /**
      * Checks if any table exist in database
-     * @return boolean
+     * @return boolean $res true if table exists else false
      */
     public static function tablesExists () {
 

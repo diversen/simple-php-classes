@@ -1,31 +1,23 @@
 <?php
 
 namespace diversen\filter;
+
 use diversen\conf;
 
-/**
- * file contains filter for higlighting using geshi
- * You will need to have a recent version of geshi
- * where it can be inclued from
- * 
- * @package    filters
- */
-
-/**
- * @ignore
- */
 include_once "geshi/geshi.php";
 
 /**
- * file contains filter for higlighting using geshi
- * You will need to have a recent version of geshi
- * where it can be inclued from
+ * File contains a filter for higlighting code using GeShi:
  * 
- * @package    filters
- */
-
-
-
+ * > composer require geshi/geshi
+ * 
+ * @package main
+ * @example
+~~~
+ use diversen\filters\geshiHl;
+ $txt = geshiHl::filter($txt);
+~~~
+*/
 class geshiHl {
 
     /**

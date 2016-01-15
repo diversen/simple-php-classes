@@ -6,26 +6,25 @@ use diversen\strings\version;
 use diversen\cli\common;
 
 /**
- * file contains class for doing insall, removal of apache2 virtual hosts
- * @package apache2
- */
-
-/**
- * class contains class for doing insall, removal of apache2 virtual hosts
- * @package apache2
+ * Helper class for creating Apache2 hosts on Unix 
+ * Will most likely only work on Linux as we make
+ * exec calls to e.g. `which`. 
+ * 
+ * Used in `apache2` shell command
+ * 
+ * @package     main
  */
 class apache2 {
 
     /**
-     * sets a flag indicating to use apache2 with SSL
-     * @param array $options
+     * Sets a flag which indicate the usage of SSL
      */
-    public static function setUseSSL($options) {
+    public static function setUseSSL() {
         conf::setMainIni('a2_use_ssl', true);
     }
 
     /**
-     * create apache log files
+     * Creates two apache2 log files (access.log and error.log)
      */
     public static function createLogs() {
         touch(conf::pathBase() . '/logs/access.log');
@@ -33,9 +32,8 @@ class apache2 {
     }
 
     /**
-     * create apache2 configuration string
-     * Note: we don't use the conf::pathHtdocs() path. 
-     * @param   string  $server_name the host to enable
+     * Get an apache2 configuration string based on a server name
+     * @param   string  $SERVER_NAME the host to enable
      * @return  string  $config an apache2 configuration string.
      */
     public static function getA2Conf($SERVER_NAME) {
@@ -52,15 +50,15 @@ class apache2 {
     }
 
     /**
-     * function for enabling a aapche2 site
-     * the script does the following:
+     * Method for enabling an apache2 site
+     * The script does the following:
      *
      * - create access.log and error.log in ./logs
      * - create virtual configuration and put it in sites-available
      * - enable new site
      * - create new /etc/hosts file
      *
-     * @param array $options only options is $options[sitename] 
+     * @param array $options $options[sitename] 
      */
     public static function enableSite($options) {
         $hostname = trim($options['hostname']);
@@ -68,7 +66,6 @@ class apache2 {
         
         common::needRoot();
         
-
         // create apache2 conf and enable site
         $apache2_conf = self::getA2Conf($hostname);
         $tmp_file = conf::pathBase() . "/tmp/$hostname";
@@ -102,7 +99,7 @@ class apache2 {
     }
 
     /**
-     * function for disabling an apache2 site
+     * method that disable an apache2 site
      * @param array $options only options is $options[sitename] 
      */
     public static function disableSite($options) {
@@ -144,7 +141,7 @@ class apache2 {
     }
 
     /**
-     * 
+     * Check is Apache2 is installed. 
      * @return int $ret 0 if exists 1 if not exits
      */
     public static function isInstalled() {
@@ -156,8 +153,8 @@ class apache2 {
     }
 
     /**
-     * gets apache2 version running
-     * @return string
+     * Gets the running version of apache2
+     * @return string $version e.g. 2.4.6
      */
     public static function getVersion() {
         exec('apache2 -v', $ary, $ret);
@@ -170,9 +167,8 @@ class apache2 {
     }
 
     /**
-     * gets a configuration file
-     * it knows about apache2 changes in 2_4_x
-     * where conf files needs to end on .conf
+     * Get apache2 configuration as a string
+     * 
      * @param string $SERVER_NAME
      * @param string $DOCUMENT_ROOT
      * @param string $APACHE_LOG_ROOT

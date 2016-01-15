@@ -2,10 +2,23 @@
 
 namespace diversen\filter;
 
+/**
+ * In order to use this, you will need cebe-markdown: 
+ * 
+ * > composer require cebe/markdown
+ * 
+ * It is just a wrapper around cebe-markdown
+ * 
+ * @package main
+ * @example
+~~~
+ use diversen\filters\cebeMarkdown;
+ $txt = cebeMarkdown::filter($txt);
+~~~
+*/
 class cebeMarkdown {
     
-    public function filter ($text) {
-    
+    public static function filter ($text) {
         $parser = new \cebe\markdown\GithubMarkdown();
         return $parser->parse($text);
 

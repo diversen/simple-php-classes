@@ -1,23 +1,21 @@
 <?php
 
 namespace diversen\cache;
+
 use diversen\db\q;
 use diversen\file;
 use diversen\conf;
-/**
- * File contains methods for clearing all or some of the cached assets
- */
 
 /**
- * Class contains a simple class for clearing caches
- * @package cache_clear
+ * Class contains a simple class for clearing caches 
+ * To be used with framework 
+ * @package main
  */
-
 class clear {
 
     /**
-     * clears system_cache table
-     * @return int  
+     * Clears database system_cache table
+     * @return boolean $res true on success else false  
      */
     public static function db () {
         $res = q::delete('system_cache')->filter('1 =', 1)->exec();

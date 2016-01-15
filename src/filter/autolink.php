@@ -1,19 +1,20 @@
 <?php
 
 namespace diversen\filter;
-/**
- * file contains filter for creating links from urls
- * @package    filters
- */
 
 /**
- * class contains method for creating links from urls
- * @package    filters
- */
+ * Filter a text and transform URLs to HTML links
+ * @package main
+ * @example
+~~~
+ use diversen\filters\autolink;
+ $txt = autolink::filter($txt);
+~~~
+*/
 class autolink {
 
     /**
-     * filters urls to links
+     * Filters a text and transforms URLS to HTML links
      * @param string $text to filter
      * @return string $text filtered text
      */
@@ -23,7 +24,7 @@ class autolink {
     }
 
     /**
-     * do the replacement
+     * Do the replacement
      * @param string $text
      * @return string $text
      */

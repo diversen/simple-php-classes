@@ -6,6 +6,12 @@ use diversen\conf;
 use PDO;
 use PDOException;
 
+/**
+ * Create a connection to some sort of database
+ * 
+ * @package main
+ */
+
 class connect {
     
     /** database handle */
@@ -18,7 +24,8 @@ class connect {
     public static $debug = array();
     
     /**
-     * create a connect
+     * Create a connection to a database using PDO
+     * @param array $options array('url', 'username', 'password', 'dont_die', 'db_init')
      */
     public function __construct($options = null) {
         if (!self::$dbh) {
@@ -28,9 +35,7 @@ class connect {
     
     /**
      * connect to a database
-     * @param type $options
-     * 
-     * array('url', 'username', 'password', 'dont_die', 'db_init')
+     * @param type $options array('url', 'username', 'password', 'dont_die', 'db_init')
      * 
      * @return string
      */
@@ -90,7 +95,7 @@ class connect {
     }
     
     /**
-     * set SSL for mysql 
+     * Set SSL for mysql 
      */
     public static function setSsl() {
         $attr = conf::getMainIni('mysql_attr');
@@ -102,8 +107,8 @@ class connect {
     }
     
     /**
-     * Method for showing errors
-     * @param   string  $msg the message to show with the backtrace
+     * Method for showing fatal database errors
+     * @param string $msg the message to show with the backtrace
      */
     protected static function fatalError($msg) {
         self::$debug[] = "Fatal error encountered";

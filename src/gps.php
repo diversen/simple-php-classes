@@ -58,3 +58,4 @@ class gps {
         return json_encode($result);
     }
 }
+

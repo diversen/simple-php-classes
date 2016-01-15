@@ -3,24 +3,20 @@
 namespace diversen\date;
 use diversen\html;
 use diversen\date;
-/**
- * File contains helper methods connected to date
- * @package date 
- */
+
 
 /**
  * Class contains helper methods connected to date
- * @package date
+ * @package main
  */
 class helpers {
-    
 
-    
     /**
-     * return last 12 months starting with param start
+     * Return last 12 months in format: yyyy-mm-dd
+     * 
      * @param string $date e.g. '2012-12-30'
-     * @return array $ary last 12 moinths and years as ints
-     *                in assoc array with arrays with values('year' => 2013, 'month' => 7) etc.
+     * @return array $ary the last 12 months and years as integers arranged in 
+     *                    an assoc array with values like this: ('year' => 2013, 'month' => 7)
      */
     public static function last12Months ($date) {
         if (!$date) {
@@ -52,7 +48,8 @@ class helpers {
     }
     
     /**
-     * returns a dropdown with months
+     * Returns a form dropdown element with 12 months
+     * 
      * @param string $name name of form element
      * @param int $selected the selected month
      * @return string $html the clean html select element
@@ -70,8 +67,8 @@ class helpers {
     }
     
     /**
-     * returns a dropdown with months. Starting with current month 
-     * and then last month ... etc.  
+     * Returns a dropdown with he last 12 months. 
+     * 
      * @param string $name name of form element
      * @param int $selected the selected month
      * @return string $html the clean html select element
@@ -106,9 +103,10 @@ class helpers {
 
     
     /**
-     * add or subtract days from timestamp (SQL like)
+     * Add or subtract days from timestamp (SQL like)
+     * 
      * @param int $days e.g. 10 or -10
-     * @param string $from e.g. 2013-10-10. Default to now
+     * @param string $from e.g. 2013-10-10. Defaults to 'now'
      * @return string $stamp e.g. 2013-10-20
      */
     public static function daysToTimestamp ($days, $from = null) {

@@ -3,19 +3,17 @@
 namespace diversen\ary;
 
 /**
- * file contains array helpers
- * @package array
- */
-
-/**
- * class contains array helpers
- * @package array
+ * Class contains a couple of array helpers
+ * @package main
  */
 class helpers {
     /**
-     * prepares an array for db post where we specify keys to use 
+     * Prepares an array for db post where we specify keys to return from global
+     * *$_POST* 
      * @param array $keys keys to use from POST request
-     * @return array $ary array with post array we will use 
+     * @param boolean $null_values set a null value if key is not set in POST 
+     *                values. If false, then the values will not exist. 
+     * @return array $ary array with array we will use 
      */
     public static function preparePOST ($keys, $null_values = true) {
         $ary = array ();
@@ -32,9 +30,12 @@ class helpers {
     }
     
     /**
-     * prepares an array for db post where we specify keys to use 
+     * Prepares an array for db using GET where we specify keys to return from 
+     * global *$_GET*
      * @param array $keys keys to use from GET request
-     * @return array $ary array with post array we will use 
+     * @param boolean $null_values set a null value if key is not set in POST 
+     *                values. If false, then the values will not exist. 
+     * @return array $ary array with array we will use 
      */
     public static function prepareGET ($keys, $null_values = true) {
         $ary = array ();
@@ -50,7 +51,14 @@ class helpers {
         return $ary;
     }
     
-    //http://php.net/manual/en/function.array-search.php
+    /** 
+     * Search an array recursively for a needle
+     * 
+     * @see http://php.net/manual/en/function.array-search.php
+     * @param type $needle
+     * @param type $haystack
+     * @return boolean
+     */
     public static function searchRecursive($needle, $haystack) {
         foreach ($haystack as $key => $value) {
             $current_key = $key;
@@ -60,5 +68,4 @@ class helpers {
         }
         return false;
     }
-
 }

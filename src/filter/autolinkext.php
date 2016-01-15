@@ -1,22 +1,22 @@
 <?php
 
 namespace diversen\filter;
-/**
- * file contains filter for creating links from urls
- * @package    filters
- */
 
 /**
- * class contains method for creating links from urls
- * much the same as autolink class, but this is better
- * as there is a options for setting links not to be linkified
- * @package    filters
- */
+ * Filter text and transform URLs to HTML links
+ * 
+ * @package main
+ * @example
+~~~
+ use diversen\filters\autolinkext;
+ $txt = autolink::filter($txt);
+~~~
+*/
 class autolinkext {
 
     /**
-     * filter method
-     * @param strin $text to filter
+     * The filter method
+     * @param string $text to filter
      * @return string $text
      */
     public static function filter($text){        
@@ -25,10 +25,10 @@ class autolinkext {
     }
     
    /**
-    * found on: http://stackoverflow.com/questions/1925455/how-to-mimic-stackoverflow-auto-link-behavior
-    * from http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
-    * Replace links in text with html links
-    *
+    * Replace URLs in text with HTML links
+    * 
+    * @see http://daringfireball.net/2009/11/liberal_regex_for_matching_urls
+    * @see http://stackoverflow.com/questions/1925455/how-to-mimic-stackoverflow-auto-link-behavior
     * @param  string $text
     * @return string $string
     */
@@ -64,7 +64,7 @@ class autolinkext {
     }
     
     /**
-     * list of hostnames to not add links to
+     * List of hosts to ignore
      * @return array $ary
      */
     public static function getDenyhosts () {

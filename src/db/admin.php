@@ -4,20 +4,19 @@ namespace diversen\db;
 use diversen\db;
 use diversen\conf;
 use diversen\cli\common;
-/**
- * File contains comon methods when working in db adin mode. 
- * @package db 
- */
 
 /**
- * dbadmin 
- * @package db
+ * File contains common methods to use with databases without doing queries,
+ * like copy tables, shift database etc.  
+ * @package main 
  */
+
 class admin {
     
     /**
-     * changes database we are working on
-     * @param string $database
+     * Changes the database we are working on. 
+     * May only work on MySQL
+     * @param string $database the new database to connect to
      */
     public static function changeDB ($database = null) {
         $db = new db();
@@ -33,8 +32,9 @@ class admin {
     }
     
     /**
-     * gets database info from cinfuguration
-     * @return array|false $ary false if no url is given. Array with db url info 
+     * Gets database info from configuration.
+     * May only work on MySQL
+     * @return array|false $ary with info or false if no url exists in the configuration
      */
     public static function getDbInfo($url = null) {
         if (!$url) {
@@ -54,15 +54,14 @@ class admin {
             }
         }
         return $url;
-
     }
     
     /**
-     * dublicate a table 
+     * Dublicate a table. May only work on MySQL databases 
      * @param string $source source table name
      * @param string $dest destination table name
      * @param boolean $drop should we drop table if destination exists 
-     * @return boolean $res result of query
+     * @return boolean $res result of the executed query
      */
     public static function dublicateTable ($source, $dest, $drop = true) {
         $db = new db();
@@ -78,10 +77,11 @@ class admin {
     }
     
     /**
-     * Alter table to include a full text index
+     * Alter a table and add a fulltext index on columns.
+     * May only work on MySQL
      * @param string $table
-     * @param string $columns (e.g. firstname, lastname)
-     * @return boolean $res result
+     * @param string $columns columns to make the index on (e.g. firstname, lastname)
+     * @return boolean $res result of the exectued query
      */
     public static function generateIndex($table, $columns) {
         $db = new db();
@@ -97,9 +97,10 @@ class admin {
     }
     
     /**
-     * check if a table with specified name exists
+     * Check if a table with specified name exists. 
+     * May only work on MySQL
      * @param string $table
-     * @return array $rows
+     * @return array $rows empty array if table does not exist
      */
     public static function tableExists($table) {
         $db = new db();
@@ -109,7 +110,8 @@ class admin {
     }
     
     /**
-     * get indexes on the table
+     * Get column *keys* on from a table as an array. 
+     * May only work on MySQL
      * @param string $table the table name
      * @return array $rows
      */
@@ -121,8 +123,9 @@ class admin {
     }
     
     /**
-     * check if a specified key exists
-     * 
+     * Examine if a *key* exists on a *table* 
+     * May only work on MySQL
+     * @return array $rows empty row if the key does not exists
      */
     public static function keyExists ($table, $key) {
         $db = new db();
@@ -132,7 +135,8 @@ class admin {
     }
     
     /**
-     * clone a complete database
+     * Clone a complete database from *database* to *newDatabase*
+     * May only work on MySQL
      * @param string $database
      * @param string $newDatabase
      * @return boolean $res
@@ -158,7 +162,9 @@ class admin {
     }
     
     /**
-     * creates a database from config params (url, password, username)
+     * Create a database from configuation params (url, password, username)
+     * found in *config.ini*
+     * May only work on MySQL
      * @param array $options
      * @return int $res result from exec operation
      */

@@ -3,19 +3,19 @@
 namespace diversen\filter;
 
 /**
- * file contains stacklink filter
- * @package filters
- */
-
-/**
- * class contans stacklink filter
- * @package filters
- */
-
+ * Filter text and transform URLs to *short* HTML links
+ * 
+ * @package main
+ * @example
+~~~
+ use diversen\filters\autolinkShorten;
+ $txt = autolinkShorten::filter($txt);
+~~~
+*/
 class autolinkShorten {
     
     /**
-     * create auto links in a text
+     * The filter method
      * @param string $text to filter
      * @return string $text the filtered text
      */
@@ -25,7 +25,7 @@ class autolinkShorten {
     }
 
     /**
-     * autolink text
+     * Transform URLs to HTML links
      * @param string $text to filter
      * @return string $text the filtered text
      */
@@ -35,7 +35,7 @@ class autolinkShorten {
     }
 
     /**
-     * following functions found on: http://stackoverflow.com/a/1971451
+     * @see http://stackoverflow.com/a/1971451
      * @param array $matches
      * @return string $text linkified url
      */

@@ -10,9 +10,23 @@ use diversen\log;
 use R;
 use Exception;
 
-
+/**
+ * A simple PHP bounce barser for IMAP
+ * 
+ * @package main
+ */
 class parser {
-
+    
+    /**
+     * 
+     * @param array $options <code>$options = array(
+                'host' => conf::getMainIni('imap_host'),
+                'port' => conf::getMainIni('imap_port'),
+                'user' => conf::getMainIni('imap_user'),
+                'password' => conf::getMainIni('imap_password'),
+                'ssl' => conf::getMainIni('imap_ssl')
+            );</code>
+     */
     public function __construct($options = array()) {
         rb::connect();
         if (empty($options)) {
@@ -27,11 +41,15 @@ class parser {
         $this->options = $options;
     }
     
+    /**
+     * Options 
+     * @var array 
+     */
     public $options = array();
     
     /**
-     * init imap with options
-     * @return imap $imap
+     * Get IMAP object `diversen\imap` with options
+     * @return diversen\imap $imap diversen\imap
      */
     public function getImap () {
         $imap = new imap();
@@ -39,7 +57,9 @@ class parser {
         return $imap;
     }
     /**
-     * function which is easy to add to a cron job
+     * Connect and parse mails found in a bounce mailbox 
+     * This should be easy to add to a cron job
+     * @param boolean $remove if true messages are removed.  
      */
     public function parse($remove = true) {
 
@@ -67,9 +87,10 @@ class parser {
     }
     
     /**
-     * 
-     * @param imap $imap 
-     * @param type $x
+     * Parse a single email message, and save status code of message
+     * in database. 
+     * @param imap $imap diversen\imap
+     * @param int $x the number of the message
      */
     public function parseMessage($imap, $x) {
 
@@ -128,7 +149,7 @@ class parser {
     }
 
     /*
-     * delete all messages
+     * Delete all messages
      */
 
     public function deleteAll() {
@@ -160,9 +181,9 @@ class parser {
     }
     
     /**
-     * returns bounce code from [message/delivery-status] part of message
+     * Returns the bounce code from [message/delivery-status] part of message
      * e.g. 4.2.2
-     * @param string $mail
+     * @param string $mail the email message
      * @return string $code e.g. 4.2.2
      */
     public static function getBounceCode($mail) {
@@ -185,10 +206,10 @@ class parser {
     }
     
     /**
-     * returns email from [message/delivery-status] part of message
-     * looks for 'final-recipient: ' and returns email
-     * @param string $mail
-     * @return string $email
+     * Returns email from [message/delivery-status] part of message
+     * looks for 'final-recipient: ' and returns the email
+     * @param string $mail the mail message
+     * @return string $email the email
      */
     public static function getBounceEmail($mail) {
 
@@ -206,7 +227,11 @@ class parser {
         return null;
     }
     
-    
+    /**
+     * Search a message for a email
+     * @param type $str
+     * @return boolean
+     */
     public static function getEmailFromStr ($str) {
         $pattern = "/([\s]*)([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*([ ]+|)@([ ]+|)([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,}))([\s]*)/i";
         

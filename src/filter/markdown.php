@@ -1,18 +1,21 @@
 <?php
 
 namespace diversen\filter;
-/**
- * markdown filter. use Michelf markdown
- * @package    filters
- */
 
 use \Michelf\MarkdownExtra as MD;
 
 /**
- * markdown filter.
+ * Markdown wrapper around michelf/markdown. You will need to: 
+ * 
+ * > composer require michelf/php-markdown
  *
- * @package    filters
- */
+ * @package main
+ * @example
+~~~
+ use diversen\filters\markdown;
+ $txt = markdown::filter($txt);
+~~~
+*/
 class markdown extends MD {
 
     	protected function _doImages_reference_callback($matches) {

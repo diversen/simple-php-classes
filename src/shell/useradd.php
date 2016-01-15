@@ -39,7 +39,7 @@ function useradd_super ($options = null){
  * @param array $options
  * @return int $res
  */
-function useradd_add ($options = null){
+function useradd_user ($options = null){
 
     $values['email'] = common::readSingleline("Enter Email of super user (you will use this as login): ");
     $values['password'] = common::readSingleline ("Enter password: ");

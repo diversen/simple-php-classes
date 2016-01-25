@@ -44,15 +44,24 @@ class helpers {
      * method for generating a delete confirmform
      * @param string $name the name of the submit button
      * @param string $legend the legend of the form
+     * @param string $text the text of the submit button
      * @return string $form the html form.
      */
-    public static function confirmDeleteForm ($name = 'submit', $legend = 'delete') {
+    public static function confirmDeleteForm ($name = 'submit', $legend = 'delete', $text = null, $hidden_id  = null) {
         
+        if (!$text) {
+            $text = lang::translate('Delete');
+        }
+         
         $html = new html ();
         $html->setAutoEncode(true);
         $html->formStart('custom_delete_form');
         $html->legend($legend);
-        $html->submit($name, lang::translate('Delete'));
+        if ($hidden_id) { 
+            $html->hidden('id', $hidden_id);
+        }
+        
+        $html->submit($name, $text);
         $html->formEnd(); 
         return $html->getStr();
     }

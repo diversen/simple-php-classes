@@ -302,7 +302,7 @@ class q extends connect {
         self::setWhere();
         self::$query.= " $filter ? ";
         self::$bind[] = array ('value' => $value, 'bind' => $bind);
-        return new self();
+        return new self;
     }
     
     /**
@@ -321,7 +321,7 @@ class q extends connect {
                 self::$bind[] = array ('value' => $val, 'bind' => null);
             }
         }
-        return new self();
+        return new self;
     }
     
     /**
@@ -342,7 +342,7 @@ class q extends connect {
     public static function sql ($sql) {
         self::setWhere();
         self::$query.= " $sql ";
-        return new self();
+        return new self;
     }
     
     /**
@@ -377,7 +377,7 @@ class q extends connect {
             }
         }
         self::$query.=")";
-        return new self();
+        return new self;
     }
 
     /**
@@ -527,14 +527,15 @@ class q extends connect {
         return array();
     }
     
-        /**
+    /**
      * short hand of setSelect
      * @param string $table
      * @param string $fields
      * @return object $db_q
      */
     public static function select ($table, $fields = null){
-        return self::setSelect($table, $fields);
+        self::setSelect($table, $fields);
+        return new self;
         
     }
     
@@ -544,7 +545,8 @@ class q extends connect {
      * @return object $db_q
      */
     public static function numRows ($table){
-        return self::setSelectNumRows($table);
+        self::setSelectNumRows($table);
+        return new self;
     }
     
     /**
@@ -563,7 +565,8 @@ class q extends connect {
      */
     
     public static function update ($table) {
-        return self::setUpdate($table);
+        self::setUpdate($table);
+        return new self;
     }
     
         /**
@@ -571,7 +574,8 @@ class q extends connect {
      * @param type $table the table to insert values into
      */
     public static function insert ($table) {
-        return self::setInsert($table);
+        self::setInsert($table);
+        return new self;
     }
     
     /**
@@ -622,10 +626,11 @@ class q extends connect {
     public static function replace ($table, $values, $search) {
         $num_rows = self::numRows($table)->filterArray($search)->fetch();
         if (!$num_rows){
-            return self::insert($table)->values($values)->exec();
+            self::insert($table)->values($values)->exec();
         } else {
-            return self::update($table)->values($values)->filterArray($search)->exec();
+            self::update($table)->values($values)->filterArray($search)->exec();
         }
+        return new self;
     }
     
     /**
@@ -634,7 +639,8 @@ class q extends connect {
      * @param array $bind array with types to bind values to
      */
     public static function values ($values, $bind = array()) {
-        return self::setValues($values, $bind);
+        self::setValues($values, $bind);
+        return new self;
     }
     
     

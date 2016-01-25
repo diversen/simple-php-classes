@@ -220,10 +220,7 @@ class session {
      * @param int $id
      * @return array $row
      */
-    public static function getAccount ($id = null) {
-        if (!$id) { 
-            $id = session::getUserId();
-        }
+    public static function getAccount ($id) {
         $db = new db();
         $row = $db->selectOne('account', 'id', $id);
         return $row;

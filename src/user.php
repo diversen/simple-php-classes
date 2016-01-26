@@ -75,7 +75,7 @@ class user {
      * @return boolean
      */
     public static function locked () {
-        $user = self::getAccount();
+        $user = self::getAccount(session::getUserId());
         if (empty($user)) {
             return false;
         }
@@ -90,10 +90,7 @@ class user {
      * @param int $id user_id 
      * @return array $row from account 
      */
-    public static function getAccount ($id = null) {
-        if (!$id) { 
-            $id = session::getUserId();
-        }
+    public static function getAccount ($id ) {
         $db = new db();
         $row = $db->selectOne('account', 'id', $id);
         return $row;

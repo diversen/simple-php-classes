@@ -441,24 +441,20 @@ class session {
     }
 
     /**
-     * method for setting an action message. Used when we want to tell a
+     * Method for setting an action message. Used when we want to tell a
      * user what happened if he is e.g. redirected. You can force to
      * close the session, which means you can write to screen after you
      * session vars has been set. This should be avoided.  
      *
      * @param string $message the action message.
-     * @param boolean $close to close session writing or not
+     * @param string $type the type (default is 'system_message') 
      */
-    public static function setActionMessage($message, $close = false){
-        if (!isset($_SESSION['system_message'])) {
-            $_SESSION['system_message'] = array ();
+    public static function setActionMessage($message, $type = 'system_message'){
+        if (!isset($_SESSION[$type])) {
+            $_SESSION[$type] = array ();
         } 
             
-        $_SESSION['system_message'][] = $message;
-            
-        if ($close) {
-            session_write_close();
-        }
+        $_SESSION[$type][] = $message;
     }
 
     /**
@@ -467,9 +463,10 @@ class session {
      * in your template. 
      * @return string $str actionMessage
      */
-    public static function getActionMessage($empty = true){
-        if (isset($_SESSION['system_message'])){
-            $messages = $_SESSION['system_message'];
+    public static function getActionMessage($type = 'system_message', $empty = true){
+        if (isset($_SESSION[$type])){
+
+            $messages = $_SESSION[$type];
             $ret = '';
             if (is_array($messages)) {
                 foreach ($messages as $message) {
@@ -477,7 +474,7 @@ class session {
                 }
             }
             if ($empty) {
-                unset($_SESSION['system_message']);
+                unset($_SESSION[$type]);
             }
             return $ret;
         }

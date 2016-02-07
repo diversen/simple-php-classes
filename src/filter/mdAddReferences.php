@@ -9,11 +9,10 @@ namespace diversen\filter;
  */
 
 use diversen\file;
-use diversen\lang;
+use diversen\log;
 use diversen\uri\direct;
 use Michelf\Markdown as mark;
 use modules\image\module as imageModule;
-
 
 
 class mdAddReferences extends mark {
@@ -119,17 +118,8 @@ class mdAddReferences extends mark {
             if (isset($a['scheme'])) {
                 return false;
             }
-            
-            $mod = direct::fragment(0, $url);
-            if ($mod == 'image') {
-                $id = direct::fragment(2, $url);
-                $i = new imageModule();
-                $row = $i->getSingleFileInfo($id);
-                if ($row['figure'] == 1) {
-                    return $row;
-                }    
-            }
-            return false;
+            return $url;
+
         }
     }
 

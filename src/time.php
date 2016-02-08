@@ -2,13 +2,9 @@
 
 namespace diversen;
 use diversen\conf as conf;
-/**
- * file contains time functions
- * @package time 
- */
 
 /**
- * class with time methods
+ * A couple of time methods
  * @package time
  */
 class time {
@@ -58,7 +54,7 @@ class time {
     }
     
     /**
-     * returns a locale date string from mysql timestamp. 
+     * Returns a locale date string from mysql timestamp. 
      * @param type $date same format as mysql timestamp
      * @param string $format ini settings format e.g. date_format_long
      * @return string $format  
@@ -87,3 +83,4 @@ class time {
         return checkdate ($date_ary['1'] , $date_ary['2'] , $date_ary['0']);
     }
 }
+

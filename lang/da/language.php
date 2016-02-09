@@ -3,6 +3,7 @@
 $LANG = array();
 
 $LANG['No title'] = 'Ingen titel';
+$LANG['filter_'] = 'filter_';
 $LANG['(Admin) Edit profile'] = '(Admin) Rediger profil';
 $LANG['Logout'] = 'Log ud';
 $LANG['Edit'] = 'Edit';

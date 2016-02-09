@@ -21,6 +21,5 @@ class cebeMarkdown {
     public static function filter ($text) {
         $parser = new \cebe\markdown\GithubMarkdown();
         return $parser->parse($text);
-
     }
 }

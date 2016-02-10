@@ -15,6 +15,12 @@ use Exception;
  * @package
  */
 class parser {
+        
+    /**
+     * var holding options 
+     * @var array 
+     */
+    public $options = array();
     
     /**
      * Constructor withs initialize the IMAP object
@@ -45,12 +51,6 @@ array(
     }
     
     /**
-     * var holding options 
-     * @var array 
-     */
-    public $options = array();
-    
-    /**
      * Connect to IMAP server using IMAP object `diversen\imap` with
      * options set in constructor
      * @return diversen\imap $imap diversen\imap
@@ -60,10 +60,12 @@ array(
         $imap->connect($this->options);
         return $imap;
     }
+    
     /**
      * Connect and parse mails found in a the bounce mailbox 
      * This should be easy to add to a cron job
-     * @param boolean $remove true if we want messages to be removed.  
+     * @param boolean $remove true if we want messages to be removed. 
+     * @return void 
      */
     public function parse($remove = true) {
 
@@ -95,6 +97,7 @@ array(
      * in database. 
      * @param imap $imap diversen\imap
      * @param int $x the number of the message
+     * @return boolean $es true on success else false
      */
     public function parseMessage($imap, $x) {
 
@@ -152,8 +155,9 @@ array(
         return true;
     }
 
-    /*
+    /**
      * Delete all messages
+     * @return void
      */
     public function deleteAll() {
 
@@ -187,7 +191,7 @@ array(
      * Returns the bounce code from [message/delivery-status] part of message
      * e.g. 4.2.2
      * @param string $mail the email message
-     * @return string $code e.g. 4.2.2
+     * @return string|null $code e.g. 4.2.2
      */
     public static function getBounceCode($mail) {
 
@@ -212,7 +216,7 @@ array(
      * Returns email from [message/delivery-status] part of message
      * looks for 'final-recipient: ' and returns the email
      * @param string $mail the mail message
-     * @return string $email the email
+     * @return string|null $email the email
      */
     public static function getBounceEmail($mail) {
 
@@ -233,7 +237,7 @@ array(
     /**
      * Search a message for an email
      * @param type $str
-     * @return boolean
+     * @return string|false $res email or false
      */
     public static function getEmailFromStr ($str) {
         $pattern = "/([\s]*)([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*([ ]+|)@([ ]+|)([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,}))([\s]*)/i";

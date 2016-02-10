@@ -14,6 +14,7 @@ class admin {
     /**
      * Changes the MySQL database we are working on. 
      * @param string $database the new database to connect to
+     * @return void
      */
     public static function changeDB ($database = null) {
         $db = new db();

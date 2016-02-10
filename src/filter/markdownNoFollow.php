@@ -1,10 +1,6 @@
 <?php
 
 namespace diversen\filter;
-/**
- * markdown filter. use Michelf markdown
- * @package    filters
- */
 
 use \Michelf\Markdown as MD;
 

@@ -33,6 +33,7 @@ class connect {
      * Connect to a database using an array with some of these arguments
      * <code>array('url', 'username', 'password', 'dont_die', 'db_init')</code>
      * @param array $options 
+     * @return void
      */
     public function __construct($options = null) {
         if (!self::$dbh) {
@@ -45,7 +46,7 @@ class connect {
      * <code>array('url', 'username', 'password', 'dont_die', 'db_init')</code>
      * If the array is empty then try to read from a configuration file.
      * @param array $options 
-     * @return string
+     * @return void|string void or 'NO_DB_CON' if fail on connect
      */
     public static function connect($options = null){
 
@@ -105,6 +106,7 @@ class connect {
     /**
      * Set SSL for mysql if SSL is set in the configuration,
      * experimental
+     * @return void
      */
     public static function setSsl() {
         $attr = conf::getMainIni('mysql_attr');
@@ -118,6 +120,7 @@ class connect {
     /**
      * Method for showing fatal database errors
      * @param string $msg the message to show with the backtrace
+     * @return void
      */
     protected static function fatalError($msg) {
         self::$debug[] = "Fatal error encountered";

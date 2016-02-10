@@ -78,6 +78,12 @@ namespace diversen\cli;
  */
  
 class optValid {
+        
+    /**
+     * Var holding errors
+     * @var array $errors
+     */
+    public $errors = array ();
 
     /**
      * Splits string with '-' and '--' values
@@ -120,7 +126,7 @@ class optValid {
      * sets an array with sub commands, e.g.
      * -V val=test
      * @param array $ary
-     * @return array
+     * @return array $ret
      */
     public function setSubVal ($ary) {
         foreach ($ary as $key => $opt) {
@@ -133,12 +139,6 @@ class optValid {
         }
         return $ary;
     }
-    
-    /**
-     * Var holding errors
-     * @var array $errors
-     */
-    public $errors = array ();
     
     /**
      * Checks if an array of commands are valid based on an array

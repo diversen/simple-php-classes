@@ -45,6 +45,7 @@ class main extends cli {
      * - Load language
      * - Set timeezone 
      * - Load translation
+     * @return void
      */
     public static function init() {
 
@@ -129,6 +130,7 @@ EOF;
     /**
      * After the commandline options has been parsed. 
      * Examine the --domain flag and the --verbose flag
+     * @return void
      */
     public static function afterParse($result) {
         
@@ -154,6 +156,7 @@ EOF;
      * Before parsing of the commandline options
      * This loads all commandline modules from file system
      * and any modules found in the database
+     * @return void
      */
     public static function beforeParse () {
         self::loadBaseModules();
@@ -166,6 +169,7 @@ EOF;
     /**
      * Loads all modules found in database if *'modules'* table exists
      * Else the CLI command may be used for e.g. an install. 
+     * @return void
      */
     public static function loadDbModules (){        
           
@@ -192,6 +196,7 @@ EOF;
     /**
      * Loads all base modules
      * Base modules are placed in *vendor/diversen/simple-php-classes/src/shell*
+     * @return void
      */
     public static function loadBaseModules () {
         $command_path = __DIR__ . "/../shell";

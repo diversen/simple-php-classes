@@ -8,27 +8,24 @@ include_once "geshi/geshi.php";
 
 /**
  * File contains a filter for higlighting code using GeShi:
- * 
- * > composer require geshi/geshi
- * 
- * @package main
+ * * composer require geshi/geshi*
  * @example
-~~~
+<code>
  use diversen\filters\geshiHl;
  $txt = geshiHl::filter($txt);
-~~~
+</code>
 */
 class geshiHl {
 
     /**
-     *
-     * @var string $language - the language to use.
+     * Var holding programming language to highlight
+     * @var string $language
      */
     private $lang;
 
 
     /**
-     * highlight a text using geshi. 
+     * Highlight a text using geshi. 
      * in your text you will need, e.g. for PHP,
      * <code>[hl:php]<?php echo "hello world";?>[/hl:php]</code>
      * @param string $text string to filter.

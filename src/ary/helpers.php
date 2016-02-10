@@ -55,8 +55,8 @@ class helpers {
     /** 
      * Search an array recursively for a needle
      * @see http://php.net/manual/en/function.array-search.php
-     * @param type $needle the needle to find
-     * @param type $haystack the array to search in
+     * @param string $needle the needle to find
+     * @param array $haystack the array to search in
      * @return boolean $res true if found else false
      */
     public static function searchRecursive($needle, $haystack) {

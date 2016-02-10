@@ -1,21 +1,17 @@
 <?php
 
 namespace diversen\file;
-/**
- * File contains single function for getting utf8 about a path. 
- * works in the same way as the native function pathinfo
- * @package file 
- */
+
 
 /**
- * class version of pathinfo_utf8
- * @package file
+ * class contains a utf8 version of pathinfo, and a better realpath (truepath)
+ * method (to replace the native realpath)
  */
 class path {
 
     
     /**
-     * function returns utf8 pathinfo as the native pathinfo returns pathinfo
+     * Method that returns utf8 pathinfo. The native pathinfo does not work well with utf8
      * @param string $path
      * @return array $pathinfo
      */
@@ -115,5 +111,4 @@ class path {
 
         return $path;
     }
-
 }

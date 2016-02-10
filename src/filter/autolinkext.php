@@ -4,13 +4,11 @@ namespace diversen\filter;
 
 /**
  * Filter text and transform URLs to HTML links
- * 
- * @package main
  * @example
-~~~
+<code>
  use diversen\filters\autolinkext;
  $txt = autolink::filter($txt);
-~~~
+</code>
 */
 class autolinkext {
 

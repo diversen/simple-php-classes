@@ -99,19 +99,20 @@ class q extends connect {
     public static $isset = null;
 
     /**
-     * constructor inits object
-     * @param array $options 
+     * Constructor inits object
+     * @param array $options
+     * @return void
      */
     function __construct($options = null) {
         self::init($options);       
     }
     
     /**
-     * inits object
-     * @param array $options 
+     * Init. Create connection if no connection exists
+     * @param array $options
+     * @return void
      */
     public static function init($options = null) {
-        //static $db = null;
         if (!self::$dbh) {
             self::connect($options);
         } 
@@ -135,27 +136,26 @@ class q extends connect {
 
     /**
      * roolback transaction
-     * @returres boolean $res 
+     * @return boolean $res 
      */
     public static function rollback () {
         return self::$dbh->rollBack();
     }
     
     /**
-     * 
+     * Get last string from debug array
      * @return string $debug
      */
     public static function getLastDebug () {
         return $debug = array_pop(self::$debug);
     }
     
-
     /**
-     * escapes fields to select, e.g. 'id, date, test'
-     * @param string $fields string of fields
-     * @return string  escaped string of fields
+     * Get fields to select as a string, e.g. 'id, date, test'
+     * @param array $fields string of fields
+     * @return string $str escaped string of fields
      */
-    public static function escapeFields ($fields) {
+    private static function getFieldsAsString ($fields) {
         $fields = explode(',', $fields);
         $ary = array ();
         foreach ($fields as $field) {
@@ -166,20 +166,19 @@ class q extends connect {
     }
     
     /**
-     * prepare for a select statement. 
-     * 
+     * Set SQL for a SELECT statement
      * @param string $table the table to select from 
      * @param string $fields the fields from the table to select 
      *             e.g. * or 'id, title'
+     * @return self
      */
-    
     public static function setSelect ($table, $fields = null){
         self::$method = 'select';
         
         if (!$fields) {
             $fields = '*';
         } else {
-            $fields = self::escapeFields($fields);
+            $fields = self::getFieldsAsString($fields);
         }
         
         self::$query = "SELECT $fields FROM `$table` ";
@@ -188,9 +187,9 @@ class q extends connect {
     
     
     /**
-     * sets select statement for numrows
+     * Set SQL for a SELECT count(*) statement
      * @param type $table
-     * @return \q 
+     * @return self
      */
     public static function setSelectNumRows ($table){
         self::$method = 'num_rows';
@@ -201,8 +200,9 @@ class q extends connect {
 
     
     /**
-     * prepare for a delete query
+     * Set SQL for delete
      * @param string $table the table to delete from
+     * @return self
      */
     public static function setDelete ($table){
         self::$method = 'delete';
@@ -211,8 +211,9 @@ class q extends connect {
     }
     
     /**
-     * prepare for an update query statement
-     * @param type $table 
+     * Set SQL for update
+     * @param string $table 
+     * @return self
      */
     
     public static function setUpdate ($table) {
@@ -222,8 +223,9 @@ class q extends connect {
     }
     
     /**
-     * prepare for insert
+     * Set SQL For insert
      * @param type $table the table to insert values into
+     * @return self
      */
     public static function setInsert ($table) {
         self::$method = 'insert';
@@ -232,9 +234,10 @@ class q extends connect {
     }
     
     /**
-     * set values for insert or update. 
+     * Set values for insert or update. 
      * @param array $values the values to insert
      * @param array $bind array with types to bind values to
+     * @return self
      */
     public static function setValues ($values, $bind = array()) {
         if (self::$method == 'update') {
@@ -246,9 +249,10 @@ class q extends connect {
     }
     
     /**
-     * prepare for update values
+     * Prepare and bind for update
      * @param array $values the values to update with
-     * @param array $bind the array with types to bind with 
+     * @param array $bind array with types to bind with
+     * @return self
      */
     public static function setUpdateValues ($values, $bind = array ()) {
         $ary = array();
@@ -266,9 +270,10 @@ class q extends connect {
     } 
     
     /**
-     * set insert values
+     * Prepares and bind insert values
      * @param array $values the values to insert into table
      * @param array $bind the values to bind values with
+     * @return self
      */
     public static function setInsertValues ($values, $bind = array ()) {
         $rest = array ();
@@ -293,11 +298,11 @@ class q extends connect {
     } 
 
     /**
-     * filter something in a query e.g. filter('id > 2', $value);
-     * the values used will be prepared 
+     * Prepare and bind a filter in a query, e.g. filter('id > 2', $value);
      * @param string $filter the filter to use e.g. 'id >
      * @param string $value the value to filter from e.g. '2'
      * @param string $bind  if we want to bind the value to a type. 
+     * @return self
      */
     public static function filter ($filter, $value, $bind = null) {
         self::setWhere();
@@ -307,10 +312,11 @@ class q extends connect {
     }
     
     /**
-     * prepares a query as string
+     * Prepares and bind a query as string
      * @param string $str the filter to use e.g. 'id > ? OR email = ?'
      * @param array  $values the value to filter from e.g. '2'
      * @param array  $bind  if we want to bind the value to a type. 
+     * @return self
      */
     public static function filterString ($str, $values, $bind = null) {
         self::setWhere();
@@ -326,9 +332,9 @@ class q extends connect {
     }
     
     /**
-     * sets WHERE if a WHERE condition has not been set
+     * Sets WHERE if a WHERE condition has not been set
      */
-    public static function setWhere () {
+    private static function setWhere () {
         if (!self::$where) {
             self::$where = 1;
             self::$query.= "WHERE ";
@@ -336,9 +342,9 @@ class q extends connect {
     }
     
     /**
-     * filter for setting some additional sql somewhere after WHERE
-     * 
+     * Set clean SQL after WHERE
      * @param string $sql e.g. "id >= 3"
+     * @return self
      */
     public static function sql ($sql) {
         self::setWhere();
@@ -347,20 +353,21 @@ class q extends connect {
     }
     
     /**
-     * set a complete and clean SQL statement
+     * Set a complete and clean SQL statement
      * @param string $sql e.g. "SELECT * FROM `table`  id >= 3"
      */
     public static function sqlClean ($sql) {
         self::$method = 'select';
         self::$query = $sql;
-        return new self();
+        return new self;
     }
     
     /**
-     * filter for creating IN queries where we use an array of values
+     * SQL for preparing IN queries where we use an array of values
      * to create our filter from. 
      * @param string $filter waht to filter from, e.g. "ID in"
      * @param array $values the values which we will use, e.g. array(1, 2, 3) 
+     * @return self
      */
     public static function filterIn ($filter, $values) {
         self::setWhere();
@@ -382,8 +389,9 @@ class q extends connect {
     }
 
     /**
-     * sets a condition between filters
+     * Sets a condition between filters, e.g. AND
      * @param string $condition (e.g. 'AND', 'OR')
+     * @return self
      */
     public static function condition ($condition){
         self::$query.= " $condition ";
@@ -391,10 +399,11 @@ class q extends connect {
     }
 
     /**
-     * set ordering of the values which we tries to fetch
-     * remember to escape the order when using user input!
+     * Set ordering of the values which we tries to fetch
+     * NOTE: Remember to escape the order when using user input
      * @param string $column column to order by, e.g. title (remember to escape this!)
      * @param string $order (e.g. ASC or DESC)
+     * @return self
      */
     public static function order ($column, $order = 'ASC', $options = array ()){      
         if (!self::$isset) { 
@@ -406,12 +415,12 @@ class q extends connect {
         return new self;
     }
     
-
     /**
-     * method for setting a limit in the query
-     * 
+     * Method for setting a limit in the query. Note: Escape user
+     * supplied values
      * @param int $from where to start the limit e.g. 200
      * @param int $limit the limit e.g. 10
+     * @return self
      */
     public static function limit ($from, $limit){
         $from = (int)$from;
@@ -421,9 +430,9 @@ class q extends connect {
     }
 
     /**
-     * method for preparing all bound columns and corresponding values
+     * Method for preparing and setting all bound columns and corresponding values
      */
-    public static function prepare (){
+    private static function prepare (){
         if (self::$bind){
             $i = 1;
             foreach (self::$bind as $key => $val){
@@ -436,11 +445,10 @@ class q extends connect {
             }
         }
         self::$bind = null;
-
     }
 
     /**
-     * method for fetching rows which we created with our query
+     * Method for fetching rows
      * @return array $rows assoc array of rows
      */
     public static function fetch (){
@@ -474,9 +482,9 @@ class q extends connect {
     }
     
     /**
-     * sets a raw query
+     * Set a raw query
      * @param string $query e.g. "SELECT * FROM mytable";
-     * @return object $db_q
+     * @return self
      */
     public static function query ($query) {
         self::$query = $query;
@@ -508,7 +516,7 @@ class q extends connect {
     }
     
     /**
-     * get last inset id
+     * Get last insert id
      * @return int $id last insert id
      */
     public static function lastInsertId () {
@@ -516,7 +524,7 @@ class q extends connect {
     }
 
     /**
-     * fetch a single row, first in line
+     * Fetch a single row
      * @return array $row single array
      */
     public static function fetchSingle (){
@@ -529,10 +537,10 @@ class q extends connect {
     }
     
     /**
-     * short hand of setSelect
+     * Short hand for setSelect
      * @param string $table
-     * @param string $fields
-     * @return object $db_q
+     * @param array $fields
+     * @return self
      */
     public static function select ($table, $fields = null){
         self::setSelect($table, $fields);
@@ -541,9 +549,9 @@ class q extends connect {
     }
     
     /**
-     * short hand of setSelectNumRows
+     * Short hand of setSelectNumRows
      * @param string $table
-     * @return object $db_q
+     * @return self
      */
     public static function numRows ($table){
         self::setSelectNumRows($table);
@@ -551,8 +559,9 @@ class q extends connect {
     }
     
     /**
-     * prepare for a delete query
+     * Set delete SQL
      * @param string $table the table to delete from
+     * @return self
      */
     public static function delete ($table){
         self::$method = 'delete';
@@ -560,19 +569,20 @@ class q extends connect {
         return new self;
     }
     
-        /**
-     * prepare for an update query statement
-     * @param type $table 
-     */
-    
+    /**
+     * Set update SQL
+     * @param string $table
+     * @return self
+     */   
     public static function update ($table) {
         self::setUpdate($table);
         return new self;
     }
     
-        /**
-     * prepare for insert
+    /**
+     * Set SQL for insert
      * @param type $table the table to insert values into
+     * @return self
      */
     public static function insert ($table) {
         self::setInsert($table);
@@ -580,10 +590,11 @@ class q extends connect {
     }
     
     /**
-     * set conditions as a array 
+     * Set multiple filters as an array
      * @param array $ary array('user_id =' => 20, 'username =' => 'myname); 
-     * @param string $condition e.g. 'AND', 'OR' 
-     * @return \q object
+     * @param string $condition the condition to split the statements with, 
+     * e.g. 'AND', 'OR' 
+     * @return self
      */
     public static function filterArray ($ary, $condition = 'AND') {
         $i = count($ary);
@@ -598,11 +609,11 @@ class q extends connect {
     }
     
     /**
-     * set conditions as a array, but do not include =, <, or something else as array key param
+     * Set filter conditions as a array, but without e.g. '=' or '<' in the keys
      * @param string $ary array('user_id' => 20, 'username' => 'myname);
      * @param string $condition e.g. 'AND', 'OR' 
      * @param string $operator e.g. (=)
-     * @return \q object
+     * @return self
      */
     public static function filterArrayDirect ($ary, $condition = 'AND', $operator = '=') {
         $i = count($ary);
@@ -619,10 +630,11 @@ class q extends connect {
         
     
     /**
-     * replace a row in a table
+     * Replace (insert or update) a row in a table
      * @param string $table
      * @param array $values update|insert values
-     * @param array $search e.g. array('user_id =' => 20, 'username =' => 'myname); 
+     * @param array $search e.g. array('user_id =' => 20, 'username =' => 'myname);
+     * @return self
      */
     public static function replace ($table, $values, $search) {
         $num_rows = self::numRows($table)->filterArray($search)->fetch();
@@ -635,18 +647,18 @@ class q extends connect {
     }
     
     /**
-     * set values for insert or update. 
+     * Set values for insert or update. 
      * @param array $values the values to insert
      * @param array $bind array with types to bind values to
+     * @return self
      */
     public static function values ($values, $bind = array()) {
         self::setValues($values, $bind);
         return new self;
     }
     
-    
     /**
-     * short hand of fetchSingle
+     * Short hand of fetchSingle
      * @return array $row
      */
     public static function one () {
@@ -654,12 +666,9 @@ class q extends connect {
     }
     
     /**
-     * method for unsetting static vars when an operation is compleate.
+     * Method for unsetting static vars when an operation is complete.
      */
-    public static function unsetVars (){
-        if (conf::getMainIni('debug')) {
-            //self::(self::$query);
-        }
+    private static function unsetVars (){
         self::$query = self::$isset = self::$bind = self::$where = self::$stmt = null;
     }
 }

@@ -24,7 +24,7 @@ class clear {
     /**
      * Clears *conf::pathBase() . "/htdocs/files/default/cached_assets*
      * @param array $options
-     * @return int
+     * @return int $res '1'
      */
     public static function assets ($options = null) {
 
@@ -38,7 +38,7 @@ class clear {
     /**
      * Clear both DB and files cache
      * @param array $options
-     * @return int always 1
+     * @return int $res always '1'
      */
     public static function all ($options = null) {
         self::assets();

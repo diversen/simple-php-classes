@@ -28,6 +28,7 @@ class rb {
         
     /**
      * Create a db connection with params found in *config.ini*
+     * @return void
      */
     public static function connect () {
         static $connected = null;
@@ -104,8 +105,8 @@ class rb {
     }
 
     /**
-     * Shorthand method that will delete a bean with *commit* and *rollback*  transactions
-     * @param object $beans 
+     * Shorthand method that will delete a collection of beans with *commit* and *rollback*  transactions
+     * @param object $beans
      */
     public static function deleteBeans ($beans) {
         R::begin();

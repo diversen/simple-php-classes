@@ -6,13 +6,13 @@ use diversen\strings\version;
 use diversen\cli\common;
 
 /**
- * Helper class for creating Apache2 hosts on Unix 
+ * @description 
+ * 
+ * Helper class for creating Apache2 hosts on Unix.  
  * Will most likely only work on Linux as we make
  * exec calls to e.g. `which`. 
  * 
  * Used in `apache2` shell command
- * 
- * @package     main
  */
 class apache2 {
 
@@ -33,6 +33,7 @@ class apache2 {
 
     /**
      * Get an apache2 configuration string based on a server name
+     * 
      * @param   string  $SERVER_NAME the host to enable
      * @return  string  $config an apache2 configuration string.
      */
@@ -52,7 +53,6 @@ class apache2 {
     /**
      * Method for enabling an apache2 site
      * The script does the following:
-     *
      * - create access.log and error.log in ./logs
      * - create virtual configuration and put it in sites-available
      * - enable new site
@@ -99,7 +99,8 @@ class apache2 {
     }
 
     /**
-     * method that disable an apache2 site
+     * Method that disable an apache2 site
+     * 
      * @param array $options only options is $options[sitename] 
      */
     public static function disableSite($options) {
@@ -142,6 +143,7 @@ class apache2 {
 
     /**
      * Check is Apache2 is installed. 
+     * 
      * @return int $ret 0 if exists 1 if not exits
      */
     public static function isInstalled() {
@@ -154,6 +156,7 @@ class apache2 {
 
     /**
      * Gets the running version of apache2
+     * 
      * @return string $version e.g. 2.4.6
      */
     public static function getVersion() {
@@ -230,8 +233,8 @@ EOD;
     }
 
     /**
-     * difference in conf files in version 2.4.x
-     * @return string
+     * Fetch difference in conf files in version 2.4.x
+     * @return string $str
      */
     public static function get2_4_conf() {
         $str = <<<EOF
@@ -243,7 +246,8 @@ EOF;
     }
 
     /**
-     * get apache2 with ssl configuration
+     * Get apache2 with ssl configuration
+     * 
      * @param string $SERVER_NAME
      * @param string $DOCUMENT_ROOT
      * @param string $APACHE_LOG_ROOT

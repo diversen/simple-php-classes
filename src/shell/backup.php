@@ -6,15 +6,16 @@ use diversen\time;
 use diversen\cli\common;
 
 /**
- * function for generaing tar archives
+ * 
+ * CLI command: Make a backup of all sources. 
  *
- * All file settings are preserved. Archive will be placed in /backup/full dir.
- * You can specifiy an exact filename in options. If you don't use a filename
+ * Archive will be placed in backup/full dir.
+ * You can specifiy an exact filename on the commandline. If you don't use a filename
  * in the options array, the archive will be named after current timestamp, e.g.
  * backup/full/1264168904.tar
  *
- * @param   array   $options options to parser, e.g.
- *                  <code>array('File' => 'backup/full/latest.tar')</code> This will create
+ * @param   array   $options Input from commandline, e.g.
+ *                  array('File' => 'backup/full/latest.tar') This will create
  *                  the backup file backup/full/latest.tar
  *                  Leave options empty if you want to use current timestamp for 
  *                  your achive.
@@ -35,12 +36,11 @@ function backup_backup($options){
 }
 
 /**
- * function for generaing tar archives of files
- *
+ * CLI command: Make a backup of all public files 
  *
  * @param   array   options to parser, e.g.
- *                  <code>array('File' => 'backup/full/latest.tar')</code> This will create
- *                  the backup file backup/full/latest.tar
+ *                  `array('File' => 'backup/files/latest.tar')` This will create
+ *                  the backup file `backup/files/latest.tar`
  *                  Leave options empty if you want to use current timestamp for 
  *                  your achive.
  * @return  int     the executed commands shell status 0 on success. 
@@ -59,12 +59,11 @@ function backup_files_backup($options){
 }
 
 /**
- * function for restoring tar archive
- *
+ * CLI command: Function for restoring full tar archive
  * All file settings are restored (if user is the owner of all files)
  *
  * @param   array   options to parser, e.g.
- *                  <code>array('File' => '/backup/full/latest.tar')</code> This will restore
+ *                  array('File' => '/backup/full/latest.tar') This will restore
  *                  the tar achive /backup/full/latest.tar
  *
  *                  Leave options empty if you
@@ -90,8 +89,7 @@ function backup_restore($options){
 }
 
 /**
- * function for restoring tar archive
- *
+ * CLI command. Function for restoring tar archive
  * All file settings are restored (if user is the owner of all files)
  *
  * @param   array   options to parser, e.g.
@@ -121,7 +119,7 @@ function backup_files_restore($options){
 }
 
 /**
- * function for getting latest timestamp from /backup/full dir
+ * CLI command: function for getting latest timestamp from /backup/full dir
  *
  * @return int   backup with most recent timestamp
  */

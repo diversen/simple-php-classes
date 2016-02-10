@@ -9,56 +9,57 @@ use Exception;
 use PDO;
 
 /**
- * a simple way of making db quiries
- * @package db
- * @example <br />
-~~~
-### Connect
+ * A simple way of doing DB operations
+ * 
+ * @example
+
 
 Connection is made in the db class. If writing a module, you will be connected
-per auto. 
+per auto.
+<code>
 
-    $db = new db($options);
-    $db->connect();
+// Connect
+$db = new db($options);
+$db->connect();
 
-### Read (Select)
- 
 
-    $rows = db_q->select('account')->
-            filter('id > ', '10')->
-            condition('AND')->
-            filter('email LIKE', '%d%')->
-            order('email', 'DESC')->limit(0, 10)->
-            fetch();
+// Read (fetch())
+$rows = q::select('account')->
+    filter('id > ', '10')->
+    condition('AND')->
+    filter('email LIKE', '%d%')->
+    order('email', 'DESC')->limit(0, 10)->
+    fetch();
     print_r($rows);
 
-Select one row: 
+// Select one row (fetchSingle()): 
+$rows = q::select('account')->
+    filter('id > ', '10')->
+    condition('AND')->
+    filter('email LIKE', '%d%')->
+    order('email', 'DESC')->limit(0, 10)->
+    fetchSingle();
+    print_r($rows);
 
-            fetchSingle()
 
-### Insert
+// Insert
+$values = array ('email' => 'dennisbech@yahoo.dk');
+$res = q::insert('account')->
+    values($values)->exec();
 
-    $values = array ('email' => 'dennisbech@yahoo.dk');
-    $res = db_q->insert('account')->
-        values($values)->exec();
+// Delete
+$res = q::delete('account')->
+    filter('id =', 21)->
+    exec();
 
-### Delete
-
-S    $res = db_q->delete('account')->
-            filter('id =', 21)->
-            exec();
-
-### Update
-
-    $values['username'] = 'dennis';
-    $res = db_q->setUpdate('account')->
+// Update
+$values['username'] = 'dennis';
+$res = q::update('account')->
             setUpdateValues($values)->
             filter('id =', 22)->
             exec();
 
-
-
-~~~
+</code>
  */
 class q extends connect {
     /**

@@ -1,22 +1,30 @@
 <?php
 
+use diversen\conf;
+use diversen\db;
+
 /**
- * common files used for web install
+ * @description
+ * Common files used for web install
+ * 
  * see: 
  * 
  * htdocs/install.php
  * htdocs/upgrade.php
  * 
- * @package webinstall
+ * @ignore
  * 
  */
-use diversen\conf;
-use diversen\db;
+
 /**
+ * @description
+ * 
  * class installDb
  * Only method change is connect.
  * We don't try and catch in the class
- * @package webinstall
+ * 
+ * @ignore
+ *
  */
 class installDb extends db {
     public $sql;

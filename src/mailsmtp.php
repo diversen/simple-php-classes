@@ -5,11 +5,16 @@ namespace diversen;
 use diversen\conf;
 use PHPMailer;
 use diversen\log;
+
 /**
- * simple wrapper of PHPMailer. 
- * just loads most basic settings from config.php 
+ * A simple wrapper aorund PHPMailer. 
+ * just loads most basic settings from config.ini 
  * and returns a PHPMailer object
  * 
+ * If you use simple-php-classes as a lib you will need to install PHPMailer
+ * 
+ * `composer require phpmailer/phpmailer`
+ *
 <code>
 
 $mail = mailsmtp::getPHPMailer();

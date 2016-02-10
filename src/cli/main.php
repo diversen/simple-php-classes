@@ -16,24 +16,8 @@ use diversen\moduleloader;
 
 /**
  * Main cli command for the simple-php-framework
- * Some base commands and options for extending the framework
- * 
- * @package main
- */
-
-class main extends cli {
-    
-    /**
-     * - Init the CLI command
-     * - Set up autoloading
-     * - Define common
-     * - Set include_path
-     * - Load language
-     * - Set timeezone 
-     * - Load translation
-     * @package main
-     * @example <br />
-~~~
+ * @example
+<code>
 #!/usr/bin/env php
 <?php
 
@@ -48,8 +32,19 @@ conf::setMainIni('base_path', $path);
 mainCli::init();
 $ret = mainCli::run();
 exit($ret);
-~~~
-     * 
+</code>
+ */
+
+class main extends cli {
+    
+    /**
+     * - Init the CLI command
+     * - Set up autoloading
+     * - Define common
+     * - Set include_path
+     * - Load language
+     * - Set timeezone 
+     * - Load translation
      */
     public static function init() {
 

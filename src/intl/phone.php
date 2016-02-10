@@ -1,16 +1,10 @@
 <?php
 
 namespace diversen\intl;
-/**
- * file contains function for getting dial code info from 
- * country filter
- * @package intl 
- */
 
 /**
- * class contains function for getting dial code info from 
+ * Class contains a method for getting dial code info from country code 
  * country filter
- * @package intl 
  */
 
 class phone {

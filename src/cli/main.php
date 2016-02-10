@@ -16,14 +16,15 @@ use diversen\moduleloader;
 
 /**
  * Main cli command for the framework
- * @example
+ * All framework commands are placed in src/shell, one file per command,
+ * and the system can easily be extended by modules.
+ * @example This is the coscli.sh command
 <code>
 #!/usr/bin/env php
 <?php
 
 include_once "vendor/autoload.php";
 use diversen\conf;
-use diversen\cli;
 use diversen\cli\main as mainCli;
 
 $path = dirname(__FILE__);

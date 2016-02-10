@@ -3,18 +3,17 @@
 namespace diversen\cli;
 
 /**
- * class for validating options
- * Checks for options using '-' or '--'
- *  * @example <br />
- 
-```
-        // A string where we want 
+ * A class for validating options
+ * Checks for options using '-' or '--'. 
+ * Any other option is ignored
+ * @example 
+<code>
+        // The commandline string to examine 
         $str = "-s -S --cchapters=7 -V geometry:margin=1in -V documentclass=memoir -V lang=danish";
 
-        // Which arguments to allow
+        // Allowed options
         $allow = array(
             // Produce typographically correct output, converting straight quotes to curly quotes 
-
             'S' => null,
             'smart' => null,
             // Specify the base level for headers (defaults to 1).
@@ -75,7 +74,7 @@ namespace diversen\cli;
         } else {
             echo "there seems to be something wrong";
         }
- ```   
+</code>  
  */
  
 class optValid {
@@ -95,8 +94,8 @@ class optValid {
     }
 
     /**
-     * From all opts we get an array of arrays with values of
-     * '0' the command '1' the value of the command
+     * From all opts we get an array of arrays with values where
+     * '0' key = the command, and '1' = the key value of the command
      * @param array $opts
      * @return array $ret
      */
@@ -142,7 +141,7 @@ class optValid {
     public $errors = array ();
     
     /**
-     * Checks if an error of commands are valid based on an array
+     * Checks if an array of commands are valid based on an array
      * of allowed commands
      * @param array $ary
      * @param array $allow

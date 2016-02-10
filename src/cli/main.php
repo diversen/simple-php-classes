@@ -15,7 +15,7 @@ use diversen\log;
 use diversen\moduleloader;
 
 /**
- * Main cli command for the simple-php-framework
+ * Main cli command for the framework
  * @example
 <code>
 #!/usr/bin/env php
@@ -48,7 +48,7 @@ class main extends cli {
      */
     public static function init() {
 
-        
+        // Autoload modules
         $m = new modules();
         $m->autoloadRegister();
 
@@ -83,6 +83,7 @@ class main extends cli {
         // Init parent with base commands
         parent::init();
         
+        // Make a cool description
         self::$parser->description = <<<EOF
                     _ _       _     
   ___ ___  ___  ___| (_)  ___| |__  
@@ -110,8 +111,7 @@ EOF;
     }
     
     /**
-     * Run the command line
-     *                              
+     * Run the command line afterloading all modules                           
      * @return int $ret 0 on success any other int is failure
      */
     public static function run() {
@@ -152,8 +152,8 @@ EOF;
 
     /**
      * Before parsing of the commandline options
-     * This loads all commandline options from file system
-     * and modules found in the database
+     * This loads all commandline modules from file system
+     * and any modules found in the database
      */
     public static function beforeParse () {
         self::loadBaseModules();
@@ -164,7 +164,8 @@ EOF;
     }
 
     /**
-     * Loads all modules found in database
+     * Loads all modules found in database if *'modules'* table exists
+     * Else the CLI command may be used for e.g. an install. 
      */
     public static function loadDbModules (){        
           
@@ -190,7 +191,7 @@ EOF;
         
     /**
      * Loads all base modules
-     * Base modules are placed in vendor/diversen/simple-php-classes
+     * Base modules are placed in *vendor/diversen/simple-php-classes/src/shell*
      */
     public static function loadBaseModules () {
         $command_path = __DIR__ . "/../shell";

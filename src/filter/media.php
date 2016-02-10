@@ -1,7 +1,9 @@
 <?php
 
 namespace diversen\filter;
+
 use diversen\conf as conf;
+
 /**
  * File containing media filter
  * @package filters
@@ -34,7 +36,7 @@ class media {
         $text = self::linkifySoundcloud($text);
         return $text;
     }
-    
+
     /**
      * calculate a video ratio
      * @param int $default
@@ -72,7 +74,8 @@ class media {
      * @return type
      */
     public static function linkifySoundcloud($text) {
-        include_once "vendor/diversen/simple-php-classes/src/filter/soundcloud.php";
+
+        // include_once "vendor/diversen/simple-php-classes/src/filter/soundcloud.php";
         $regex = '~https?://soundcloud\.com/[\-a-z0-9_]+/[\-a-z0-9_]+~ix';
         $text = preg_replace_callback($regex, array('self', 'soundcloudCallback'), $text);
         return $text;
@@ -86,16 +89,19 @@ class media {
     public static function soundcloudCallback($match) {
         $url = $match[0];
 
-        //include_once "soundcloud.php";
-        //$atts = 'soundcloud params="color=33e040&theme_color=80e4a0&iframe=true';
-        $atts = array(
-            'color' => '33e040',
-            'theme_color' => '80e4a0',
-            'iframe' => true
-        );
-        return soundcloud_shortcode($atts, $url);
+        //Get the JSON data of song details with embed code from SoundCloud oEmbed
+        $getValues = file_get_contents('http://soundcloud.com/oembed?format=js&url=' . $url . '&iframe=true');
+        //Clean the Json to decode
+        $decodeiFrame = substr($getValues, 1, -2);
+        //json decode to convert it as an array
+        $jsonObj = json_decode($decodeiFrame);
+
+        //Change the height of the embed player if you want else uncomment below line
+        // echo $jsonObj->html;
+
+        return str_replace('height="400"', 'height="140"', $jsonObj->html);
     }
-    
+
     /**
      * vimeo callback
      * @param array $matches
@@ -168,7 +174,6 @@ EOF;
         $width = ceil($ratio * $width);
         $height = ceil($ratio * $height);
 
-
         $str = <<<EOF
 <div class="media_container">
 <iframe 
@@ -184,4 +189,3 @@ EOF;
     }
 
 }
-

@@ -7,15 +7,12 @@ use diversen\cli\common;
 
 /**
  * File contains common methods to use with databases without doing queries,
- * like copy tables, shift database etc.  
- * @package main 
+ * Copy, tables, shift database, adding search index, finding keys etc.  
  */
-
 class admin {
     
     /**
-     * Changes the database we are working on. 
-     * May only work on MySQL
+     * Changes the MySQL database we are working on. 
      * @param string $database the new database to connect to
      */
     public static function changeDB ($database = null) {
@@ -32,9 +29,9 @@ class admin {
     }
     
     /**
-     * Gets database info from configuration.
-     * May only work on MySQL
-     * @return array|false $ary with info or false if no url exists in the configuration
+     * Get database info from configuration.
+     * @return array|false $ary with info or false if no url 
+     * does not exists in the configuration
      */
     public static function getDbInfo($url = null) {
         if (!$url) {
@@ -57,7 +54,7 @@ class admin {
     }
     
     /**
-     * Dublicate a table. May only work on MySQL databases 
+     * Dublicate a MySQL table.  
      * @param string $source source table name
      * @param string $dest destination table name
      * @param boolean $drop should we drop table if destination exists 
@@ -77,10 +74,9 @@ class admin {
     }
     
     /**
-     * Alter a table and add a fulltext index on columns.
-     * May only work on MySQL
+     * Alter a table and add a MySQL fulltext index on specified columns.
      * @param string $table
-     * @param string $columns columns to make the index on (e.g. firstname, lastname)
+     * @param string $columns columns to make the index on (e.g. 'firstname, lastname')
      * @return boolean $res result of the exectued query
      */
     public static function generateIndex($table, $columns) {
@@ -97,7 +93,7 @@ class admin {
     }
     
     /**
-     * Check if a table with specified name exists. 
+     * Check if a MySQL table with specified name exists. 
      * May only work on MySQL
      * @param string $table
      * @return array $rows empty array if table does not exist
@@ -110,7 +106,7 @@ class admin {
     }
     
     /**
-     * Get column *keys* on from a table as an array. 
+     * Get MySQL column *keys* in a table as an array. 
      * May only work on MySQL
      * @param string $table the table name
      * @return array $rows
@@ -123,8 +119,7 @@ class admin {
     }
     
     /**
-     * Examine if a *key* exists on a *table* 
-     * May only work on MySQL
+     * Examine if a MySQL *key* exists in a *table*
      * @return array $rows empty row if the key does not exists
      */
     public static function keyExists ($table, $key) {
@@ -135,8 +130,7 @@ class admin {
     }
     
     /**
-     * Clone a complete database from *database* to *newDatabase*
-     * May only work on MySQL
+     * Clone a complete MySQL database from *database* to *newDatabase*
      * @param string $database
      * @param string $newDatabase
      * @return boolean $res
@@ -162,7 +156,7 @@ class admin {
     }
     
     /**
-     * Create a database from configuation params (url, password, username)
+     * Create a MySQL database from configuation params (url, password, username)
      * found in *config.ini*
      * May only work on MySQL
      * @param array $options

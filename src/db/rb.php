@@ -10,20 +10,19 @@ include_once "vendor/diversen/redbean-composer/rb.php";
 
 
 /**
- * class rb contains some helpers methods for RB. 
+ * RB contains some helpers methods for RB. 
  * Methods for connecting, converting array to beans
  * 
  * In order to use this class you need to do: *composer require diversen/redbean-composer*
- * 
- * @package main
+ * @see http://www.redbeanphp.com/index.php
  * @example: 
-~~~
+<code>
 use diversen\rb;
 rb::connect();
 $bean = rb::getBean('test');
 $bean = rb::arrayToBean($bean, $_POST);
 r::store($bean);
-~~~
+</code>
  */
 class rb {
         

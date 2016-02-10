@@ -47,7 +47,7 @@ class helpers {
     }
     
     /**
-     * Returns a dropdown form element with 12 months
+     * Returns a dropdown form element with 12 months from 1 to 12
      * @param string $name name of form element
      * @param int $selected the selected month
      * @return string $html the 'select' form element
@@ -65,7 +65,7 @@ class helpers {
     }
     
     /**
-     * Returns a dropdown with the last 12 months. 
+     * Returns a dropdown with *the last 12 months* counting from current month
      * @param string $name name of form element
      * @param int $selected the selected month
      * @return string $html the clean html select element

@@ -14,18 +14,25 @@ use PDOException;
 
 class connect {
     
-    /** database handle */
+    /**
+     * database handle 
+     */
     public static $dbh = null;
     
-    /** Flaf indicating if there is a connection */
+    /*
+     * Flag indicating if there is a connection 
+     */
     public static $con = null;
     
-    /** var thar holds all sqlstatements */
+    /** 
+     * var that holds all sql statements fro debug purpose
+     */
     public static $debug = array();
     
     /**
-     * Create a connection to a database using PDO
-     * @param array $options array('url', 'username', 'password', 'dont_die', 'db_init')
+     * Connect to a database using an array with some of these arguments
+     * <code>array('url', 'username', 'password', 'dont_die', 'db_init')</code>
+     * @param array $options 
      */
     public function __construct($options = null) {
         if (!self::$dbh) {
@@ -34,14 +41,15 @@ class connect {
     }
     
     /**
-     * connect to a database
-     * @param type $options array('url', 'username', 'password', 'dont_die', 'db_init')
-     * 
+     * Connect to a database using an options array 
+     * <code>array('url', 'username', 'password', 'dont_die', 'db_init')</code>
+     * If the array is empty then try to read from a configuration file.
+     * @param array $options 
      * @return string
      */
     public static function connect($options = null){
 
-        self::$debug[] = "Trying to connect with " . conf::$vars['coscms_main']['url'];
+        self::$debug[] = "Trying to connect with " . conf::getMainIni('url');
         
         if (isset($options['url'])) {
             $url = $options['url'];
@@ -95,7 +103,8 @@ class connect {
     }
     
     /**
-     * Set SSL for mysql 
+     * Set SSL for mysql if SSL is set in the configuration,
+     * experimental
      */
     public static function setSsl() {
         $attr = conf::getMainIni('mysql_attr');

@@ -13,34 +13,35 @@ use PDO;
  * 
  * @example
 
-
-Connection is made in the db class. If writing a module, you will be connected
-per auto.
+Connect
 <code>
 
-// Connect
-$db = new db($options);
-$db->connect();
+// Using an array
+// q::connect(array('url', 'username', 'password', 'dont_die', 'db_init'));
 
+// E.g sqlite: 
+// q::connect(array('sqlite:test.sql'));
+// Using the framework
+// Settings should be set and in config/config.ini and connection is
+// done im boot.php
+// q::connect()
 
-// Read (fetch())
+// Fetch multiple rows
 $rows = q::select('account')->
     filter('id > ', '10')->
     condition('AND')->
-    filter('email LIKE', '%d%')->
+    filter('email LIKE', '%test%')->
     order('email', 'DESC')->limit(0, 10)->
     fetch();
     print_r($rows);
 
-// Select one row (fetchSingle()): 
+// Fetch one row
 $rows = q::select('account')->
     filter('id > ', '10')->
     condition('AND')->
-    filter('email LIKE', '%d%')->
-    order('email', 'DESC')->limit(0, 10)->
+    filter('email LIKE', '%test%')->
+    order('email', 'DESC')->
     fetchSingle();
-    print_r($rows);
-
 
 // Insert
 $values = array ('email' => 'dennisbech@yahoo.dk');
@@ -58,7 +59,6 @@ $res = q::update('account')->
             setUpdateValues($values)->
             filter('id =', 22)->
             exec();
-
 </code>
  */
 class q extends connect {

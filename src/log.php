@@ -2,17 +2,19 @@
 
 namespace diversen;
 use diversen\conf;
-/**
- * File contains methods for logging
- * @package    log
- */
 
 /**
  * class log contains methods for doing 
  * logging
- * @package log
  */
 class log {
+
+    /**
+     * Var holding log file for CLI mode
+     * Default is default.log
+     * @var string $logfile
+     */
+    public static $cliLog = 'default.log';
     
     /**
      * logs an error. Will always be written to log file
@@ -23,6 +25,7 @@ class log {
      */
     public static function error ($message) {
               
+        
         if (!is_string($message)) {
             $message = var_export($message, true);
         }
@@ -67,12 +70,6 @@ class log {
             self::$cliLog = $file;
         }
     }
-    
-    /**
-     * var holding log file for CLI mode
-     * @var string $logfile
-     */
-    public static $cliLog = null;
 
     /**
      * Set a log level based on env and debug

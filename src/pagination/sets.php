@@ -1,20 +1,12 @@
 <?php
 
 namespace diversen\pagination;
-use diversen\html;
 
-/**
- * File contains class for doing simple pagination of sets 
- * E.g. images with prev next
- * 
- * @package sets
- */
+use diversen\html;
 
 /**
  * Class for doing simple pagination of sets 
  * E.g. images with prev next
- * 
- * @package sets
  */
 class sets {
     

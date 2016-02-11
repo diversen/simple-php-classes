@@ -1,19 +1,14 @@
 <?php
 
 namespace diversen\mailer;
-/**
- * contains mail helpers
- * @package cosMail
- */
 
 /**
- * class contains mail helpers
- * @package cosMail
+ * Class with a few email helpers
  */
 class helpers {
 
     /**
-     * gets domain from email
+     * Get domain from email
      * @param string $mail
      * @return string|false $ret domain or false
      */
@@ -26,8 +21,9 @@ class helpers {
     }
 
     /**
-     * extract all emails from a text
-     * @param type $txt
+     * Extract all emails from a text string
+     * @param string $txt
+     * @return array $emails
      */
     public static function getEmails($txt) {
         $pattern = "/([\s]*)([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*([ ]+|)@([ ]+|)([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,}))([\s]*)/i";

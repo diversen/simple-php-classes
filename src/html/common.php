@@ -21,7 +21,7 @@ class common {
         }
 
         if (!defined('HTML_FORM_TEXTAREA_WT')) {
-            define('HTML_FORM_TEXTAREA_WT', 60);
+            define('HTML_FORM_TEXTAREA_WT', 30);
         }
 
         if (!defined('HTML_FORM_TEXTAREA_HT')) {

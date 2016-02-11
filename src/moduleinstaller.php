@@ -746,7 +746,10 @@ class moduleinstaller  {
         if ( $specific > $current_version ){
             $this->confirm = "Module '" . $this->installInfo['NAME'] . "'. ";
             $this->confirm.= "Version '" . $specific . "' installed. ";
+            
             $this->confirm.= "Upgraded from $current_version";
+            $this->confirm = common::colorOutput($this->confirm);
+            
             return true;
         } else {
             $this->confirm = "Module '" . $this->installInfo['NAME'] . "'. Nothing to upgrade. Module version is still $current_version";

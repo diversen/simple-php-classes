@@ -171,13 +171,13 @@ class upload {
     
 
     /**
-     * method for moving uploaded file
+     * Method for moving uploaded file
      * @param  string $filename name of file in the html forms file field
      *                 e.g. 'file'
      * @param array  $options
      * @return boolean $res true on success or false on failure
      */
-    public static function moveFile($filename = null, $options = null){
+    public static function moveFile($file = null, $options = null){
         if (isset($options)) { 
             self::$options = $options;
         }
@@ -197,17 +197,17 @@ class upload {
         }
 
         // check if an upload were performed
-        if (isset($_FILES[$filename])){
+        if (isset($file)){
                       
             // check native
-            $res = self::checkUploadNative($filename);
+            $res = self::checkUploadNative($file);
             if (!$res) { 
                 return false;
             }
             
             // check mime
             if (isset(self::$options['allow_mime'])) {
-                $res = self::checkAllowedMime($filename);
+                $res = self::checkAllowedMime($file);
                 if (!$res) { 
                     return false;
                 }
@@ -215,7 +215,7 @@ class upload {
             
             // check maxsize. Note: Will overrule php ini settings
             if (isset(self::$options['maxsize'])) {
-                $res = self::checkMaxSize($filename);
+                $res = self::checkMaxSize($file);
                 if (!$res) { 
                     return false;
                 }
@@ -226,7 +226,7 @@ class upload {
             if (isset(self::$options['save_basename'])) {
                 $save_basename = self::$options['save_basename'];
             } else {
-                $save_basename = basename($_FILES[$filename]['name']);
+                $save_basename = basename($file['name']);
             }
             
             self::$confirm['save_basename'] = $save_basename;
@@ -248,7 +248,7 @@ class upload {
                 self::$saveBasename = $save_basename;  
             }
                         
-            $ret = move_uploaded_file($_FILES[$filename]['tmp_name'], $savefile);
+            $ret = move_uploaded_file($file['tmp_name'], $savefile);
             if (!$ret) {
                 self::$errors[] = lang::translate('Could not move file.');
                 return false;

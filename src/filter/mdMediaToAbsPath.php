@@ -126,7 +126,7 @@ class mdMediaToAbsPath extends mark {
      * @return boolean
      */
     public function saveImage ($url) {
-        $save_path = conf::pathHtdocs() . "$url";
+        $save_path = conf::pathFilesBase() . "$url";
         return $save_path;
     }
     

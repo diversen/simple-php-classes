@@ -10,7 +10,6 @@ use Michelf\Markdown as mark;
 use diversen\conf as conf;
 use diversen\file;
 use diversen\log;
-use diversen\http\headers;
 use modules\image\module as image;
 
 /**

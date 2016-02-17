@@ -507,7 +507,7 @@ class layout {
      * @param array $options
      * @return string $str containing menu in html form, an ul with li elements
      */
-    public static function parseModuleMenu($menu, $options = null){
+    public static function parseModuleMenu($menu){
         
         $str = '';
         foreach($menu as $v){         

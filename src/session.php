@@ -447,7 +447,9 @@ class session {
      * session vars has been set. This should be avoided.  
      *
      * @param string $message the action message.
-     * @param string $type the type (default is 'system_message') 
+     * @param string $type type of message. Default is 'system_message' and 
+     *                     another type is 'system_error'. You can also just create
+     *                     your own types
      */
     public static function setActionMessage($message, $type = 'system_message'){
         if (!isset($_SESSION[$type])) {

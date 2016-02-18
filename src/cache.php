@@ -42,9 +42,15 @@ use diversen\db\q as q;
  */
 class cache {
 
+        
+    /**
+     * DB cache table
+     * @var string
+     */
+    public static $table = 'system_cache';
 
     /**
-     * generate a system cache id
+     * Generate a system cache id
      * @param   string    $module
      * @param   int       $id
      * @return  string    $str (md5)
@@ -89,9 +95,7 @@ class cache {
     public static function delete($module, $id) {
         return self::deleteDb($module, $id) ;
     }
-    
-        
-    public static $table = 'system_cache';
+
     /**
      * get a cached string from a module and an id
      * the module and the id can be anything, but for the sake of not 
@@ -123,7 +127,7 @@ class cache {
     }
 
     /**
-     * sets a string in cache
+     * Sets a string in cache. Notice that the database uses transactions. 
      * @param   string  $module
      * @param   int     $id
      * @param   string  $data
@@ -135,7 +139,10 @@ class cache {
         $id = self::generateId($module, $id);
         $values = array('id' => $id, 'unix_ts' => time());
         $values['data'] = serialize($data);
-        q::insert(self::$table)->values($values)->exec();
+        $res = q::insert(self::$table)->values($values)->exec();
+        if (!$res) {
+            q::rollback();
+        }
         return q::commit();
     }
 

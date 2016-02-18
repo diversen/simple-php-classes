@@ -336,11 +336,11 @@ class upload {
             $maxsize = self::$options['maxsize'];
         }
         if($file['size'] > $maxsize ){
-            $error = lang::translate('File is too large.');
-            $error.= lang::translate('Max size is ') .
+            $error = lang::translate('File is too large.') . ' ';
+            $error.= lang::translate('Max size is ') . ' ' .
                     self::bytesToGreek($maxsize);
             log::error($error);
-            self::$errors[] = $message;
+            self::$errors[] = $error;
             return false;
         }
         return true;

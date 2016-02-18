@@ -336,6 +336,7 @@ class moduleloader {
     
     /**
      * reference to table name e.g. content/article to content_article
+     * @deprecated since 9.0
      * @param string $reference
      * @return string $table_name
      */

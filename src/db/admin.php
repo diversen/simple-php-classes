@@ -1,6 +1,7 @@
 <?php
 
 namespace diversen\db;
+
 use diversen\db;
 use diversen\conf;
 use diversen\cli\common;

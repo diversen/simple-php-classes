@@ -188,6 +188,11 @@ class layout {
         self::$menu['module'] = array_merge(self::$menu['module'], $menu);
     }
     
+    /**
+     * @deprecated
+     * @param type $parent
+     * @param type $running
+     */
     public static function setParentModuleMenu ($parent, $running = null) {
         if (!$running) {
             $running = moduleloader::$running;
@@ -207,7 +212,8 @@ class layout {
     }
     
     /**
-     * sets a module main and sub menu from class path. 
+     * Sets a module main and sub menu from class path. 
+     * @deprecated 9.x
      * @param string $path e.g. blog or content/article
      */
     public static function setMenuFromClassPath ($path) {

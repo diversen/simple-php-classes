@@ -175,7 +175,7 @@ class q extends connect {
     public static function setSelect ($table, $fields = null){
         self::$method = 'select';
         
-        if (!$fields) {
+        if (empty($fields)) {
             $fields = '*';
         } else {
             $fields = self::getFieldsAsString($fields);

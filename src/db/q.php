@@ -151,21 +151,6 @@ class q extends connect {
     }
     
     /**
-     * Get fields to select as a string, e.g. 'id, date, test'
-     * @param array $fields string of fields
-     * @return string $str escaped string of fields
-     */
-    private static function getFieldsAsString ($fields) {
-        $fields = explode(',', $fields);
-        $ary = array ();
-        foreach ($fields as $field) {
-            $field = trim($field);
-            $ary[] = " $field "; 
-        }
-        return implode(",", $ary);
-    }
-    
-    /**
      * Set SQL for a SELECT statement
      * @param string $table the table to select from 
      * @param string $fields the fields from the table to select 
@@ -177,8 +162,10 @@ class q extends connect {
         
         if (empty($fields)) {
             $fields = '*';
-        } else {
-            $fields = self::getFieldsAsString($fields);
+        } 
+        
+        if (is_array($fields)) {
+            $fields = implode(', ', $fields);
         }
         
         self::$query = "SELECT $fields FROM `$table` ";

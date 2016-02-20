@@ -267,6 +267,7 @@ class profile  {
             }
             
             $git_url = shell_exec($command);
+            $git_url = trim($git_url);
             $tags = git::getTagsModule($template, 'template');
             $latest = array_pop($tags);
 
@@ -277,7 +278,8 @@ class profile  {
             }
 
             $val['module_name'] = $template;
-            $val['public_clone_url'] = trim($git_url);
+            $val['public_clone_url'] = $git_url; 
+            $val['private_clone_url'] = git::getSshFromHttps($git_url);
         }  
         return $val;
     }

@@ -7,14 +7,8 @@ use diversen\layout;
 
 
 /**
- * a collection of view function
- * used for views
- * @package view
- */
-
-/**
- * class with simple view methods
- * @package view
+ * @description A collection of simple view methods which can be overridden by
+ * template views
  */
 class view {
    
@@ -41,7 +35,8 @@ class view {
 
     
     /**
-     * get override view name
+     * Get file name of a view override
+     * If a view exists in a template, then the view will override the default view
      * @return string $str filename of the view 
      */
     public static function getOverrideFilename () {
@@ -70,19 +65,14 @@ class view {
     }
     
     /**
-     * function for including a view file.
-     * Maps to module (e.g. 'tags' and 'view file' e.g. 'add')
-     * we presume that views are placed in modules views folder
-     * e.g. tags/views And we presume that views always has a .inc
-     * postfix
-     *
+     * Method for including a view file.
      * @param string $module
      * @param string $view
      * @param array  $vars to parse into template
      * @param boolean return as string (1) or output directly (0)
      * @return string|void $str 
      */
-    static function includeModuleView ($module, $view, $vars = null, $return = null){
+    public static function includeModuleView ($module, $view, $vars = null, $return = null){
 
         if (self::$override) {
             $filename = self::getOverrideFilename();
@@ -107,7 +97,7 @@ class view {
     }
     
     /**
-     * shorthand for includeModuleView. Will always return the parsed template 
+     * Shorthand for includeModuleView. Will always return the parsed template 
      * instead of printing to standard output. 
      * 
      * @param string $module the module to include view from
@@ -121,7 +111,7 @@ class view {
     }
     
     /**
-     * shorthand for includeModuleView. Will always return the parsed template 
+     * Shorthand for includeModuleView. Will always return the parsed template 
      * instead of printing to standard output. 
      * 
      * @param string $module the module to include view from
@@ -144,16 +134,15 @@ class view {
     }
     
     /**
-     * include a set of module function used for e.g. templates. These 
-     * functions can be overridden in template if they exists in a template
+     * Include a set of module function used for a module. These 
+     * functions will be overridden in template if they exists in a template
      * @param string $module
      * @param string $file
      * @return void
      */
     public static function includeOverrideFunctions ($module, $file) {
 
-        // only template who has set name will be able to override this way
-        // templage_name = 'clean'
+        // Check for view in template
         $template = layout::getTemplateName();
         if ($template) {
             $override = conf::pathHtdocs() . "/templates/$template/$module/$file";
@@ -167,7 +156,7 @@ class view {
     
     
     /**
-     * gets a direct file view
+     * Load a view from file and substitute PHP vars
      * @param string $filename
      * @param mixed $vars
      * @return strin $str 

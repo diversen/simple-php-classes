@@ -2,14 +2,9 @@
 
 namespace diversen;
 use diversen\db\q as q;
-/**
- * File contains a simple class for caching content to database table. 
- * @package cache
- */
 
 /**
- * 
- * class cache. 3 methods set, get, and delete
+ * Class cache. 3 methods set, get, and delete
  * 
  * When setting something with the cache class you will specify a string and
  * a ID. Name is given in order to prevent class of identical ID's only.
@@ -74,7 +69,7 @@ class cache {
     }
 
     /**
-     * sets a string in cache
+     * Sets a string in cache
      * @param   string  $module
      * @param   int     $id
      * @param   string  $data
@@ -82,8 +77,6 @@ class cache {
      */
     public static function set($module, $id, $data) {
         return self::setDb($module, $id, $data);
-        
-
     }
 
     /**
@@ -136,9 +129,11 @@ class cache {
     private static function setDb($module, $id, $data) {
         q::begin();
         self::delete($module, $id);
-        $id = self::generateId($module, $id);
-        $values = array('id' => $id, 'unix_ts' => time());
+        $md5 = self::generateId($module, $id);
+        $values = array('id' => $md5, 'unix_ts' => time());
         $values['data'] = serialize($data);
+        $values['name'] = $module;
+        $values['index_id'] = $id;
         $res = q::insert(self::$table)->values($values)->exec();
         if (!$res) {
             q::rollback();

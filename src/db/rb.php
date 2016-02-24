@@ -3,6 +3,7 @@
 namespace diversen\db;
 
 use diversen\conf;
+use diversen\db\connect;
 use Exception;
 use R;
 
@@ -46,6 +47,17 @@ class rb {
             }
             $connected = true;
         } 
+    }
+    
+    /**
+     * Connect to existing database handle with RedBeans
+     */
+    public static function connectExisting () {
+        R::setup(connect::$dbh); 
+        $freeze = conf::getMainIni('rb_freeze');
+        if ($freeze == 1) {
+            R::freeze(true);
+        }
     }
     
     /**

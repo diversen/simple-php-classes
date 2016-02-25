@@ -99,8 +99,8 @@ class cache {
      * @return  mixed     $data unserialized data
      */
     private static function getDb($module, $id, $max_life_time = null) {
-        $id = self::generateId($module, $id);
-        $row = q::select(self::$table)->filter('id =', $id)->fetchSingle();
+        $md5 = self::generateId($module, $id);
+        $row = q::select(self::$table)->filter('id =', $md5)->fetchSingle();
 
         if (!$row) {
             return null;
@@ -108,7 +108,7 @@ class cache {
         if ($max_life_time) {
             $expire = $row['unix_ts'] + $max_life_time;
             if ($expire < time()) {
-                self::delete($module, $id);
+                self::delete($module, $md5);
                 return null;
             } else {
                 return unserialize($row['data']);

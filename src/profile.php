@@ -545,10 +545,9 @@ class profile  {
                 continue;
             }
             
-            if (copy($source, $dest)){
+            if (file_exists($source)) {
+                copy($source, $dest);
                 $this->confirm[] = "Copy $source to $dest";
-            } else {
-                $this->error[] = "Could not copy $source to $dest";
             }
 
             // If a PHP config.php file exists, then copy that too.

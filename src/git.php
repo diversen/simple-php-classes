@@ -32,7 +32,7 @@ class git {
     }
 
     /**
-     * get tags for a system git repo
+     * Get all tags as a string for install
      * @return string $tags tags as a string
      */
     public static function getTagsInstall() {
@@ -42,7 +42,7 @@ class git {
     }
     
     /**
-     * get system tags as array
+     * Get all tags for install or update
      * @return array $tags
      */
     public static function getTagsInstallAsArray () {
@@ -52,8 +52,8 @@ class git {
     }
     
     /**
-     * get latest installed tag. This is the latest tag
-     * @return array $tags
+     * Get latest install tag. 
+     * @return string $tags
      */
     public static function getTagsInstallLatest () {
         $ary = self::getTagsInstallAsArray();
@@ -145,6 +145,10 @@ class git {
         return null;
     }
     
+    /**
+     * Check if main repo is master
+     * @return boolean true if master else false
+     */
     public static function isMaster () {
         $branch = shell_exec('git branch');
         if ('* master' == trim($branch)){
@@ -186,17 +190,20 @@ class git {
         
         // Is it already https
         if (isset($ary['scheme']) && $ary['scheme'] == 'https') {
+                        
             return $url;
         }
         
         // E.g. git://github.com/diversen/vote.git
         if (isset($ary['scheme']) && $ary['scheme'] == 'git') {
+
             return 'https://' . $ary['host'] . $ary['path'];
         }
         
 
         $num = count($ary);
-        if ($num == 1) {          
+        if ($num == 1) {    
+
             return self::parsePrivateUrl($url);
         }
         return "$ary[scheme]@$ary[host]:$ary[path]";

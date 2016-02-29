@@ -108,6 +108,15 @@ class q extends connect {
     }
     
     /**
+     * Quotes a string safely according to connection type, e.g. MySQL
+     * @param string $string
+     * @return string $string
+     */
+    public static function quote ($string) {
+        return self::$dbh->quote($string);
+    }
+    
+    /**
      * Init. Create connection if no connection exists
      * @param array $options
      * @return void

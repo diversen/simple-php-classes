@@ -9,10 +9,10 @@ function cron_run () {
     foreach($modules as $module) {
         $name = $module['module_name'];
         $class = "\\modules\\$name\\cron";
-        if (method_exists($class, 'run')) {
-            // Load config if any
+        if (method_exists($class, 'run')) {    
             moduleloader::includeModule($name);
-            $class::run();
+            $c = new $class();
+            $c->run();
         }
     }
 }

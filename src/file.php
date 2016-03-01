@@ -258,7 +258,7 @@ class file {
                 $dirs[$key] = basename($dir);
             }
         }
-        asort($dirs);
+
         return $dirs;
     }
 

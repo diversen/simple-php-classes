@@ -2,8 +2,9 @@
 
 namespace diversen;
 
-use diversen\strings\version;
 use diversen\cli\common;
+use diversen\strings\version;
+use diversen\conf;
 
 /**
  * Helper class for creating Apache2 hosts on Unix 

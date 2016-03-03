@@ -2,6 +2,8 @@
 
 /**
  * 
+ * @ignore
+ * @example
 According to this question on stackoverflow: [Detecting utf8 broken characters in MySQL](http://stackoverflow.com/questions/1476356/detecting-utf8-broken-characters-in-mysql). I found that [this answer](http://stackoverflow.com/questions/1476356/detecting-utf8-broken-characters-in-mysql/9159875#9159875) had the correct approach. This approach will transform broken chars like the following into the correct utf8 chars: 
 
     Ã¡ = á

@@ -11,21 +11,30 @@ use R;
 use Exception;
 
 /**
- * A simple PHP bounce barser for IMAP
- * 
- * @package main
+ * A simple PHP bounce barser using IMAP
+ * @package
  */
 class parser {
+        
+    /**
+     * var holding options 
+     * @var array 
+     */
+    public $options = array();
     
     /**
-     * 
-     * @param array $options <code>$options = array(
-                'host' => conf::getMainIni('imap_host'),
-                'port' => conf::getMainIni('imap_port'),
-                'user' => conf::getMainIni('imap_user'),
-                'password' => conf::getMainIni('imap_password'),
-                'ssl' => conf::getMainIni('imap_ssl')
-            );</code>
+     * Constructor withs initialize the IMAP object
+<code>
+array(
+        'host' => 'imap_host',
+        'port' => 'imap_port',
+        'user' => 'imap_user',
+        'password' => 'imap_password',
+        'ssl' => 'imap_ssl
+    );
+</code>
+     @param array $options
+
      */
     public function __construct($options = array()) {
         rb::connect();
@@ -42,13 +51,8 @@ class parser {
     }
     
     /**
-     * Options 
-     * @var array 
-     */
-    public $options = array();
-    
-    /**
-     * Get IMAP object `diversen\imap` with options
+     * Connect to IMAP server using IMAP object `diversen\imap` with
+     * options set in constructor
      * @return diversen\imap $imap diversen\imap
      */
     public function getImap () {
@@ -56,10 +60,12 @@ class parser {
         $imap->connect($this->options);
         return $imap;
     }
+    
     /**
-     * Connect and parse mails found in a bounce mailbox 
+     * Connect and parse mails found in a the bounce mailbox 
      * This should be easy to add to a cron job
-     * @param boolean $remove if true messages are removed.  
+     * @param boolean $remove true if we want messages to be removed. 
+     * @return void 
      */
     public function parse($remove = true) {
 
@@ -91,6 +97,7 @@ class parser {
      * in database. 
      * @param imap $imap diversen\imap
      * @param int $x the number of the message
+     * @return boolean $es true on success else false
      */
     public function parseMessage($imap, $x) {
 
@@ -148,10 +155,10 @@ class parser {
         return true;
     }
 
-    /*
+    /**
      * Delete all messages
+     * @return void
      */
-
     public function deleteAll() {
 
         $connect = array(
@@ -184,7 +191,7 @@ class parser {
      * Returns the bounce code from [message/delivery-status] part of message
      * e.g. 4.2.2
      * @param string $mail the email message
-     * @return string $code e.g. 4.2.2
+     * @return string|null $code e.g. 4.2.2
      */
     public static function getBounceCode($mail) {
 
@@ -209,7 +216,7 @@ class parser {
      * Returns email from [message/delivery-status] part of message
      * looks for 'final-recipient: ' and returns the email
      * @param string $mail the mail message
-     * @return string $email the email
+     * @return string|null $email the email
      */
     public static function getBounceEmail($mail) {
 
@@ -228,9 +235,9 @@ class parser {
     }
     
     /**
-     * Search a message for a email
+     * Search a message for an email
      * @param type $str
-     * @return boolean
+     * @return string|false $res email or false
      */
     public static function getEmailFromStr ($str) {
         $pattern = "/([\s]*)([_a-zA-Z0-9-]+(\.[_a-zA-Z0-9-]+)*([ ]+|)@([ ]+|)([a-zA-Z0-9-]+\.)+([a-zA-Z]{2,}))([\s]*)/i";

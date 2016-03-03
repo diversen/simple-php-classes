@@ -103,54 +103,46 @@ class profile  {
      * @return array $val module
      */
     public static function getModuleInfo($val) {
-        $options['module'] = $val['module_name'];
-        $mi = new moduleinstaller($options);
 
-        // Find a public clone URL
-        if (isset($mi->installInfo['PUBLIC_CLONE_URL'])) {
-            $val['public_clone_url'] = $mi->installInfo['PUBLIC_CLONE_URL'];
-        } else {
-            $public = self::getCloneUrl($val['module_name']);
-            if (!$public) {
-                return false;
-            }
-            $val['public_clone_url'] = $public;
-            $val['public_clone_url'] = git::getHttpsFromSsh($val['public_clone_url']);           
+        $clone_url = self::getCloneUrlModule($val['module_name']);
+        if (!$clone_url) {
+            return false;
         }
 
-        // Set private clone URL
-        if (isset($mi->installInfo['PRIVATE_CLONE_URL'])) {
-            $val['private_clone_url'] = $mi->installInfo['PRIVATE_CLONE_URL'];
-        } else {
-            $private = self::getCloneUrl($val['module_name']);
-            if (!$private) {
-                return false;
-            }
-            $val['private_clone_url'] = $private;
-            $val['private_clone_url'] = git::getSshFromHttps($val['private_clone_url']);
-        }
+        $val['public_clone_url'] = git::getHttpsFromSsh($clone_url);
+        $val['private_clone_url'] = git::getSshFromHttps($clone_url);
 
         if (self::$master) {
             $val['module_version'] = 'master';
         }
-        
+
         return $val;
     }
 
     /**
      * Try to set a public clone URL in a module array
-     * @param array $val module info
-     * @return array $val module info with a public clone URL. If a public clone URL exists
+     * @param string $module_name name of the module
+     * @return string $val clone url
      */
-    public static function getCloneUrl($module_name) {
-
-        $module_path = conf::pathModules() . "/$module_name";
-        if (!file_exists($module_path)) {
+    public static function getCloneUrlModule($module_name) {
+        $path = conf::pathModules() . "/$module_name";
+        if (!file_exists($path)) {
+            echo $path . " NOT" . PHP_EOL;
             common::echoStatus('NOTICE', 'y', "module $module_name has no module source");
             return false;
         }
+        
+        return self::getCloneUrlFromPath($path);
+    }
+    
+    /**
+     * Get a clone URL from git path 
+     * @param string $path
+     * @return string|false string if we get a clone URL, selse false
+     */
+    public static function getCloneUrlFromPath ($path) {
 
-        $command = "cd $module_path && git config --get remote.origin.url";
+        $command = "cd $path && git config --get remote.origin.url";
         $ret = common::execCommand($command, array('silence' => 1), 0);
         if ($ret == 0) {
             $git_url = shell_exec($command);
@@ -220,7 +212,7 @@ class profile  {
 
         $ary = array ();
         foreach ($templates as $val){
-            $info = $this->getSingleTemplate($val);
+            $info = $this->getTemplateInfo($val);
             if (empty($info)) {
                 continue;
             }
@@ -234,17 +226,23 @@ class profile  {
      * @param string $template
      * @return array $val template info
      */
-    public function getSingleTemplate($template) {
+    public function getTemplateInfo($template) {
         
-        $template_dir = conf::pathHtdocs() . "/templates";
-        $install_file = $template_dir . "/$template/install.inc";
+        $template_dir = conf::pathHtdocs() . "/templates/$template";
+        $install_file = $template_dir . "/install.inc";
+        
+        $clone_url = self::getCloneUrlFromPath($template_dir);
+        if (!$clone_url) {
+            return false;
+        }
         
         $val = array();
         if (file_exists($install_file)) {
             
             include $install_file;
-            $val['public_clone_url'] = $_INSTALL['PUBLIC_CLONE_URL'];
-            $val['private_clone_url'] = $_INSTALL['PRIVATE_CLONE_URL'];
+
+            $val['public_clone_url'] = git::getHttpsFromSsh($clone_url);
+            $val['private_clone_url'] = git::getSshFromHttps($clone_url);
             if (!self::$master) {
                 if (isset($_INSTALL['VERSION'])) {
                     $val['module_version'] = "$_INSTALL[VERSION]";
@@ -258,26 +256,17 @@ class profile  {
             $val['module_name'] = $template;
         } else { 
 
-            // check if this a git repo
-            $path = conf::pathHtdocs() . "/templates/$template";
-            $command = "cd $path && git config --get remote.origin.url";
-            exec($command, $output, $ret);
-            if ($ret != 0) {
-                return false;
-            }
-            
-            $git_url = shell_exec($command);
             $tags = git::getTagsModule($template, 'template');
             $latest = array_pop($tags);
-
-            if (!self::$master) {
-                $val['module_version'] = $latest;
-            } else {
+            if (self::$master OR !$latest) {
                 $val['module_version'] = "master";
+            } else {
+                $val['module_version'] = $latest;
             }
 
             $val['module_name'] = $template;
-            $val['public_clone_url'] = trim($git_url);
+            $val['public_clone_url'] = git::getHttpsFromSsh($clone_url); 
+            $val['private_clone_url'] = git::getSshFromHttps($clone_url);
         }  
         return $val;
     }
@@ -543,10 +532,9 @@ class profile  {
                 continue;
             }
             
-            if (copy($source, $dest)){
+            if (file_exists($source)) {
+                copy($source, $dest);
                 $this->confirm[] = "Copy $source to $dest";
-            } else {
-                $this->error[] = "Could not copy $source to $dest";
             }
 
             // If a PHP config.php file exists, then copy that too.

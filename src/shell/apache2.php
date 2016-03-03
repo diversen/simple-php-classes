@@ -8,10 +8,6 @@ use diversen\apache2;
  * creatiion of apache2 web hosts
  */
 
-function cos_create_a2_conf($SERVER_NAME){
-    return apache2::getA2Conf($SERVER_NAME);
-}
-
 function cos_a2_enable_site($options){
     apache2::enableSite($options);
 }

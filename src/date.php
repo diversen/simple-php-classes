@@ -1,22 +1,19 @@
 <?php
 
 namespace diversen;
-/**
- * File contains common function for doing date math
- * @package date 
- */
 
 /**
- * Class contains common function for doing date math with SQL
+ * Class contains common function for doing date math with mainly SQL timestamps
  * @package date
  */
 class date {
     
     /**
-     * checks if a date is in a range between start and end date
-     * @param string $start_date SQL
-     * @param string $end_date SQL
-     * @param string $date_from_user SQL
+     * Checks if a date is in a range between start and end date
+     * Start and end date are included
+     * @param string $start_date timestamp
+     * @param string $end_date timestamp
+     * @param string $date_from_user timestamp
      * @return boolean $res true if in range else false
      */
     public static function inRange ($start_date, $end_date, $date_from_user) {
@@ -27,8 +24,8 @@ class date {
     }
 
     /**
-     * gets locale day as 'weekday' from SQL timestamp
-     * @param string  $stamp SQL stamp to be used with strtotime
+     * Gets a timestamp's day as 'weekday' from SQL timestamp
+     * @param string  $stamp timestamp to be used with strtotime
      * @return string $weekday
      */
     public static function timestampToLocaleDay ($stamp) {
@@ -38,7 +35,7 @@ class date {
     }
 
     /**
-     * gets diff between two SQL dates as an int
+     * Gets diff between two SQL dates as an int
      * @param string $from date to be parsed with strtotime
      * @param string $to date
      * @return int $days
@@ -50,9 +47,8 @@ class date {
         return floor($diff/(60*60*24));
     }
 
-
     /**
-     * gets a month name from month as int
+     * Get a month name from month as int
      * @param int $month_int
      * @param string $format
      * @return string $month_name 
@@ -65,7 +61,7 @@ class date {
     }
 
     /**
-     * get current year
+     * Get current year
      * @return int $year the current year
      */
     public static function getCurrentYear () {
@@ -73,7 +69,7 @@ class date {
     }
     
     /**
-     * get current month
+     * Get current month
      * @return int $month the current month
      */
     public static function getCurrentMonth () {
@@ -81,8 +77,8 @@ class date {
     }
 
     /**
-     * get dates as array between two SQL dates
-     * excludes last day
+     * Get all dates, as array, between two timestamp dates
+     * Excludes last day
      * @param string $from date
      * @param string $to date
      * @return array $dates
@@ -104,8 +100,8 @@ class date {
     }
 
     /**
-     * get currenct date as SQL stamp
-     * @param array $options if we need hms then set hms => 1
+     * Get currenct date as  timestamp
+     * @param array $options, if we need hms then set hms => 1
      * @param int $unix_stamp
      * @return string $date
      */
@@ -133,10 +129,10 @@ class date {
 
 
     /**
-     * add days to a SQL timestamp
+     * Add days to a timestamp
      * @param string $from start date
      * @param int $days days to add
-     * @return string $date SQL timestamp 
+     * @return string $date timestamp 
      */
     public static function addDaysToTimestamp ($from, $days) {
         $date = strtotime("$from +$days days");
@@ -145,7 +141,7 @@ class date {
     }
 
     /**
-     * subtract days from SQL timestamp
+     * Subtract days from a timestamp
      * @param string $from date
      * @param int $days to subtract
      * @return string $date 
@@ -157,7 +153,7 @@ class date {
     }
 
     /**
-     * checks if a SQL date is valid
+     * Checks if a timestamp date is valid
      * @param string $date
      * @return boolean $res
      */
@@ -173,7 +169,7 @@ class date {
     }
 
     /**
-     * gets a week as number from a strtotime date
+     * Get week as number from a strtotime date
      * @param string $date (parsed by strtotime)
      * @return string $week 'W' 
      */
@@ -183,7 +179,7 @@ class date {
     }
 
     /**
-     * get a date as a day number 'N' from a strtotime date
+     * Get date as a day number 'N' from a timestamp
      * @param string $date (parsed by strtotime)
      * @return int $weekday 1-7 'N'
      */
@@ -193,7 +189,7 @@ class date {
     }
 
     /**
-     * gets day from date as string 'D' from a strtotime date
+     * Get day from date as string 'D' from a strtotime date
      * @param string $date (parsed by strtotime)
      * @return string $weekday 'D'
      */
@@ -203,7 +199,7 @@ class date {
     }
 
     /**
-     * gets range of weeks between two dates (parsed by strtotime)
+     * Get a range of weeks between two dates (parsed by strtotime)
      * @param string $from date
      * @param string $to date
      * @return array $weeks array of weeks
@@ -222,7 +218,7 @@ class date {
 
 
     /**
-     * gets week from date as array with 'startdate' and 'enddate'
+     * Get week from date as array with 'startdate' and 'enddate'
      * @param string $date 
      * @return array $ary ('startdate' => 'date', 'enddate' => 'enddate');
      */
@@ -234,7 +230,7 @@ class date {
     }
 
     /**
-     * return SQL date as an array
+     * Return timestamp as an array with month, day and year
      * @param string $sql timestamp ('2012-10-09');
      * @return array $ary ('year' => 1972, 'month' => 02, 'day' => 1972);
      */
@@ -249,7 +245,7 @@ class date {
     // found on
     // http://snippets.dzone.com/posts/show/1310
     /**
-     * gets years old from SQL birthday
+     * Gets years old from timestamp
      * @param string $birthday SQL birthday (e.g. 1965-05-21)
      * @return int $years 
      */
@@ -267,7 +263,7 @@ class date {
     }
     
     /**
-     * 
+     * Get locale date from a format
      */
     public static function dateGetDateNowLocale($format) {
         if (!$format) {
@@ -276,3 +272,4 @@ class date {
         return strftime($format);
     }
 }
+

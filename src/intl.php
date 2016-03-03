@@ -484,3 +484,4 @@ class intl {
         return $browser;
     }
 }
+

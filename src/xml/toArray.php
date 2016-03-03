@@ -1,14 +1,9 @@
 <?php
 
 namespace diversen\xml;
-/**
- * contains file with single method for transforming xml into an array
- * @package xml
- */
 
 /**
  * contains class with single method for transforming xml into an array
- * @package xml
  */
 class toArray {
 

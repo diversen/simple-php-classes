@@ -2,14 +2,9 @@
 
 namespace diversen;
 use diversen\db\q as q;
-/**
- * File contains a simple class for caching content to database table. 
- * @package cache
- */
 
 /**
- * 
- * class cache. 3 methods set, get, and delete
+ * Class cache. 3 methods set, get, and delete
  * 
  * When setting something with the cache class you will specify a string and
  * a ID. Name is given in order to prevent class of identical ID's only.
@@ -42,9 +37,15 @@ use diversen\db\q as q;
  */
 class cache {
 
+        
+    /**
+     * DB cache table
+     * @var string
+     */
+    public static $table = 'system_cache';
 
     /**
-     * generate a system cache id
+     * Generate a system cache id
      * @param   string    $module
      * @param   int       $id
      * @return  string    $str (md5)
@@ -68,7 +69,7 @@ class cache {
     }
 
     /**
-     * sets a string in cache
+     * Sets a string in cache
      * @param   string  $module
      * @param   int     $id
      * @param   string  $data
@@ -76,8 +77,6 @@ class cache {
      */
     public static function set($module, $id, $data) {
         return self::setDb($module, $id, $data);
-        
-
     }
 
     /**
@@ -89,9 +88,7 @@ class cache {
     public static function delete($module, $id) {
         return self::deleteDb($module, $id) ;
     }
-    
-        
-    public static $table = 'system_cache';
+
     /**
      * get a cached string from a module and an id
      * the module and the id can be anything, but for the sake of not 
@@ -102,8 +99,8 @@ class cache {
      * @return  mixed     $data unserialized data
      */
     private static function getDb($module, $id, $max_life_time = null) {
-        $id = self::generateId($module, $id);
-        $row = q::select(self::$table)->filter('id =', $id)->fetchSingle();
+        $md5 = self::generateId($module, $id);
+        $row = q::select(self::$table)->filter('id =', $md5)->fetchSingle();
 
         if (!$row) {
             return null;
@@ -111,7 +108,7 @@ class cache {
         if ($max_life_time) {
             $expire = $row['unix_ts'] + $max_life_time;
             if ($expire < time()) {
-                self::delete($module, $id);
+                self::delete($module, $md5);
                 return null;
             } else {
                 return unserialize($row['data']);
@@ -123,7 +120,7 @@ class cache {
     }
 
     /**
-     * sets a string in cache
+     * Sets a string in cache. Notice that the database uses transactions. 
      * @param   string  $module
      * @param   int     $id
      * @param   string  $data
@@ -132,10 +129,15 @@ class cache {
     private static function setDb($module, $id, $data) {
         q::begin();
         self::delete($module, $id);
-        $id = self::generateId($module, $id);
-        $values = array('id' => $id, 'unix_ts' => time());
+        $md5 = self::generateId($module, $id);
+        $values = array('id' => $md5, 'unix_ts' => time());
         $values['data'] = serialize($data);
-        q::insert(self::$table)->values($values)->exec();
+        $values['name'] = $module;
+        $values['index_id'] = $id;
+        $res = q::insert(self::$table)->values($values)->exec();
+        if (!$res) {
+            q::rollback();
+        }
         return q::commit();
     }
 

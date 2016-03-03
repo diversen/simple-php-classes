@@ -7,14 +7,13 @@ use diversen\file;
 use diversen\conf;
 
 /**
- * Class contains a simple class for clearing caches 
- * To be used with framework 
- * @package main
+ * Class clears DB cache and assets.
+ * NOT To be used outside framework
  */
 class clear {
 
     /**
-     * Clears database system_cache table
+     * Clears DB *system_cache* table
      * @return boolean $res true on success else false  
      */
     public static function db () {
@@ -22,6 +21,11 @@ class clear {
         return $res;
     }
 
+    /**
+     * Clears *conf::pathBase() . "/htdocs/files/default/cached_assets*
+     * @param array $options
+     * @return int $res '1'
+     */
     public static function assets ($options = null) {
 
         $path = conf::pathBase() . "/htdocs/files/default/cached_assets";
@@ -31,6 +35,11 @@ class clear {
         return 1;
     }
 
+    /**
+     * Clear both DB and files cache
+     * @param array $options
+     * @return int $res always '1'
+     */
     public static function all ($options = null) {
         self::assets();
         self::db();

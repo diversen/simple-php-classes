@@ -15,10 +15,25 @@ use diversen\log;
 use diversen\moduleloader;
 
 /**
- * Main cli command for the simple-php-framework
- * Some base commands and options for extending the framework
- * 
- * @package main
+ * Main cli command for the framework
+ * All framework commands are placed in src/shell, one file per command,
+ * and the system can easily be extended by modules.
+ * @example This is the coscli.sh command
+<code>
+#!/usr/bin/env php
+<?php
+
+include_once "vendor/autoload.php";
+use diversen\conf;
+use diversen\cli\main as mainCli;
+
+$path = dirname(__FILE__);
+conf::setMainIni('base_path', $path); 
+
+mainCli::init();
+$ret = mainCli::run();
+exit($ret);
+</code>
  */
 
 class main extends cli {
@@ -31,29 +46,11 @@ class main extends cli {
      * - Load language
      * - Set timeezone 
      * - Load translation
-     * @package main
-     * @example <br />
-~~~
-#!/usr/bin/env php
-<?php
-
-include_once "vendor/autoload.php";
-use diversen\conf;
-use diversen\cli;
-use diversen\cli\main as mainCli;
-
-$path = dirname(__FILE__);
-conf::setMainIni('base_path', $path); 
-
-mainCli::init();
-$ret = mainCli::run();
-exit($ret);
-~~~
-     * 
+     * @return void
      */
     public static function init() {
 
-        
+        // Autoload modules
         $m = new modules();
         $m->autoloadRegister();
 
@@ -88,6 +85,7 @@ exit($ret);
         // Init parent with base commands
         parent::init();
         
+        // Make a cool description
         self::$parser->description = <<<EOF
                     _ _       _     
   ___ ___  ___  ___| (_)  ___| |__  
@@ -115,8 +113,7 @@ EOF;
     }
     
     /**
-     * Run the command line
-     *                              
+     * Run the command line afterloading all modules                           
      * @return int $ret 0 on success any other int is failure
      */
     public static function run() {
@@ -134,6 +131,7 @@ EOF;
     /**
      * After the commandline options has been parsed. 
      * Examine the --domain flag and the --verbose flag
+     * @return void
      */
     public static function afterParse($result) {
         
@@ -157,8 +155,9 @@ EOF;
 
     /**
      * Before parsing of the commandline options
-     * This loads all commandline options from file system
-     * and modules found in the database
+     * This loads all commandline modules from file system
+     * and any modules found in the database
+     * @return void
      */
     public static function beforeParse () {
         self::loadBaseModules();
@@ -169,7 +168,9 @@ EOF;
     }
 
     /**
-     * Loads all modules found in database
+     * Loads all modules found in database if *'modules'* table exists
+     * Else the CLI command may be used for e.g. an install. 
+     * @return void
      */
     public static function loadDbModules (){        
           
@@ -195,7 +196,8 @@ EOF;
         
     /**
      * Loads all base modules
-     * Base modules are placed in vendor/diversen/simple-php-classes
+     * Base modules are placed in *vendor/diversen/simple-php-classes/src/shell*
+     * @return void
      */
     public static function loadBaseModules () {
         $command_path = __DIR__ . "/../shell";

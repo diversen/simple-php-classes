@@ -5,14 +5,8 @@ use diversen\file\path;
 use diversen\conf;
 
 /**
- * package contains file class for doing common file tasks
- * @package file
+ * File class for doing common file tasks
  * 
- */
-
-/**
- * class for doing common file tasks
- * @package file
  */
 class file {
 
@@ -264,6 +258,7 @@ class file {
                 $dirs[$key] = basename($dir);
             }
         }
+
         return $dirs;
     }
 

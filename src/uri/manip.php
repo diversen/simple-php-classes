@@ -10,7 +10,6 @@ class manip {
      * @param string $key
      * @return string $url
      */
-    
     public static function deleteQueryPart ($url, $key) {
         
         $ret = '';
@@ -29,6 +28,20 @@ class manip {
             $ret.= "?" . http_build_query($query);
         }
         return $ret;
+    }
+    
+    /**
+     * Delete query parts from a url
+     * @param string $url
+     * @param array $ary values to delete
+     * @return string $url
+     */
+    public static function deleteQueryParts($url, $ary) {
+        foreach ($ary as $val) {
+            $url = self::deleteQueryPart($url, $val);
+        }
+        return $url;
+        
     }
     
     /**

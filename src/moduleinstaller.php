@@ -10,44 +10,40 @@ use diversen\git;
 /**
  * Class for installing modules.
  * Copy configuration, and install SQL
- * @package  moduleinstaller
  */
 class moduleinstaller  {
 
     /**
-     * holding array of info for the install
-     * this is loaded from install.inc file and will read
-     * the $_INSTALL var
+     * Var holding array of info for a module during install
      * @var array $installInfo 
      */
     public $installInfo = array();
 
     /**
-     * holding error
+     * Var holding error
      * @var string $error
      */
     public $error = null;
     
     /**
-     * var holding notices
+     * Var holding notices
      * @var string 
      */
     public $notice = null;
 
     /**
-     * holding confirm message
+     * Var holding confirm message
      * @var string $confirm
      */
     public $confirm;
 
     /**
-     * Connect to database
-     * Set some install options
-     *
-     * @param   array $options
-     *                array ('module', 'profile'
+     * Constructor. Connects to database
+     * Set some default install options
+     * @param  array $options ['module_name', 'profile']
      */
     public function __construct($options = null){
+        
         
         $db = new db();
         $db->connect();
@@ -58,12 +54,13 @@ class moduleinstaller  {
     }
 
     /**
-     * 
-     * @param   array $options
+     * Sets install info from options
+     * @param  array $options
      */
     public function setInstallInfo($options){
+                
         $this->installInfo = array();
-        // Base info
+        
         $module_name = $options['module'];
         $module_dir = conf::pathModules() . "/$module_name";
         
@@ -85,9 +82,8 @@ class moduleinstaller  {
             // Merge in locale.ini settings if found
             $this->loadLocaleIniSettings($module_dir);
             
-            // load install.inc if found
+            // load install.inc if it exists
             $install_file = "$module_dir/install.inc";
-            
             $this->loadInstallFile($module_name, $install_file);
             
             
@@ -99,7 +95,7 @@ class moduleinstaller  {
     }
     
     /**
-     * overload ini settings with locale.ini, if file is found in module_dir
+     * Overload ini settings with locale.ini, if file is found in module_dir
      * @param string $module_dir
      */
     public function loadLocaleIniSettings($module_dir) {
@@ -131,11 +127,12 @@ class moduleinstaller  {
     }
 
     /**
-     * load install.inc file, and set installInfo
+     * Load install.inc file, and set installInfo
      * @param string $module_name
      * @param string $install_file
      */
     public function loadInstallFile($module_name, $install_file) {
+        
         // set a default module_name - which is the module dir
         $this->installInfo['NAME'] = $module_name;
 
@@ -151,9 +148,7 @@ class moduleinstaller  {
                 $this->installInfo['menu_item'] = 0;
             } else {
                 $this->installInfo['menu_item'] = 1;
-            }
-
-            
+            } 
         }
 
         // If no version is found, then check if this is a git repo
@@ -163,7 +158,7 @@ class moduleinstaller  {
             $this->setInstallInfoFromGit();
         }
 
-        // run levels
+        // Set a default run level if not set in install.inc
         if (empty($this->installInfo['RUN_LEVEL'])) {
             $this->installInfo['RUN_LEVEL'] = '0';
         }
@@ -182,8 +177,6 @@ class moduleinstaller  {
             $latest = array_pop($tags);
         }
         $this->installInfo['VERSION'] = $latest;
-        
-
     }
 
     /**
@@ -206,7 +199,7 @@ class moduleinstaller  {
     }
 
     /**
-     * get module info from db
+     * Get module info from DB
      * @return array|false  $res
      */
     public function getModuleDbInfo(){
@@ -285,10 +278,11 @@ class moduleinstaller  {
     
     /**
      * Method for deleting DB routes for a module
+     * @return boolean $res
      */
     public function deleteRoutes () {
         $db = new db();
-        $db->delete('system_route', 'module_name', $this->installInfo['NAME']);
+        return $db->delete('system_route', 'module_name', $this->installInfo['NAME']);
     }
     
     /**
@@ -322,7 +316,7 @@ class moduleinstaller  {
     }
 
     /**
-     * get single SQL file name from 'module_name', 'version', and action
+     * Get single SQL file name from 'module_name', 'version', and action
      * @param  string   $module
      * @param  float    $version
      * @param  string   $action (up or down)
@@ -480,8 +474,7 @@ class moduleinstaller  {
     }
 
     /**
-     * method for updating module version in module registry
-     *
+     * Method for updating module version in module registry
      * @param float $new_version the version to upgrade to
      * @param int $id the id of the module to be upgraded
      * @return boolean true or throws an error on failure
@@ -536,7 +529,7 @@ class moduleinstaller  {
     }
 
     /**
-     * create SQL on module install
+     * Create SQL on module install
      * There is not much error checking, because it is not possible to enable 
      * commit and rollback on table creation (Not with MySQL)
      */
@@ -544,8 +537,8 @@ class moduleinstaller  {
 
         $updates = $this->getSqlFileListOrdered($this->installInfo['NAME'], 'up');
 
-        // perform sql upgrade. We upgrade only to the version nmber
-        // set in module file install.inc. 
+        // Perform sql upgrade. We upgrade only to the version number
+        // set in module file install.inc - or the latest tag in no install.inc file 
         if (!empty($updates)){            
             foreach ($updates as $val){
                 $this->executeSqlUp($val);
@@ -555,7 +548,7 @@ class moduleinstaller  {
     }
     
     /**
-     * run SQL statements for a single version, e.g. 1.02 
+     * Run SQL statements for a single version, e.g. 1.02 
      * @param string $val path to file to read sql from
      */
     public function executeSqlUp($val) {
@@ -572,9 +565,8 @@ class moduleinstaller  {
     }
 
     /**
-     * method for installing a module.
-     * checks if module already is installed, if not we install it.
-     *
+     * Method for installing a module.
+     * Checks if module already is installed, if not we install it.
      * @return  boolean $res true on success or false on failure
      */
     public function install (){
@@ -612,7 +604,7 @@ class moduleinstaller  {
     }
 
     /**
-     * method for uninstalling a module
+     * Method for uninstalling a module
      * @return boolean $res true on success or false on failure
      */
     public function uninstall(){
@@ -649,7 +641,7 @@ class moduleinstaller  {
     }
     
     /**
-     * execute all downgrades in order to uninstall the module
+     * Execute all downgrades in order to uninstall the module
      * @param array $downgrades
      */
     public function executeUninstallSQL($downgrades = array()) {
@@ -671,7 +663,7 @@ class moduleinstaller  {
     }
     
     /**
-     * execute a single SQL string from file 
+     * Execute a single SQL from a single file, statement by statement 
      * @param string $sql
      */
     public function executeSqlDown($sql) {
@@ -685,7 +677,7 @@ class moduleinstaller  {
 
     /**
      * Upgrade to a specific version of a module
-     * @param float $specific, e.g. '5.06'
+     * @param float $specific e.g. '5.06'
      * @return boolean $res
      */
     public function upgrade ($specific = null){
@@ -746,7 +738,10 @@ class moduleinstaller  {
         if ( $specific > $current_version ){
             $this->confirm = "Module '" . $this->installInfo['NAME'] . "'. ";
             $this->confirm.= "Version '" . $specific . "' installed. ";
+            
             $this->confirm.= "Upgraded from $current_version";
+            $this->confirm = common::colorOutput($this->confirm);
+            
             return true;
         } else {
             $this->confirm = "Module '" . $this->installInfo['NAME'] . "'. Nothing to upgrade. Module version is still $current_version";
@@ -755,7 +750,7 @@ class moduleinstaller  {
     }
     
     /**
-     * execute SQL upgrades
+     * Execute SQL upgrades
      * @param float $version e.g. 1.04
      */
     public function executeSqlUpgrade($version) {

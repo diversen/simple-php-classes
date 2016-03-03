@@ -13,7 +13,6 @@ class helpers {
 
     /**
      * Return last 12 months in format: yyyy-mm-dd
-     * 
      * @param string $date e.g. '2012-12-30'
      * @return array $ary the last 12 months and years as integers arranged in 
      *                    an assoc array with values like this: ('year' => 2013, 'month' => 7)
@@ -48,11 +47,10 @@ class helpers {
     }
     
     /**
-     * Returns a form dropdown element with 12 months
-     * 
+     * Returns a dropdown form element with 12 months from 1 to 12
      * @param string $name name of form element
      * @param int $selected the selected month
-     * @return string $html the clean html select element
+     * @return string $html the 'select' form element
      */
     public static function monthDropdown ($name ='month', $selected = null) {
         for ($i= 1; $i <= 12; $i++) {
@@ -67,8 +65,7 @@ class helpers {
     }
     
     /**
-     * Returns a dropdown with he last 12 months. 
-     * 
+     * Returns a dropdown with *the last 12 months* counting from current month
      * @param string $name name of form element
      * @param int $selected the selected month
      * @return string $html the clean html select element
@@ -104,7 +101,6 @@ class helpers {
     
     /**
      * Add or subtract days from timestamp (SQL like)
-     * 
      * @param int $days e.g. 10 or -10
      * @param string $from e.g. 2013-10-10. Defaults to 'now'
      * @return string $stamp e.g. 2013-10-20

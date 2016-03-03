@@ -2,7 +2,8 @@
 
 namespace diversen\micro;
 /**
- * simple class for reading configuration
+ * A unused conf class
+ * @ignore
  */
 class conf {
 

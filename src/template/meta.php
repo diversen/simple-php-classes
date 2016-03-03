@@ -66,7 +66,7 @@ class meta extends template {
             $author = '') {
     
         // title
-        assets::setTitle(html::specialEncode($title));
+        assets::setTitle($title);
         self::setMetaAsStr(
                 '<meta property="og:title" content="' . html::specialEncode($title) . '" />' . "\n");
 

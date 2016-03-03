@@ -18,8 +18,8 @@ class video {
 .vjs-fullscreen {padding-top: 0px}
 EOF;
         if (!$loaded) {
-            assets::setEndHTML(' <script src="https://vjs.zencdn.net/5.4.4/video.js"></script>');
-            assets::setRelAsset('css', 'https://vjs.zencdn.net/5.4.4/video-js.css');
+            assets::setEndHTML(' <script src="https://vjs.zencdn.net/5.6.0/video.js"></script>');
+            assets::setRelAsset('css', 'https://vjs.zencdn.net/5.6.0/video-js.css');
             assets::setStringCss($css, null, array('head' => true));
             $loaded = true;
             return $css;
@@ -39,7 +39,7 @@ EOF;
 <div class="wrapper">
  <div class="videocontent">
 	
-<video id="really-cool-video" class="video-js vjs-default-skin" controls ="controls"
+<video class="video-js vjs-default-skin" controls ="controls"
  preload="auto" 
  data-setup='{}'>
   <source type="video/mp4" src="$mp4">  

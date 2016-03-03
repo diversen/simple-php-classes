@@ -61,7 +61,7 @@ class mdMediaToAbsPath extends mark {
         if (!$url) {
             return '';
         }
-        //$url = conf::pathHtdocs() . "$url";
+        // $url = conf::pathHtdocs() . "$url";
         return "![$alt_text]($url)";
 
     }
@@ -126,24 +126,10 @@ class mdMediaToAbsPath extends mark {
      * @return boolean
      */
     public function saveImage ($url) {
-        $id = direct::fragment(2, $url);
-        $title = direct::fragment(3, $url);
-
-        $title = rawurlencode($title);
-        $path = "/images/$id/$title";
-        $save_path = conf::getFullFilesPath($path);
-        $web_path = conf::getSchemeWithServerName() . conf::getWebFilesPath($path);
-        
-        $code = headers::getReturnCode($web_path);
-        
-        if ($code != '200') {
-            log::error("Could not get file content (image). Got: $code " . $web_path . ' in ' . __CLASS__);
-            return false;
-        } 
- 
+        $save_path = conf::pathFilesBase() . "$url";
         return $save_path;
-        
     }
+    
     
     public function saveMp4($url) {
         $file = conf::pathFilesBase() . $url;

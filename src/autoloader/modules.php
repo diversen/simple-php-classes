@@ -6,9 +6,15 @@ use diversen\conf;
 
 /**
  * Modules autoloader for simple-php-classes
- * 
- * @package     main
- * @example     
+ * @package
+ * @example
+<code>
+// Register an autoloader for loading modules from mopdules dir
+$m = new modules();
+$m->autoloadRegister();
+
+// Now it is possible to load e.g. modules/blog/module.php 
+</code>    
  */
 class modules {
 

@@ -1,13 +1,45 @@
 <?php
 
-/**
- * @description modulized php micro framework
- * a php micro framework with modules
- */
 namespace diversen;
+
 use diversen\file;
 use diversen\conf;
 use diversen\uri\direct;
+
+/**
+ * @description modulized php micro framework
+ * A php micro framework with modules
+~~~
+<?php
+
+include_once "vendor/autoload.php";
+
+use diversen\micro;
+use diversen\autoloader\modules;
+
+$a = new modules();
+$a->autoloadRegister();
+
+$m = new micro();
+$m->parse();
+~~~
+
+In modules/main/module.php you then place: 
+
+~~~
+<?php
+
+namespace modules\main;
+
+class module {
+    
+    public function indexAction () {
+        echo "hello world";
+    }
+}
+~~~
+ */
+
 
 class micro {
     

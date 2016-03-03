@@ -10,7 +10,7 @@ use Michelf\Markdown as mark;
 use diversen\conf as conf;
 use diversen\file;
 use diversen\log;
-use diversen\http\headers;
+use modules\image\module as image;
 
 /**
  * markdown filter.
@@ -45,13 +45,29 @@ class mdDownloadImages extends mark {
         if (isset($this->urls[$link_id])) {
             $url = $this->encodeAttribute($this->urls[$link_id]);
             
-            if ($this->isImage($url)) {
-                $this->saveImage($url);
+            $type = $this->getType($url);
+            if ($type == 'mp4') {
+                $full_path = conf::pathHtdocs() . $url;
+                return "![$alt_text]($url)";
             }
             
+            if ($this->isImage($url)) {
+                return "![$alt_text](" . $this->saveImage($url) . ")";
+            }
             return;
         } 
     }
+    
+    /**
+     * Get type of extension
+     * @param type $url
+     * @return type
+     */
+    protected function getType($url) {
+        $type = file::getExtension($url);
+        return strtolower($type);        
+    }
+    
 
     protected function _doImages_inline_callback($matches) {
         $whole_match = $matches[1];
@@ -62,10 +78,16 @@ class mdDownloadImages extends mark {
         $alt_text = $this->encodeAttribute($alt_text);
         $url = $this->encodeAttribute($url);
 
-        if ($this->isImage($url)) {
-            $this->saveImage($url);
+        $type = $this->getType($url);
+        if ($type == 'mp4') {
+            $full_path = conf::pathHtdocs() . $url;
+            return "![$alt_text]($url)";
         }
-        // $url = $this->saveImage($url);
+
+        if ($this->isImage($url)) {
+            return "![$alt_text](" . $this->saveImage($url) . ")";
+        }
+
         return;
 
     }
@@ -123,15 +145,17 @@ class mdDownloadImages extends mark {
 
         return $text;
     }
-        /**
+   
+    /**
      * Checks broken media
      * @param type $url
      * @return boolean
      */
     protected function isImage($url) {
- 
+        
         $type = file::getExtension($url);
-        if ($type == 'mp4') {    
+        if ($type == 'mp4') {
+            log::error($url);
             return false;
         }   
         return true;
@@ -140,27 +164,23 @@ class mdDownloadImages extends mark {
     protected function saveImage($url) {
 
         $id = direct::fragment(2, $url);
-        $title = direct::fragment(3, $url);
         
-        
-        
+        $ext = file::getExtension($url);
+        $title = md5(uniqid()) . ".$ext";
+
+        $i = new image();
+        $file = $i->getFile($id);
+        if (empty($file)) {
+            return '';
+        }
+          
         $path = "/images/$id/$title";
         $save_path = conf::getFullFilesPath($path);
         $web_path = conf::getWebFilesPath($path);
-        $image_url = conf::getSchemeWithServerName() . $url;
 
-        $code = headers::getReturnCode($image_url);
-        if ($code != 200) {
-            log::error("Could not get file content (image). Got: $code " . $image_url);
-            return '';
-        } else {
-            $file = file_get_contents($image_url);
-        }
-
-        // make dir 
         $dir = dirname($path);
         file::mkdir($dir);
-        file_put_contents($save_path, $file);
+        file_put_contents($save_path, $file['file']);
         return $web_path;
     }
 

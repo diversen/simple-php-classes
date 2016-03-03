@@ -4,14 +4,14 @@ namespace diversen\mailer;
 
 use diversen\db\rb;
 use diversen\mailer\helpers;
+
 /**
- * contains mail queue
- * used for sending messages delayed
- * @package mailer
+ * A work in progress for storing email in database in a queue
+ * @ignore
  */
 
 /**
- * example
+ * @example
  * 
  <code>
     $subject = "test";
@@ -38,6 +38,10 @@ use diversen\mailer\helpers;
 
 class queue {
     
+    /**
+     * Var holding default dateTime format
+     * @var type 
+     */
     public static $dateTime = null;
     
     /**

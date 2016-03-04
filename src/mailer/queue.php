@@ -67,7 +67,7 @@ class queue {
      * @return type
      */
     public static function add ($to, $mime_headers, $body) {
-        rb::connect();
+        rb::connectExisting();
         $bean = rb::getBean('mailerqueue');
         $bean->to = $to;
         $bean->mimeheaders = serialize($mime_headers);

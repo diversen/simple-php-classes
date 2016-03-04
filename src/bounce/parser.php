@@ -37,7 +37,7 @@ array(
 
      */
     public function __construct($options = array()) {
-        rb::connect();
+        rb::connectExisting();
         if (empty($options)) {
             $options = array(
                 'host' => conf::getMainIni('imap_host'),

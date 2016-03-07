@@ -76,8 +76,8 @@ function heroku_set_sendgrid_conf () {
         $from_text = common::readSingleline('Enter which from text should be seen in his inbx, e.g. CosCMS (not the email)');
         $reply = common::readSingleline('Enter which email users should reply to (an email):');
         
-        conf::$vars['coscms_main']['site_email'] = "$from_text <$user>"; 
-        conf::$vars['coscms_main']['site_email_reply'] = "$from_text <$reply>"; 
+        conf::$vars['coscms_main']['smtp_params_name'] = "$from_text"; 
+        conf::$vars['coscms_main']['smtp_params_email'] = "$reply"; 
         conf::$vars['coscms_main']['smtp_params_host'] = "smtp.sendgrid.net";
         conf::$vars['coscms_main']['smtp_params_sender'] = $user;
         conf::$vars['coscms_main']['smtp_params_username'] = $user;

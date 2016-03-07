@@ -261,14 +261,13 @@ if (conf::isCli()){
 
     self::setOption('profile_dont_hide_secrets', array(
         'long_name'   => '--no-hide-secrets',
-        'description' => 'Set this an common secrets will not be hidden when building profile',
+        'description' => 'Common secrets (like SMTP, DB etc) will not be hidden when building profile',
         'action'      => 'StoreTrue'
     ));
 
     self::setOption('load_profile', array(
         'long_name'   => '--load',
-        'description' => 'Will load a profile. This means that any ini file from a profile 
-    will overwrite current ini files',
+        'description' => 'Load a profile. Any ini file from a profile will overwrite current ini file, including config/config.ini',
         'action'      => 'StoreTrue'
     ));
 
@@ -280,14 +279,13 @@ if (conf::isCli()){
 
     self::setOption('profile_use_master', array(
         'long_name'   => '--master',
-        'description' => 'Use master - else we will use specified versions of modules 
-            and templates found in profile.inc',
+        'description' => 'Use master instead of version numbers specified in profile.inc',
         'action'      => 'StoreTrue'
     ));
 
     self::setOption('create_profile', array(
         'long_name'   => '--create',
-        'description' => 'Will create profile with specified name which will be placed in /profiles/{profile}',
+        'description' => 'Will create a profile with specified name which will be placed in /profiles/{profile}',
         'action'      => 'StoreTrue'
     ));
 
@@ -299,7 +297,7 @@ if (conf::isCli()){
 
     self::setOption('upgrade_from_profile', array(
         'long_name'   => '--all-up',
-        'description' => 'Will upgrade from specified profile. If new module or templates exists they will be installed. ',
+        'description' => 'Upgrade from specified profile. If a new module or templates exists they will be installed. ',
         'action'      => 'StoreTrue'
     ));
 

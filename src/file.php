@@ -175,20 +175,6 @@ class file {
     }
 
     /**
-     * method for getting first path were coslib exists
-     * @return string $path the full coslib path
-     */
-    public static function getFirstCoslibPath() {
-        $ps = explode(":", ini_get('include_path'));
-        foreach ($ps as $path) {
-            $coslib = $path . "/coslib";
-            if (file_exists($coslib)) {
-                return $coslib;
-            }
-        }
-    }
-
-    /**
      * method for creating a directory in the conf::pathHtdocs()/files directory
      * It will know if we are using a multi domain setup
      * @param string $dir

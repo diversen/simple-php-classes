@@ -2,37 +2,37 @@
 
 namespace diversen\filter;
 
-use diversen\uri\direct as direct;
-use Michelf\Markdown as mark;
 use diversen\conf as conf;
 use diversen\file;
 use diversen\log;
-use modules\image\module as image;
+use diversen\db\q;
+
 
 /**
- * Markdown filter that downloads images, and substitute 
- * images links. E.g. you have a link like this in your markdown document:
- * /images/download/test.jpg). This image will be downloaded to a path 
- * on your computer and the link in the markdown document will change 
- * accordingly
- * 
- * Quite hackish
+ * Markdown filter that uploads images to a database, and substitute full path
+ * image links with online path to a controller. 
  */
-class mdDownloadImages extends mark {
+class mdUploadImages extends \Michelf\Markdown {
 
     /**
-     * if set images will be downloaded to file system
-     * @var $download 
+     * Name of the reference given to image class
+     * @var string 
      */
-    public static $download = true;
+    public $reference;
     
     /**
-     * 
-     * If set we return raw markdown
-     * @var type 
+     * Parent id of upload image
+     * @var int
      */
-    public static $getRaw = true;
-
+    public $parentId;
+    
+    /**
+     * Var holding image user id
+     * @var int 
+     */
+    public $userId; 
+    
+    
     protected function _doImages_reference_callback($matches) {
         $whole_match = $matches[1];
         $alt_text = $matches[2];
@@ -53,22 +53,13 @@ class mdDownloadImages extends mark {
             }
             
             if ($this->isImage($url)) {
-                return "![$alt_text](" . $this->saveImage($url) . ")";
+                return "![$alt_text](" . $this->uploadImage($url) . ")";
             }
             return;
         } 
     }
     
-    /**
-     * Get type of extension
-     * @param type $url
-     * @return type
-     */
-    protected function getType($url) {
-        $type = file::getExtension($url);
-        return strtolower($type);        
-    }
-    
+        
 
     protected function _doImages_inline_callback($matches) {
         $whole_match = $matches[1];
@@ -86,12 +77,23 @@ class mdDownloadImages extends mark {
         }
 
         if ($this->isImage($url)) {
-            return "![$alt_text](" . $this->saveImage($url) . ")";
+            return "![$alt_text](" . $this->uploadImage($url) . ")";
         }
 
         return;
 
     }
+    
+    /**
+     * Get type of extension
+     * @param type $url
+     * @return type
+     */
+    protected function getType($url) {
+        $type = file::getExtension($url);
+        return strtolower($type);        
+    }
+
 
     protected function doImages($text) {
         #
@@ -162,49 +164,33 @@ class mdDownloadImages extends mark {
         return true;
     }
     
-    protected function saveImage($url) {
+    protected function uploadImage($url) {
 
-        $id = direct::fragment(2, $url);
+        // Array ( [name] => Angus_cattle_18.jpg [type] => image/jpeg [tmp_name] => /tmp/php5lPQZT [error] => 0 [size] => 52162 )
+
+        $ary = [];
         
-        $ext = file::getExtension($url);
-        $title = md5(uniqid()) . ".$ext";
-
-        $i = new image();
-        $file = $i->getFile($id);
-        if (empty($file)) {
-            return '';
+        $name = file::getFilename($url) . "." . file::getExtension($url);
+        
+        $ary['name'] = $name;
+        $ary['type'] = file::getMime($url);
+        $ary['tmp_name'] = $url;
+        $ary['error'] = 0;
+        $ary['size'] = 0;
+        
+        $i = new \modules\image\uploadBlob();
+        $res = $i->insertFile($ary, $this->reference, $this->parentId, $this->userId);
+        if ($res) {
+            $id = q::lastInsertId();
+            $row = $i->getSingleFileInfo($id);
+            return $i->getFullWebPath($row);
+        } else {
+            log::error("Could not upload image: $name");
+            return false;
         }
-          
-        $path = "/images/$id/$title";
-        $save_path = conf::getFullFilesPath($path);
-        $web_path = conf::getWebFilesPath($path);
-
-        $dir = dirname($path);
-        file::mkdir($dir);
-        file_put_contents($save_path, $file['file']);
-        return $web_path;
     }
-
-    /**
-     *
-     * @param  string     string to markdown.
-     * @return string
-     */
-    public static function filter($text) {
-
-        static $md = null;
-        if (!$md) {
-            $md = new self();
-        }
-
-        $md->no_entities = true;
-        $md->no_markup = true;
-        
-        if (isset(self::$getRaw)) {
-            return $md->doImages($text); 
-        }
-
-        $text = $md->transform($text);
-        return $text;
+    
+    public function filter ($text) {
+        return $this->doImages($text);
     }
 }

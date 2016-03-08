@@ -53,7 +53,11 @@ class rb {
      * Connect to existing database handle with RedBeans
      */
     public static function connectExisting () {
-        R::setup(connect::$dbh); 
+        static $connected = null;
+        if (!$connected) {
+            R::setup(connect::$dbh);
+            $connected = true;
+        }
         $freeze = conf::getMainIni('rb_freeze');
         if ($freeze == 1) {
             R::freeze(true);

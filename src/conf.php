@@ -130,7 +130,7 @@ class conf {
     }
     
     /**
-     * sets a main ini setting, e.g. override from database
+     * Sets a main ini setting, e.g. override from database
      * @param string $key the key to set
      * @param string $value the value to set the key with
      */

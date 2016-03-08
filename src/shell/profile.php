@@ -176,10 +176,11 @@ function cos_purge_from_profile ($options) {
 }
 
 /**
- * function for updating a modules .ini file with new settings
+ * Function for updating a module .ini file with new settings
  * from updated ini-dist file.
  *  
- * @param array     $options 
+ * @deprecated
+ * @param array $options 
  */
 function upgrade_config_ini_file ($options){
     

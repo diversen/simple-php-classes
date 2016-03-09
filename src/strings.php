@@ -1,19 +1,18 @@
 <?php
 
-/**
- * @desciption 
- * class for doing string operations
- */
-
 namespace diversen;
 
-
+/**
+ * 
+ * Class for doing string operations
+ */
 class strings {
     
     /**
+     * Get ascii representation of a string
      * From: http://cubiq.org/the-perfect-php-clean-url-generator
-     * @param type $str
-     * @return type 
+     * @param string $str
+     * @return string $str
      */
     public static function toAscii($str) {
 	$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $str);
@@ -23,35 +22,21 @@ class strings {
     }
     
     /**
+     * Get ascii string with translit
      * From: http://cubiq.org/the-perfect-php-clean-url-generator
-     * @param type $str
-     * @return type 
+     * @param string $str
+     * @return string $str 
      */
     public static function toAsciiWithTranslit($str) {
 	$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $str);
 	$clean = preg_replace("/[^a-zA-Z0-9\/_| -]/", '', $clean);
 	$clean = strtolower(trim($clean, '-'));
 	$clean = preg_replace("/[\/_| -]+/", '-', $clean);
-
 	return $clean;
     }
-    
-    /**
-     * method for creating a seo title by seperating spaces with e.g. '-'
-     * @deprecated since 1.721
-     * @param string $title the title to change
-     * @param string $sep the seperator to use. Deffaults to '-'
-     * @return string $title seo title
-     */
-    function seoTitle($title, $sep = '-'){
-        $title = explode(' ', ($title));
-        $title = strtolower(implode($title, $sep));
-        return $title;
-    }
-    
         
     /**
-     * this is used for rawurlencode a string and substitue spaces ' ' with '-'
+     * Rawurlencode a string and substitue spaces ' ' with '-'
      * @param string $str the string to work on
      * @return string $str the manipulated string
      */
@@ -61,7 +46,7 @@ class strings {
     }
     
     /**
-     * creates a utf8 based slug where ' ' are substituted with '-'
+     * Create an UTF8 based slug where ' ' are substituted with '-'
      * @param string $base the basde of the url, e.g. /content/article/view/1
      * @param string $title the title of the url e.g. 华语 華語
      * @return string $str the manipulated string, e.g. 
@@ -77,7 +62,7 @@ class strings {
     }
     
     /**
-     * get a utf8 slug from a string
+     * Gets a utf8 slug from a string
      * @param string $title 
      * @return string $str stripped utf8 string 
      */
@@ -88,15 +73,13 @@ class strings {
     }
     
     /**
-     * function for sanitizing a URL
+     * Method for sanitizing a URL
      * from http://chyrp.net/
-     * 
      * @param string $string
      * @param boolean $force_lowercase 
      * @param boolean $remove_special
      * @return string $str the sanitized string 
      */
-    
     public static function sanitizeUrlRigid ($string, $force_lowercase = true, $remove_special = false) {
         $strip = array("~", "\n", "\t", "\r", "`", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "=", "+", "[", "{", "]",
                    "}", "\\", "|", ";", ":", "\"", "'", "&#8216;", "&#8217;", "&#8220;", "&#8221;", "&#8211;", "&#8212;",

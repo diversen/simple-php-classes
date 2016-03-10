@@ -15,6 +15,12 @@ $LANG['filter_markdownNoFollow_help'] = 'Content added to this field will be fil
 $LANG['filter_stacklink_help'] = 'Automatic replacement of URLs with links, e.g. http://os-cms.net becomes <a href="http://os-cms.net">http://os-cms.net</a>';
 $LANG['filter_markdownPublic_help'] = 'Content added to this field will be filtered according to the markdown syntax. <a href ="http://daringfireball.net/projects/markdown/syntax">This link</a> gives a description of the syntax. You can not use HTML directly.';
 
+// Translation of file vendor/diversen/simple-php-classes/src/filter/mdAddReferences.php
+
+$LANG['No title'] = 'No title';
+$LANG['Video'] = 'Video';
+$LANG['Figure'] = 'Figure';
+
 // Translation of file vendor/diversen/simple-php-classes/src/html.php
 
 $LANG['Max size per file'] = 'Max size per file';

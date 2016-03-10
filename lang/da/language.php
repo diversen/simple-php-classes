@@ -12,6 +12,9 @@ $LANG['filter_phphl_help'] = 'Fremhæv PHP kode ved hjælp <span class="notransl
 $LANG['filter_markdownNoFollow_help'] = 'Indhold generes i henhold til markdown syntaks. <a href ="http://daringfireball.net/projects/markdown/syntax">Dette link</a> giver en beskrivelse af syntaksen. Du kan ikke bruge HTML direkte.';
 $LANG['filter_stacklink_help'] = 'Automatisk tilføjning af links, f.eks bliver http://os-cms.net til <a href="http://os-cms.net">http://os-cms.net</a>';
 $LANG['filter_markdownPublic_help'] = 'Indholdet genereres i henhold til markdown syntaks. <a href ="http://daringfireball.net/projects/markdown/syntax">Dette link</a> giver en beskrivelse af syntaksen. Du kan ikke bruge HTML direkte.';
+$LANG['No title'] = 'Ingen titel';
+$LANG['Video'] = 'video';
+$LANG['Figure'] = 'Figur';
 $LANG['Max size per file'] = 'Max størrelse pr fil';
 $LANG['Max number of files: <span class="notranslate">{MAX_FILES}</span>'] = 'Max antal filer: <span class="notranslate">{MAX_FILES}</span>';
 $LANG['Only one file at a time'] = 'Kun én fil ad gangen';
@@ -19,7 +22,6 @@ $LANG['Edit'] = 'Edit';
 $LANG['Delete'] = 'Slet';
 $LANG['View'] = 'Udsigt';
 $LANG['Submit'] = 'Indsend';
-$LANG['No title'] = 'Ingen titel';
 $LANG['filter_'] = 'filter_';
 $LANG['File(s) exceeds php.ini settings'] = 'Fil (er) overstiger php.ini indstillinger';
 $LANG['File(s) exceeds max size'] = 'Fil (er) overstiger max størrelse';

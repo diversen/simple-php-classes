@@ -2,20 +2,16 @@
 
 namespace diversen\filter;
 
+use diversen\file;
+use diversen\lang;
+
+
 /**
  * Markdown filter that 
  * 1) add 'id' refrences to all media
  * 2) optional return of all media as a markdown doc.
  */
-
-use diversen\file;
-use diversen\log;
-use diversen\uri\direct;
-use Michelf\Markdown as mark;
-use modules\image\module as imageModule;
-
-
-class mdAddReferences extends mark {
+class mdAddReferences extends \Michelf\Markdown {
 
     protected function _doImages_reference_callback($matches) {
         $whole_match = $matches[1];
@@ -80,6 +76,13 @@ class mdAddReferences extends mark {
             return $str = "![$alt_text]($url)";
         }
         
+        if (empty($alt_text)) {
+            $alt_text = lang::translate('No title');
+        }
+        
+        $video = lang::translate('Video');
+        $figure = lang::translate('Figure');
+        
         $id = uniqid();
         $str = "<div id =\"$id\">";
         $str.= '</div>';
@@ -87,10 +90,10 @@ class mdAddReferences extends mark {
         
         if ($type == 'mp4') {
             $m = ++self::$m;
-            self::$media['movie'][] = "Movie $m [$alt_text](#$id).";
+            self::$media['movie'][] = "$video $m [$alt_text](#$id).";
         } else  {
             $f = ++self::$f;
-            self::$media['figure'][] = "Figur $f [$alt_text](#$id).";    
+            self::$media['figure'][] = "$figure $f [$alt_text](#$id).";    
         }        
         return $str;
     }

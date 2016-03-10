@@ -173,6 +173,7 @@ class mdUploadImages extends \Michelf\Markdown {
         $name = file::getFilename($url) . "." . file::getExtension($url);
         
         $ary['name'] = $name;
+        $ary['abstract'] = file::getFilename($url);
         $ary['type'] = file::getMime($url);
         $ary['tmp_name'] = $url;
         $ary['error'] = 0;

@@ -678,7 +678,10 @@ class conf {
     }
     
     /**
-     * Return full path to public files with files/{$domain} attached
+     * Return full path to public files with files/{domain} attached
+     * Default is `htdocs` of the install. If `files_path` is set
+     * in `config/config.ini` then this setting will be the default public 
+     * files dir. e.g. `/datadrive`.`/files/default` will be attached 
      * @return string $str
      */
     public static function pathFiles () {
@@ -694,24 +697,24 @@ class conf {
     }
 
     /**
-     * method for getting "domain". Domain should not be confused with
-     * server_name. Domain is used when multiple server_names share the 
+     * Method for getting "domain". Domain should not be confused with
+     * `server_name`. Domain is used when multiple `server names` share the 
      * same code base. 
      * 
-     * Inside config/ folder there is a dir (or make it) called
-     * multi. If you have two hosts pointing to the same document root, e.g. 
-     * default and default2 you can make a folder called multi/default2 and
-     * add a file called config.ini inside this folder. When a client request
-     * http:://domain2/ this will be served from the confiuration file 
-     * multi/default2/config.ini 
+     * Inside the `config` folder there is a dir (or make it) called
+     * `multi`. If you have two hosts pointing to the same document root, e.g. 
+     * `test.myhost.com` and `test.another.com` you can make a folder called 
+     * `multi/test.another.com` and add a file called `config.ini` inside this folder. 
+     * When a client request the correct domain, then this ini file will be
+     * used as configuration. 
      * 
      * In Cli Env you can specify -d as first argument,
-     * e.g. ./coscli.sh -d default2 db --con and the default2 config file 
+     * e.g. ./coscli.sh -d test.myhost.com db --con and the `config/test.myhost.com/config.ini`
      * will be used. All sub domains will also respond to diffrent environment, 
-     * stage, development, production (speicifed as sections in config.ini 
+     * stage, development, production (specifed as sections in `config.ini` 
      * settings)
      * 
-     * If no domain is given, the default config/config.ini will be loaded. 
+     * If no domain is given, the default `config/config.ini` will be loaded. 
      *  
      * @return string $domain the current domain
      */

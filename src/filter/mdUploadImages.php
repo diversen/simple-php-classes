@@ -179,7 +179,7 @@ class mdUploadImages extends \Michelf\Markdown {
         $ary['size'] = 0;
         
         $i = new \modules\image\uploadBlob();
-        $res = $i->insertFile($ary, $this->reference, $this->parentId, $this->userId);
+        $res = $i->insertFileDirect($ary, $this->reference, $this->parentId, $this->userId);
         if ($res) {
             $id = q::lastInsertId();
             $row = $i->getSingleFileInfo($id);

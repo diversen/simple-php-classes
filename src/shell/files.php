@@ -3,22 +3,19 @@
 use diversen\cli\common;
 use diversen\conf;
 
-
 /**
- * File containing function for chown and chmod files to sane settings
- *
- * @package     shell
+ * File containging shell commands for file operations
  */
 
 /**
- * function for changing owner and group to correct and safe settings.
+ * Function for changing owner and group to correct and safe settings.
  *
- * we read which user the web server is running under by fetching
- * the whoami script from the server. the owner will be the user running the
- * script. Public upload dir /htdocs/files will then be set to 770 with correct
+ * We read the user under which the web server is running. This is done by fetching
+ * the whoami.php script from the server. The owner will be the user running the
+ * script. Public upload dir `files` will then be set to 770 with correct
  * user and group
  *
- * @return int  value from exec command
+ * @return int $res value from exec command
  */
 function cos_chmod_files(){
     
@@ -43,7 +40,7 @@ function cos_chmod_files(){
     }
 
     common::needRoot();
-    $files_path = conf::pathBase() . '/htdocs/files ';
+    $files_path = conf::pathFiles() . " ";
     $files_path.= conf::pathBase() . '/logs ';
     $files_path.= conf::pathBase() . '/private ';
     $files_path.= conf::pathBase() . '/config/multi';
@@ -54,10 +51,9 @@ function cos_chmod_files(){
 }
 
 /**
- * function for changing all files to be onwed by user.
- *
+ * Function for changing all files to be onwed by user.
  * Change file to owned by owner (the user logged in)
- * Public files /htdocs/files will then be set to 777
+ * Public `files` will then be set to 777
  *
  * @return int  value from exec command
  */
@@ -68,7 +64,8 @@ function cos_chmod_files_owner(){
     } else {
         $owner = exec('whoami');
     }
-    $files_path = conf::pathBase() . '/htdocs/files ';
+    
+    $files_path = conf::pathFiles() . " ";
     $files_path.= conf::pathBase() . '/logs ';
     $files_path.= conf::pathBase() . '/private ';
     $files_path.= conf::pathBase() . '/config/multi';
@@ -86,7 +83,7 @@ function cos_chmod_files_owner(){
  */
 function cos_rm_files(){
     common::needRoot();
-    $files_path = conf::pathBase() . '/htdocs/files/* ';
+    $files_path = conf::pathFiles() . "/*";
     $command = "rm -Rf $files_path";
     common::execCommand($command);
 }
@@ -104,19 +101,11 @@ function cos_create_files(){
         common::execCommand($command);
     }
 
-    $files_path = conf::pathBase() . '/htdocs/files';
+    $files_path = conf::pathFiles();
     if (!file_exists($files_path)){
-        $command = "mkdir $files_path";
+        $command = "mkdir -p $files_path";
         common::execCommand($command);
     }
-    
-    $domain = conf::getDomain();
-    $files_path = conf::pathBase() . "/htdocs/files/$domain";
-    
-    if (!file_exists($files_path)){
-        $command = "mkdir $files_path";
-        common::execCommand($command);
-    }    
 }
 
 self::setCommand('file', array(

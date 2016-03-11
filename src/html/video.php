@@ -40,7 +40,7 @@ EOF;
  <div class="videocontent">
 	
 <video class="video-js vjs-default-skin" controls ="controls"
- preload="auto" 
+ preload="none"
  data-setup='{}'>
   <source type="video/mp4" src="$mp4">  
   <p class="vjs-no-js">
@@ -65,7 +65,7 @@ EOF;
         $mp4 = $formats['mp4'];
         $str = <<<EOF
 <div class="video">
-<video width="100%" controls="controls">
+<video width="100%" preload="none" controls="controls">
   <source src="$mp4" type="video/mp4" /> 
   Your browser does not support HTML5 video.
 </video>

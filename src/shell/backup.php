@@ -49,7 +49,7 @@ function backup_files_backup($options){
     common::needRoot();
     // default backup dir
     if (isset($options['File'])){
-        // we use full path when specifing a file
+        // When file is set we use it as the backup file path
         $backup_file = $options['File'];
     } else {
         $backup_file = "backup/files/" . time() . ".tar.gz";
@@ -107,7 +107,9 @@ function backup_files_restore($options){
     
     if (!isset($options['File'])){
         $latest = backup_get_latest_backup('files');
-        if ($latest == 0) die ("Yet no backups\n");
+        if ($latest == 0) { 
+            die ("Yet no backups\n");
+        }
         $backup_file = $latest = "backup/files/" . $latest . ".tar.gz";
     } else {
         $backup_file = $options['File'];

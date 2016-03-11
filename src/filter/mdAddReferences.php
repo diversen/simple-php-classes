@@ -77,7 +77,7 @@ class mdAddReferences extends \Michelf\Markdown {
         }
         
         if (empty($alt_text)) {
-            $alt_text = lang::translate('No title');
+            $alt_text = '';
         }
         
         $video = lang::translate('Video');

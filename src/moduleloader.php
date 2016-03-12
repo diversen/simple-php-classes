@@ -108,8 +108,6 @@ class moduleloader {
         // in the system
         
         $db = new db();
-        $db->connect();
-
         return $db->selectAll('modules');
     }
     

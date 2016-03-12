@@ -133,4 +133,13 @@ class connect {
         echo "</pre>";
         die();
     }
+    
+    
+    /**
+     * return all sql statements as an array
+     * @return array $debug
+     */
+    public static function getDebug() {
+        return self::$debug;
+    }
 }

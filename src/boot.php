@@ -5,6 +5,7 @@ namespace diversen;
 use diversen\autoloader\modules;
 use diversen\conf;
 use diversen\db;
+use diversen\db\q;
 use diversen\html\common;
 use diversen\intl;
 use diversen\log;
@@ -103,7 +104,7 @@ class boot {
         ob_start();
 
         // Create a db connection
-        $db = new db();
+        q::connect();
 
         // init module loader. 
         $ml = new moduleloader();
@@ -115,7 +116,7 @@ class boot {
         $ml->runLevel(1);
 
         // select all db settings and merge them with ini file settings
-        $db_settings = $db->selectOne('settings', 'id', 1);
+        $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
 
         // merge db settings with config/config.ini settings
         // db settings override ini file settings
@@ -202,7 +203,6 @@ class boot {
         
         // echo module content
         echo $str = \mainTemplate::view($vars);
-
         
         conf::$vars['final_output'] = ob_get_contents();
         ob_end_clean();

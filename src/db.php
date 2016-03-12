@@ -77,14 +77,6 @@ class db extends connect {
     }
 
     /**
-     * return all sql statements as an array
-     * @return array $debug
-     */
-    public static function getDebug() {
-        return self::$debug;
-    }
-
-    /**
      * checks if a field exists in a table
      * @param string $table the db table
      * @param string $field the table field

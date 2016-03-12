@@ -54,10 +54,13 @@ class main extends cli {
         $m = new modules();
         $m->autoloadRegister();
 
-        // Define all system constants
+        // Define all essential paths. 
+        // base_path has been enabled, and based on this we 
+        // set htdocs_path, modules_path, files_dir
         conf::defineCommon();
 
-        // Set include path - based on config.ini
+        // Set include paths - based on config.ini
+        // enable modules_path base_path as include_dirs
         conf::setIncludePath();
 
         // Load config file 
@@ -73,9 +76,10 @@ class main extends cli {
         // Set default timezone
         intl::setTimezone();
         
-        // Load language
+        // Enable translation
         $l = new lang();
         
+        // Load all language files
         $base = conf::pathBase();
         $l->setDirsInsideDir("$base/modules/");
         $l->setDirsInsideDir("$base/htdocs/templates/");
@@ -175,7 +179,7 @@ EOF;
     public static function loadDbModules (){        
           
         if (!self::tablesExists()) {
-            common::echoMessage('No tables exists. We can not load all modules');
+            common::echoMessage('No tables exists. We can not load modules in modules dir');
             return;
         }
 
@@ -202,6 +206,7 @@ EOF;
     public static function loadBaseModules () {
         $command_path = __DIR__ . "/../shell";
         $base_list = file::getFileList($command_path, array ('search' => '.php'));
+
         foreach ($base_list as $val){
             include_once $command_path . "/$val";
         }

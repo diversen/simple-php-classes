@@ -478,11 +478,12 @@ class q extends connect {
     }
     
     /**
-     * Set a raw query
+     * Perform a raw query
      * @param string $query e.g. "SELECT * FROM mytable";
      * @return self
      */
     public static function query ($query) {
+        self::$method = 'select';
         self::$query = $query;
         return new self;
     }

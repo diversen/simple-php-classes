@@ -17,7 +17,6 @@ $LANG['filter_markdownPublic_help'] = 'Content added to this field will be filte
 
 // Translation of file vendor/diversen/simple-php-classes/src/filter/mdAddReferences.php
 
-$LANG['No title'] = 'No title';
 $LANG['Video'] = 'Video';
 $LANG['Figure'] = 'Figure';
 

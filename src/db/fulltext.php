@@ -3,10 +3,12 @@
 namespace diversen\db;
 
 use diversen\db\connect;
+use PDO;
 
 class fulltext extends connect {
     
     
+    public $modifier = 'IN BOOLEAN MODE';
     /**
      * Method for doing a simple full-text mysql search in a database table
      *
@@ -19,21 +21,28 @@ class fulltext extends connect {
      * @return  array   $rows array of rows
      */
     public function simpleSearch($table, $match, $search, $select, $from, $limit ){
+        // $search = self::quote($search);
+        
+        // WITH QUERY EXPANSION
+        // IN BOOLEAN MODE
+        
+        
+        $search = self::quote($search);
+        
         $query = "SELECT ";
         if (empty($select)){
             $select = '*';
         }
         $query.= "$select, ";
         $query.= "MATCH ($match) ";
-        $query.= "AGAINST (:search WITH QUERY EXPANSION) AS score ";
+        $query.= "AGAINST ($search $this->modifier) AS score ";
         $query.= "FROM $table ";
-        $query.= "WHERE MATCH ($match) AGAINST (:search) ";
+        $query.= "WHERE MATCH ($match) AGAINST ($search $this->modifier) ";
         $query.= "ORDER BY score DESC ";
         $query.= "LIMIT $from, $limit";
         self::$debug[]  = "Trying to prepare simpleSearch sql: $query";
         try {
             $stmt = self::$dbh->prepare($query);
-            $stmt->bindParam(':search', $search);
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -52,12 +61,12 @@ class fulltext extends connect {
      * @return  int     $num rows of search results from used full-text search
      */
     public function simpleSearchCount($table, $match, $search ){
+        $search = self::quote($search);
         $query = "SELECT COUNT(*) AS num_rows ";
         $query.= "FROM $table ";
-        $query.= "WHERE MATCH ($match) AGAINST (:search) ";
+        $query.= "WHERE MATCH ($match) AGAINST ($search $this->modifier) ";
         self::$debug[] = "Trying to prepare simpleSearchCount sql: $query in ";
         $stmt = self::$dbh->prepare($query);
-        $stmt->bindParam(':search', $search);
         $stmt->execute();
         $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach($row as $key => $val){

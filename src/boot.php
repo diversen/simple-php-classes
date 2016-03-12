@@ -4,7 +4,6 @@ namespace diversen;
 
 use diversen\autoloader\modules;
 use diversen\conf;
-use diversen\db;
 use diversen\db\q;
 use diversen\html\common;
 use diversen\intl;

@@ -134,6 +134,16 @@ class connect {
         die();
     }
     
+        
+    /**
+     * Quotes a string safely according to connection type, e.g. MySQL
+     * @param string $string
+     * @return string $string
+     */
+    public static function quote ($string) {
+        return self::$dbh->quote($string);
+    }
+    
     
     /**
      * return all sql statements as an array

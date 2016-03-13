@@ -7,7 +7,12 @@ use PDO;
 
 class fulltext extends connect {
     
-    
+    /**
+     * Search modifier, e.g.: 
+     * WITH QUERY EXPANSION
+     * IN BOOLEAN MODE
+     * @var string 
+     */
     public $modifier = 'IN BOOLEAN MODE';
     /**
      * Method for doing a simple full-text mysql search in a database table
@@ -15,29 +20,28 @@ class fulltext extends connect {
      * @param   string  $table the table to search e.g. 'article'
      * @param   string  $match what to match, e.g 'title, content'
      * @param   string  $search what to search for e.g 'some search words'
-     * @param   string  $select what to select e.g. '*'
+     * @param   string  $columns what to select e.g. '*'
+     * @param   string  $extra extra SQL, e.g. "AND parent_id = 10"
      * @param   int     $from where to start getting the results
      * @param   int     $limit how many results to fetch e.g. 20
      * @return  array   $rows array of rows
      */
-    public function simpleSearch($table, $match, $search, $select, $from, $limit ){
-        // $search = self::quote($search);
-        
-        // WITH QUERY EXPANSION
-        // IN BOOLEAN MODE
+    public function simpleSearch($table, $match, $search, $columns, $extra, $from, $limit ){
         
         
+                
         $search = self::quote($search);
         
         $query = "SELECT ";
-        if (empty($select)){
-            $select = '*';
+        if (empty($columns)){
+            $columns = '*';
         }
-        $query.= "$select, ";
+        $query.= "$columns, ";
         $query.= "MATCH ($match) ";
         $query.= "AGAINST ($search $this->modifier) AS score ";
         $query.= "FROM $table ";
         $query.= "WHERE MATCH ($match) AGAINST ($search $this->modifier) ";
+        $query.= " $extra ";
         $query.= "ORDER BY score DESC ";
         $query.= "LIMIT $from, $limit";
         self::$debug[]  = "Trying to prepare simpleSearch sql: $query";
@@ -60,17 +64,18 @@ class fulltext extends connect {
      * @param   string  $search what to search for e.g 'some search words'
      * @return  int     $num rows of search results from used full-text search
      */
-    public function simpleSearchCount($table, $match, $search ){
+    public function simpleSearchCount($table, $match, $search, $extra ){
+        
         $search = self::quote($search);
         $query = "SELECT COUNT(*) AS num_rows ";
         $query.= "FROM $table ";
         $query.= "WHERE MATCH ($match) AGAINST ($search $this->modifier) ";
+        $query.= " $extra ";
         self::$debug[] = "Trying to prepare simpleSearchCount sql: $query in ";
         $stmt = self::$dbh->prepare($query);
         $stmt->execute();
-        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach($row as $key => $val){
-            return $val['num_rows'];
-        }
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['num_rows'];
+
     }
 }

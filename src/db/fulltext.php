@@ -27,9 +27,7 @@ class fulltext extends connect {
      * @return  array   $rows array of rows
      */
     public function simpleSearch($table, $match, $search, $columns, $extra, $from, $limit ){
-        
-        
-                
+ 
         $search = self::quote($search);
         
         $query = "SELECT ";

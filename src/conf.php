@@ -415,7 +415,7 @@ class conf {
      */
     public static function loadMainCli() {
         $config_file = self::getConfigFileName();
-
+        
         if (!file_exists($config_file)) {
             return false;
         } else {

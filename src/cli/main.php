@@ -135,16 +135,22 @@ EOF;
     /**
      * After the commandline options has been parsed. 
      * Examine the --domain flag and the --verbose flag
+     * As these options needs to be examined to see if 
+     * we e.g. needs to load and merge another config file
+     * E.g. a virtual a sub-domain
      * @return void
      */
     public static function afterParse($result) {
         
+        // Set domain and first level conf vars
+        // Else they may be merged when we load a multi 
+        // domain config file.
         $verbose = $result->options['verbose'];
-        conf::setMainIni('verbose', $verbose);
+        conf::$vars['verbose'] = $verbose;
         
         // Check if other domain than default is being used
         $domain = $result->options['domain'];
-        conf::setMainIni('domain', $domain);
+        conf::$vars['domain'] = $domain;
 
         if ($domain != 'default' || empty($domain)) {
             $domain_ini = conf::pathBase() . "/config/multi/$domain/config.ini";

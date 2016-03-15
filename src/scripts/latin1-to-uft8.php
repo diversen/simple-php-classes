@@ -83,7 +83,7 @@ function get_tables_db () {
 
 function get_table_create ($table) {
     $db = new db();
-    $sql = "DESCRIBE $table";
+    $sql = "DESCRIBE `$table`";
     return $db->selectQuery($sql);
 }
 
@@ -104,6 +104,7 @@ function column_has_text ($ary) {
     if (preg_match("#^longtext#", $ary['Type']) ) {
         return true;
     }
+    
     if (preg_match("#^tinytext#", $ary['Type']) ) {
         return true;
         
@@ -113,6 +114,7 @@ function column_has_text ($ary) {
 
 $tables = get_tables_db();
 foreach ($tables as $table ) {
+
     $create = get_table_create($table);
 
     foreach ($create as $column) {

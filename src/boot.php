@@ -156,7 +156,7 @@ class boot {
         $l->setDirsInsideDir("$htdocs/templates/");
         $l->setSingleDir("$base/vendor/diversen/simple-php-classes");
         $l->setSingleDir("$base/vendor/diversen/simple-pager");
-        $l->loadLanguage(conf::getMainIni('language'));
+        $l->loadLanguage(conf::getMainIni('lang'));
 
         // runlevel 5
         $ml->runLevel(5);

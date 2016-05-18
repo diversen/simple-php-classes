@@ -12,8 +12,8 @@ namespace diversen;
 class bgJob {
     
     /**
-     * Executes a background job using exec. An file with the content 
-     * of the background job's output will be used, and a file holding the 
+     * Executes a background job using exec. A file with the content 
+     * of the background job's output will be created, and a file holding the 
      * job's pid (process id). 
      *   
      * @param string $cmd the command
@@ -35,7 +35,7 @@ class bgJob {
      * @param int $pid the process id to check for
      * @return boolean $res true if running or else false 
      */
-    function isRunning($pid) {
+    public function isRunning($pid) {
         try {
             $result = shell_exec(sprintf("ps %d", $pid));
             if (count(preg_split("/\n/", $result)) > 2) {
@@ -47,3 +47,4 @@ class bgJob {
         return false;
     }
 }
+

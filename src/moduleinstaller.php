@@ -351,9 +351,11 @@ class moduleinstaller  {
     public function getSqlFileList($module, $action){
         $sql_dir = conf::pathModules() . "/$module/mysql/$action";
         $file_list = file::getFileList($sql_dir);
-        
-        return $file_list;
-
+        if (is_array($file_list)){
+             return $file_list;
+         } else {
+             return array();
+         }
     }
 
     /**

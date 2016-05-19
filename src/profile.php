@@ -403,6 +403,7 @@ class profile  {
         $profile_dir = conf::pathBase() . "/profiles/$profile";
         $source = conf::pathBase() . "/config/config.ini";  
         $ary = conf::getIniFileArray($source, true);
+        unset($ary['base_path'], $ary['htdocs_path'], $ary['modules_dir'], $ary['modules_path'], $ary['files_dir']);
         $ary = $this->iniArrayPrepare($ary);  
         $config_str = conf::arrayToIniFile($ary);     
         file_put_contents($profile_dir . "/config.ini-dist", $config_str);

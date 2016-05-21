@@ -1,7 +1,10 @@
 <?php
 
 namespace diversen;
-use diversen\db\q as q;
+
+use diversen\db\q;
+
+
 
 /**
  * Class cache. 3 methods set, get, and delete

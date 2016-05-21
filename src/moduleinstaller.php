@@ -6,6 +6,7 @@ use diversen\cli\common;
 use diversen\conf;
 use diversen\db;
 use diversen\git;
+use Composer\Semver\Comparator;
 
 /**
  * Class for installing modules.
@@ -369,27 +370,40 @@ class moduleinstaller  {
     public function getSqlFileListOrdered($module, $action, $specific = null, $current = null){
         $ary = $this->getSqlFileList($module, $action);
         asort($ary);
+
+        $sem = new Comparator;
+        
+        if (strpos($current, 'v') === 0) {
+            $current = substr($current, 1);
+        }
+        
         if (isset($specific)){
             $ary = array_reverse($ary);
             if ($specific == 1 ) {
                 foreach ($ary as $key => $val){
                     $val = substr($val, 0, -4);
-                    if ($val > $current) {
+                    if (strpos($val, 'v') === 0) {
+                        $val = substr($val, 1);
+                    }
+                    if ($sem->greaterThan($val, $current)) {
                         unset($ary[$key]);
                     }
                 }
-                return $ary;
+                
             } else {
                 foreach ($ary as $key => $val){
                     $val = substr($val, 0, -4);
-                    if ($val < $specific ){
+                    if (strpos($val, 'v') === 0) {
+                        $val = substr($val, 1);
+                    }
+                    if ($sem->lessThan($val, $specific )){
                         unset($ary[$key]);
                     }
-                    if ($val > $current) {
+                    if ($sem->greaterThan($val, $current)) {
                         unset($ary[$key]);
                     }
                 }
-                return $ary;
+                
             }
         }
 
@@ -617,6 +631,9 @@ class moduleinstaller  {
 
         $row = $this->getModuleDbInfo();
         $current_version = $row['module_version'];
+        
+        
+        
         $downgrades = $this->getSqlFileListOrdered(
                 $this->installInfo['NAME'], 'down',
                 1, $current_version);

@@ -213,10 +213,10 @@ class layout {
     
     /**
      * Sets a module main and sub menu from class path. 
-     * @deprecated 9.x
      * @param string $path e.g. blog or content/article
      */
     public static function setMenuFromClassPath ($path) {
+        $path = str_replace('_', '/', $path);
         $ary = explode("/", $path);
         
         moduleloader::includeModule($ary[0]);

@@ -17,6 +17,7 @@ $LANG['Figure'] = 'Figur';
 $LANG['Max size per file'] = 'Max størrelse pr fil';
 $LANG['Max number of files: <span class="notranslate">{MAX_FILES}</span>'] = 'Max antal filer: <span class="notranslate">{MAX_FILES}</span>';
 $LANG['Only one file at a time'] = 'Kun én fil ad gangen';
+$LANG['Allowed file-types: '] = 'Tilladte fil-typer:';
 $LANG['Edit'] = 'Ret';
 $LANG['Delete'] = 'Slet';
 $LANG['View'] = 'Udsigt';

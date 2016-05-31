@@ -748,6 +748,12 @@ EOF;
             $label.= lang::translate('Only one file at a time');
         }
         
+        if (isset($options['allowed'])) {
+            $label.='<br />';
+            $label.= lang::translate('Allowed file-types: ') . $options['allowed'];
+            
+        }
+        
         
         self::label($filename, $label );
         self::file($filename, $options);

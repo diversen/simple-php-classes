@@ -25,6 +25,7 @@ $LANG['Figure'] = 'Figure';
 $LANG['Max size per file'] = 'Max size per file';
 $LANG['Max number of files: <span class="notranslate">{MAX_FILES}</span>'] = 'Max number of files: <span class="notranslate">{MAX_FILES}</span>';
 $LANG['Only one file at a time'] = 'Only one file at a time';
+$LANG['Allowed file-types: '] = 'Allowed file-types: ';
 
 // Translation of file vendor/diversen/simple-php-classes/src/html/helpers.php
 

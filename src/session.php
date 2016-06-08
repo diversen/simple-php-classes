@@ -682,6 +682,7 @@ class session {
     
     /**
      * Auth. Check if a user has the correct level. 
+     * @deprecated
      * @param string $level 'user', 'admin', 'super'
      * @return boolean $res true if user has the needed level. 
      */

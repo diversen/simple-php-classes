@@ -80,6 +80,12 @@ class html {
     public static $fieldset = false;
     
     /**
+     * Form attributes to set for the <form> element</form>
+     * @var array $formAttr
+     */
+    public static $formAttr = array ('class' => 'uk-form');
+    
+    /**
      * method for getting form string build. 
      * @return string $str the form build
      */
@@ -247,6 +253,8 @@ class html {
     public static function formStart (
         $name = 'form', $method ='post', $action = '#!',
         $enctype = "multipart/form-data", $options = array()) {
+        
+        $options = array_merge($options, self::$formAttr);
         
         if (!$name) {
             $name = 'form';

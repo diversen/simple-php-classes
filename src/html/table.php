@@ -20,9 +20,20 @@ class table {
      * @param string $val
      * @return string $html
      */
-    public static function td ($val, $options = array ()) {
+    public static function td ($val = '', $options = array ()) {
         $extra = html::parseExtra($options);
         return "<td $extra>$val</td>";
+    }
+
+    
+    /**
+     * Return <th>val</th>
+     * @param string $val
+     * @return string $html
+     */
+    public static function th ($val = '', $options = array ()) {
+        $extra = html::parseExtra($options);
+        return "<th $extra>$val</th>";
     }
     
     /**

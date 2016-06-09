@@ -520,18 +520,20 @@ class db extends connect {
     }
     
     /**
-     * prepares an array for db post where we specify keys to use 
+     * Prepares an array for db post, where we specify keys to use 
      * @param array $keys keys to use from request
+     * @param boolean $null_values use values from $_POST that is not set = null
+     * @param mixed $missing default values for missing $_POST, e.g. NULL
      * @return array $ary array with post array we will use 
      */
-    public static function prepareToPostArray ($keys, $null_values = true, $null_is = NULL) {
+    public static function prepareToPostArray ($keys, $use_missing = true, $missing = NULL) {
         $ary = array ();
         foreach ($keys as $val) {
             if (isset($_POST[$val])) {
                 $ary[$val] = $_POST[$val];
             } else {
-                if ($null_values) {
-                    $ary[$val] = $null_is;
+                if ($use_missing) {
+                    $ary[$val] = $missing;
                 }
             }
         }

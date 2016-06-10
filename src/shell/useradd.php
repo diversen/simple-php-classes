@@ -58,6 +58,30 @@ function useradd_user ($options = null){
     }
 }
 
+/**
+ * Create a user from commandline
+ * @param array $options
+ * @return int $res
+ */
+function useradd_admin ($options = null){
+
+    $values['email'] = common::readSingleline("Enter Email of super user (you will use this as login): ");
+    $values['password'] = common::readSingleline ("Enter password: ");
+    $values['password'] = md5($values['password']);
+    $values['username'] = $values['email'];
+    $values['verified'] = 1;
+    $values['admin'] = 1;
+    $values['super'] = 0;
+    
+    $values['type'] = 'email';
+    $res = useradd_db_insert($values);
+    if ($res) { 
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
 
 /**
  * function for inserting user
@@ -84,6 +108,12 @@ self::setCommand('useradd', array(
 self::setOption('useradd_super', array(
     'long_name'   => '--super',
     'description' => 'Add a super user from prompt.',
+    'action'      => 'StoreTrue'
+));
+
+self::setOption('useradd_admin', array(
+    'long_name'   => '--admin',
+    'description' => 'Add an admin user from prompt.',
     'action'      => 'StoreTrue'
 ));
 

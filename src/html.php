@@ -943,6 +943,12 @@ $(document).ready(function() {
             if ($key == 'action') {
                 continue;
             }
+
+            if ($key == 'disabled') {
+                $str.= ' disabled';
+
+            }
+            
             $str.= " $key = \"$val\" ";
         }
         return $str;

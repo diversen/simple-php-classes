@@ -945,7 +945,7 @@ $(document).ready(function() {
             }
 
             if ($key == 'disabled') {
-                $str.= ' disabled';
+                $str.= ' disabled ';
             }
             
             $str.= " $key = \"$val\" ";

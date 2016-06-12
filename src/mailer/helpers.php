@@ -8,16 +8,28 @@ namespace diversen\mailer;
 class helpers {
 
     /**
-     * Get domain from email
-     * @param string $mail
-     * @return string|false $ret domain or false
+     * Get domain from an valid email
+     * @param string $email
+     * @return string $domain
      */
-    public static function getDomain($mail) {
-        $ary = explode('@', $mail);
-        if (isset($ary[1])) {
-            return $ary[1];
+    public static function getDomain($email) {
+        $exploded = explode('@', $email);
+        return array_pop($exploded);
+    }
+    
+    /**
+     * Checks an email (by extracting the domain) against an array of domains 
+     * to see if the email's domain is valid
+     * @param string $email
+     * @param array $domains
+     * @return boolean $res true if valid else false
+     */
+    public static function isValidDomainEmail($email, $domains = array()) {
+        $email_domain = self::getDomain($email);
+        if (!in_array($email_domain, $domains)) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**

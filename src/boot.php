@@ -4,6 +4,7 @@ namespace diversen;
 
 use diversen\autoloader\modules;
 use diversen\conf;
+use diversen\file;
 use diversen\db\q;
 use diversen\html\common;
 use diversen\intl;
@@ -58,6 +59,9 @@ class boot {
         
         // load config file 
         conf::load();
+        
+        // set public file folder in file
+        file::$basePath = conf::getFullFilesPath();
 
         // set log level - based on config.ini
         log::setLogLevel();

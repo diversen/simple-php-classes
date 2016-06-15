@@ -502,7 +502,6 @@ class conf {
      * defines all common constants after loading main ini file. 
      * 
      */
-    
     public static function defineCommon () {
         
         $htdocs_path = conf::pathBase() . "/htdocs";

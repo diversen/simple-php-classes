@@ -2,7 +2,6 @@
 
 namespace diversen;
 
-use diversen\moduleinstaller;
 use diversen\conf;
 use diversen\cli\common;
 use diversen\git;

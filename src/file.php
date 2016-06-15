@@ -2,7 +2,6 @@
 
 namespace diversen;
 use diversen\file\path;
-use diversen\conf;
 
 /**
  * File class for doing common file tasks
@@ -108,9 +107,6 @@ class file {
         if (is_array($files)) {
             foreach ($files as $val) {
                 $res = unlink($val);
-                if (!$res) {
-                    log::error("Could not remove file: $val");
-                }
             }
         }
     }
@@ -173,14 +169,20 @@ class file {
         $ary = explode('/', $str);
         return $ary[0];
     }
+    
+    /**
+     * Base path for mkdir
+     * @var string $basePath 
+     */
+    public static $basePath = '/';
 
     /**
-     * method for creating a directory in the conf::pathHtdocs()/files directory
-     * It will know if we are using a multi domain setup
-     * @param string $dir
+     * Method for creating a directory. It takes into
+     * consideration
+     * @param boolean $res
      */
     public static function mkdir($dir, $perms = 0777) {
-        $full_path = conf::getFullFilesPath();
+        $full_path = self::$basePath;
         $dir = $full_path . "$dir";
 
         if (file_exists($dir)) {
@@ -202,17 +204,14 @@ class file {
         return $res;
     }
     
-    
-
     /**
-     * get a cached file using APC
+     * Get a memory cached file using e.g. APC
      * @param string $file
      * @return string $content content of the file 
      */
     public static function getCachedFile($file) {
         ob_start();
         readfile($file);
-
         $str = ob_get_contents();
         ob_end_clean();
         return $str;
@@ -249,8 +248,8 @@ class file {
     }
 
     /**
-     * remove directory recursively
-     * @param string $path 
+     * Remove a directory recursively
+     * @param string $dir
      */
     public static function rrmdir($dir) {
         $fp = opendir($dir);
@@ -270,6 +269,11 @@ class file {
         }
     }
 
+    /**
+     * Scans a directory recursively and returns files
+     * @param string $dir
+     * @return array $ary
+     */
     public static function scandirRecursive($dir) {
         $files = scandir($dir);
         static $ary = array();
@@ -285,37 +289,5 @@ class file {
             }
         }
         return $ary;
-    }
-
-    /**
-     * transforms bytes into human readable
-     * Found on stackoverflow. From kohana.
-     * @param int $bytes
-     * @param boolean $force_unit
-     * @param boolean $format
-     * @param type $si
-     * @return string $str human readable
-     */
-    function transform_bytes($bytes, $force_unit = NULL, $format = NULL, $si = TRUE) {
-        // Format string
-        $format = ($format === NULL) ? '%01.2f %s' : (string) $format;
-
-        // IEC prefixes (binary)
-        if ($si == FALSE OR strpos($force_unit, 'i') !== FALSE) {
-            $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB');
-            $mod = 1024;
-        }
-        // SI prefixes (decimal)
-        else {
-            $units = array('B', 'kB', 'MB', 'GB', 'TB', 'PB');
-            $mod = 1000;
-        }
-
-        // Determine unit to use
-        if (($power = array_search((string) $force_unit, $units)) === FALSE) {
-            $power = ($bytes > 0) ? floor(log($bytes, $mod)) : 0;
-        }
-
-        return sprintf($format, $bytes / pow($mod, $power), $units[$power]);
     }
 }

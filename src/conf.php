@@ -32,7 +32,7 @@ class conf {
     
     
     /**
-     * method for getting a module ini settings
+     * Get a module ini settings
      * @param string $key the key of the ini settng to get 
      * @return mixed $value the value of the setting or null if no value was found
      */
@@ -50,12 +50,17 @@ class conf {
         return self::$vars['coscms_main']['module'][$key];
     }
     
+    /**
+     * Set a module ini value
+     * @param string $key
+     * @param string $value
+     */
     public static function setModuleIni ($key, $value) {
         self::$vars['coscms_main']['module'][$key] = $value;
     }
     
     /**
-     * method for getting a main ini setting found in config/config.ini
+     * Method for getting a main ini setting found in config/config.ini
      * or in database override
      * @param   string  $key the ini setting key to get
      * @return  mixed   $val the value of the setting or null if not found. 
@@ -77,7 +82,7 @@ class conf {
     } 
     
     /**
-     * return main ini from placeholder
+     * Return a main ini from a placeholder
      * @param string $key
      * @param string $holder
      * @return mixed $val
@@ -91,7 +96,6 @@ class conf {
             return null;
         }
         
-        
         if (self::$vars[$holder][$key] == 'true') {
             return true;
         }
@@ -102,10 +106,8 @@ class conf {
         return self::$vars[$holder][$key];    
     } 
     
-
-    
     /**
-     * method for getting a main ini setting found in config/config.ini
+     * Method for getting a main ini setting found in config/config.ini
      * @param   string  $key the ini setting key to get
      * @return  mixed   $val the value of the setting or null if not found. 
      *                       If 0 is found we also reutnr null
@@ -130,7 +132,7 @@ class conf {
     }
     
     /**
-     * Sets a main ini setting, e.g. override from database
+     * Set a main ini setting, e.g. override from database
      * @param string $key the key to set
      * @param string $value the value to set the key with
      */
@@ -139,9 +141,8 @@ class conf {
     }
     
     /**
-     * sets a main ini setting, e.g. override from database
-     * @param string $key the key to set
-     * @param string $value the value to set the key with
+     * Sets main ini settings with an array, e.g. overrides from a database
+     * @param array $ary the array to set the values from
      */
     public static function setMainIniWithArray ($ary) {
         foreach ($ary as $key => $val) {
@@ -150,7 +151,8 @@ class conf {
     }
     
     /**
-     * parse ini with this and they will be cached with APC
+     * Get values from an ini file, this will keep settings in memory if
+     * using e.g. APC
      * @param string $file
      * @param boolean $sections
      * @return array $ini settings 
@@ -164,7 +166,7 @@ class conf {
     }
     
     /**
-     * get http or https depending on configuration.
+     * Get http or https depending on configuration.
      * @return string $str https|http
      */
     public static function getHttpScheme () {
@@ -177,7 +179,7 @@ class conf {
     }
     
     /**
-     * function for getting name of main configuration file 
+     * Method for getting name of main configuration file 
      * config/config.ini. 
      * 
      * If in CLI mode the --domain options need to be set in order to fetch
@@ -192,7 +194,6 @@ class conf {
      * 
      * @return string $filename the filname of the config file we should load.  
      */
-    
     public static function getConfigFileName () {
         // determine host and see if we use virtual hosting
         // where one code base can be used for more virtual hosts.
@@ -215,7 +216,7 @@ class conf {
     }
     
     /**
-     * try to match ini settings server name with $_SERVER['SERVER_NAME']
+     * Try to match ini settings server name with $_SERVER['SERVER_NAME']
      * This is used in order to determine if we are on development, stage,
      * or production server in web mode 
      * @param string $server_name e.g. *.testserver.com or www.testserver.com
@@ -243,7 +244,7 @@ class conf {
      * If no match we return production. Notice that self::$env will
      * be set and base system only calls this function once.  
      * @return string $env development, stage, production - if no match
-     *                      function will return production
+     *                     function will return production
      */
     public static function getEnvServer () {
         if (self::serverMatch(self::getMainIni('server_name'))) {
@@ -347,7 +348,7 @@ class conf {
     }
 
     /**
-     * Function for loading the main config file
+     * Method for loading the main config file
      * found in config/config.ini
      * 
      * You can place global configuration in this file. 
@@ -528,7 +529,7 @@ class conf {
     }
     
     /**
-     * gets the hostname from ini settings. You can use multiple hostnames 
+     * Get the hostname from ini settings. You can use multiple hostnames 
      * in order to work on diffrent machines in the same environment. 
      * The hostname is set in the ini settings hostname
      * @param type $section if normal default section. Else stage or development
@@ -550,18 +551,20 @@ class conf {
             $hostnames = @self::$vars['coscms_main']['development']['hostname'];
         }
         
-        if (!$hostnames) return array ();        
+        if (!$hostnames) { 
+            return array ();        
+        }
         $ary = explode(':', $hostnames);
         return $ary;
         
     }
     
     /**
-     * merge shared.ini with main ini file settings
+     * Merge shared.ini with main ini file settings
      * This method was made in order to allow stage and production
      * on the same server. 
      * 
-     * You simply specify: 
+     * Simply specify this in a config.ini file 
      * 
      * production = 1
      * 
@@ -579,39 +582,9 @@ class conf {
                     );
         }
     }
-
     
     /**
-     * loads a config file were there is a PHP array
-     * the file needs to have a variable called $config e.g.
-     * $config = array ('my_setting' => true')
-     * @param string $file
-     */
-    public static function loadPHPConfigFile($file) {
-        include $file;
-        if (isset(self::$vars['coscms_main'])) {
-            self::$vars['coscms_main']+= $config;
-        } else {
-            self::$vars['coscms_main'] = $config;
-        }
-    }
-    
-    /**
-     * load config from a php file. 
-     * in the php file the configuration has to be set in: $config = array();
-     * @param string $file
-     */
-    public static function loadPHPModuleConfig($file) {
-        include $file;
-        if (isset(self::$vars['coscms_main']['module'])) {
-            self::$vars['coscms_main']['module']+= $config;
-        } else {
-            self::$vars['coscms_main']['module'] = $config;
-        }
-    }
-    
-    /**
-     * checks if we are in cli env
+     * Checks if we are in CLI mode
      * @return boolean $res true if we are and false
      */
     public static function isCli () {
@@ -622,7 +595,7 @@ class conf {
     }
     
     /**
-     * get the computers hostname from command line
+     * Get the computer's hostname from command line
      * @return  string $hostname
      */
     public static function getHostnameFromCli () {
@@ -631,7 +604,7 @@ class conf {
     
     
     /**
-     * method for getting a path to a module
+     * Method for getting a path to a module
      * @param   string  $module the module
      * @return  string  $path the module path
      */
@@ -640,7 +613,7 @@ class conf {
     }
     
     /**
-     * method for getting a path to a template
+     * Method for getting a path to a template
      * @param   string  $template the template
      * @return  string  $path the template path
      */
@@ -649,7 +622,7 @@ class conf {
     }
     
    /**
-    * function for getting a full path to public files folder when doing e.g. uploads
+    * Method for getting a full path to public files folder when doing e.g. uploads
     * @param string|null $file optional file name to attach to path. You need to attach '/'
     * @return string $files_path the full file path 
     */
@@ -726,7 +699,7 @@ class conf {
     }
     
     /**
-     * method for getting server name. If not set in config.ini ('server_name')
+     * Method for getting server name. If not set in config.ini ('server_name')
      * $_SERVER['SERVER_NAME'] will be used
      * @return string $server_name the server name.  
      *                
@@ -744,7 +717,7 @@ class conf {
     }
     
     /**
-     * returns http|https:://server_name
+     * Returns http|https:://server_name
      * based on configuration
      * @return string $str server name with http|https scheme
      */
@@ -753,7 +726,7 @@ class conf {
     }
      
    /**
-    * method for getting the web path to files folder. 
+    * Method for getting the web path to files folder. 
     * @param string|null $file optional. a filename to attach to path. You need to attach '/'
     * @return string $path the web path to the file
     */

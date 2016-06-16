@@ -1,13 +1,13 @@
 <?php
 
 namespace diversen;
+
 use diversen\html;
 use diversen\moduleloader;
-use diversen\conf as conf;
+use diversen\conf;
 use diversen\template\assets;
-use diversen\template\meta as meta;
-use diversen\template\favicon;
-use diversen\template\logo;
+use diversen\template\meta;
+
 /**
  * File containing template class. 
  * 

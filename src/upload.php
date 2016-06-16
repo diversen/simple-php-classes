@@ -1,6 +1,7 @@
 <?php
 
 namespace diversen;
+
 use diversen\lang;
 use diversen\conf;
 use diversen\log;

@@ -1,10 +1,6 @@
 <?php
 
 namespace diversen;
-/**
- * file contains class for creating random strings
- * @package random 
- */
 
 /**
  *class random contains methods for getting random strings
@@ -14,7 +10,7 @@ namespace diversen;
 class random {
     
     /**
-     * gets a random string from length
+     * gets a random string from length [a-zA-Z0-9]
      * @param int $length
      * @return string $random
      */
@@ -30,7 +26,7 @@ class random {
     }
     
     /**
-     * gets a random number from specified length
+     * Get a random number from specified length [0-9]
      * @param int $length
      * @return string $random
      */
@@ -46,13 +42,17 @@ class random {
     }
     
     /**
-     * returns a random md5
+     * Get a random md5
      * @return string $md5 random md5
      */
     public static function md5() {
         return md5(uniqid(mt_rand(), true));
     }
     
+    /**
+     * Get random SHA1
+     * @return string $sha1
+     */
     public static function sha1 () {
         return sha1(microtime(true).mt_rand(10000,90000));
     }

@@ -101,7 +101,6 @@ class git {
 
     /**
      * Get remote tags
-     * 
      * See: https://github.com/troelskn/pearhub
      *
      * @param   string  $url a git url

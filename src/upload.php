@@ -6,12 +6,6 @@ use diversen\lang;
 use diversen\conf;
 use diversen\log;
 
-/**
- * file with class for doing uploads and a couple of helper functions
- *
- * @package     upload
- */
-
 
 /**
  * class for doing uploads

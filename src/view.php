@@ -42,7 +42,7 @@ class view {
     public static function getOverrideFilename () {
         
         if (isset(self::$options['template'])) {
-            $filename = conf::pathHtdocs() . "/template/" . self::$options[template];
+            $filename = conf::pathHtdocs() . "/template/" . self::$options['template'];
         } 
         
         if (isset(self::$options['module'])) {

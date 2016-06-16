@@ -5,20 +5,17 @@ use diversen\file\path;
 
 /**
  * File class for doing common file tasks
- * 
  */
 class file {
 
     /**
-     * function for getting a file list of a directory (. and .. will not be
+     * Method for getting a file list of a directory (. and .. will not be
      * collected)
-     *
-     * @param   string  the path to the directory where we want to create a filelist
-     * @param   array   if $options['dir_only'] isset only return directories.
-     *                  if $options['search'] isset then only files containing
-     *                  search string will be returned. Superficial as we will 
-     *                  use strstr
-     * @return  array   entries of all files array (0 => 'file.txt', 1 => 'test.php')
+     * @param   string  $dir the path to the directory where we want to create a filelist
+     * @param   array   $options if $options['dir_only'] isset then only return directories.
+     *                  if $options['search'] isset then only return files containing
+     *                  search string. 
+     * @return  array   $entries all files as an array
      */
     public static function getFileList($dir, $options = null) {
         
@@ -58,7 +55,7 @@ class file {
     }
 
     /**
-     * function for getting a file list recursive
+     * Method for getting a file list recursive
      * @param string $start_dir the directory where we start
      * @param string $pattern a given fnmatch() pattern
      * return array $ary an array with the files found. 
@@ -97,7 +94,7 @@ class file {
     }
 
     /**
-     * remove single file or array of files
+     * Remove single file or array of files
      * @param string|array $files
      */
     public static function remove($files) {
@@ -112,7 +109,7 @@ class file {
     }
 
     /**
-     * method for getting extension of a file
+     * Method for getting extension of a file
      * @param string $filename
      * @return string $extension
      */
@@ -121,10 +118,9 @@ class file {
     }
 
     /**
-     * gets a filename from a path string
+     * Get a filename from a path string
      * @param string $file full path of file
-     * @param array $options you can set 'utf8' => true and the filename will
-     *              be utf8
+     * @param array $options you can set 'utf8' => true and the filename will be utf8
      * @return string $filename the filename     
      */
     public static function getFilename($file, $options = array()) {
@@ -137,7 +133,7 @@ class file {
     }
 
     /**
-     * method for getting mime type of a file
+     * Method for getting mime type of a file
      * @param string $path
      * @return string $mime_type 
      */
@@ -160,7 +156,7 @@ class file {
     }
 
     /**
-     * returns prim mime
+     * Return the prim mime type of a file
      * @param string $file
      * @return string $mime
      */
@@ -178,7 +174,7 @@ class file {
 
     /**
      * Method for creating a directory. It takes into
-     * consideration
+     * consideration the self::$basePath
      * @param boolean $res
      */
     public static function mkdir($dir, $perms = 0777) {

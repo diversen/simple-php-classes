@@ -61,7 +61,7 @@ class git {
     }
 
     /**
-     * get tags for a module or template
+     * Get tags for a module or template
      * @param string $module
      * @param string $type 'module' or 'template'
      * @return array|false a array or false 

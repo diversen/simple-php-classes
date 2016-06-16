@@ -5,14 +5,9 @@ namespace diversen;
 use diversen\conf;
 use diversen\cache;
 use diversen\session;
-/**
- * File containing method for getting lanugage and countries. 
- * @package intl
- */
 
 /**
- * class for getting lists of countries
- * @package intl
+ * Class for getting and setting locales. 
  */
 class intl {
 
@@ -46,7 +41,7 @@ class intl {
     }
     
     /**
-     * check for cookie timezone
+     * Check for cookie timezone
      */
     public static function setCookieTimezone() {
         
@@ -79,22 +74,25 @@ class intl {
      * @return string
      */
     public static function getLocale() {
-        // check in main config setting 'locale'
-        if (isset(conf::$vars['coscms_main']['locale'])) {
-            return conf::$vars['coscms_main']['locale'];
+        
+        // Check in main config setting 'locale'
+        $locale = conf::getMainIni('locale');
+        if ($locale) {
+            return $locale;
         }
 
-        // if locale is not set we use language .utf8
-        if (isset(conf::$vars['coscms_main']['language'])) {
-            return conf::$vars['coscms_main']['language'] . ".utf8";
+        // If locale is not set we use language .utf8
+        $language = conf::getMainIni('language');
+        if ($language) {
+            return $language . ".utf8";
         }
 
-        // return system locale (e.g. 'C')
+        // System locale
         return self::getSystemLocale();
     }
 
     /**
-     * get machines system locales
+     * Get machines system locales
      * @return string $locale
      */
     public static function getSystemLocale() {
@@ -102,7 +100,7 @@ class intl {
     }
 
     /**
-     * get unix system locales
+     * Get unix system locales
      * @return array $ary array of system locales
      */
     public static function getSystemLocales() {
@@ -115,7 +113,7 @@ class intl {
     }
 
     /**
-     * get unix utf8 sysem locales 
+     * Get unix UTF8 sysem locales 
      * @return array $ary array of utf8 system locales
      */
     public static function getSystemLocalesUTF8() {
@@ -133,7 +131,7 @@ class intl {
     }
 
     /**
-     * checks if a locale is valid (used when checking web forms)
+     * Checks if a locale is valid (used when checking web forms)
      * @param string $locale
      * @return boolean $res  
      */
@@ -151,7 +149,7 @@ class intl {
     }
 
     /**
-     * get countries as array where key is country
+     * Get countries as array where key is country
      * @return array $ary array with countries as key 
      */
     public static function getCountriesWhereKeyIsCountry() {
@@ -164,7 +162,7 @@ class intl {
     }
 
     /**
-     * get all timezones as array
+     * Get all timezones as array
      * @return array $ary array with multiple arrays with both key and value
      *                    set to timezone e.g. Africa/Bissau 
      */
@@ -190,7 +188,7 @@ class intl {
     }
 
     /**
-     * can check if a given timezone is valid 
+     * Check if a given timezone is valid 
      * @param string $timezone
      * @return boolean $res 
      */
@@ -205,7 +203,7 @@ class intl {
     }
 
     /**
-     * prepares countries for a dropdown list
+     * Prepares countries for a dropdown list
      * @return array $ary array of arrays whereboth key and value is 
      *                    country 
      */
@@ -220,8 +218,8 @@ class intl {
     }
 
     /**
-     * get a country list
-     * @return array $ary array where contries is value
+     * Get a country list
+     * @return array $ary array where contries
      */
     public static function getCountries() {
         return $country_list = array(
@@ -422,7 +420,7 @@ class intl {
     }
 
     /**
-     * transforms a decimal number to secified locale
+     * Transforms a decimal number to secified locale
      * @param string $locale e.g. en_US
      * @param decimal $decimal 
      * @return decimal $decimal
@@ -433,7 +431,7 @@ class intl {
     }
 
     /**
-     * formats a dicimal according to locale
+     * Formats a dicimal according to locale
      * @param string $locale e.g. en_US
      * @param string $decimal
      * @param int $max_digits
@@ -469,19 +467,4 @@ class intl {
         }
         return $f->parse($decimal);
     }
-
-    /**
-     * method for getting browser language
-     * @return array $browser e.g. array ('language' => 'en', 'language_long => 'en_GB');
-     */
-    public static function getBrowserLang() {
-        include_once "Zend/Locale.php";
-
-        $zend_locale = new Zend_Locale(Zend_Locale::BROWSER);
-        $browser = array();
-        $browser['language'] = $zend_locale->getLanguage();
-        $browser['language_long'] = $zend_locale->toString();
-        return $browser;
-    }
 }
-

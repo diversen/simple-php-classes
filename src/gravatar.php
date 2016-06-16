@@ -1,16 +1,10 @@
 <?php
 
 namespace diversen;
-/**
- * contians simple methods and functions for getting a fravatar image from
- * gravatar.com 
- * @package gravatar
- */
 
 /**
- * contians simple methods and functions for getting a fravatar image from
+ * Contains simple methods and functions for getting a gravatar image from
  * gravatar.com 
- * @package gravatar
  */
 class gravatar {
 

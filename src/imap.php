@@ -12,10 +12,6 @@ use Exception;
 use RecursiveIteratorIterator;
 use Zend\Mail\Storage\Imap as ZendImap;
 
-
-
-
-
 /*
 Example: 
 

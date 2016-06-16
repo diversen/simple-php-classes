@@ -3,19 +3,14 @@
 namespace diversen;
 use diversen\session;
 use diversen\html;
-/**
- * File containg methods for doing http work
- * @package http
- */
 
 /**
- * class http
- * @package http
+ * Class with common HTTP methods
  */
 class http {
     
     /**
-     * generate redirect for use in prg
+     * Generate redirect for use in prg
      * @return string $path path and query
      */
     private static function getRedirect(){
@@ -40,7 +35,7 @@ class http {
         return $ret;
     }
     /**
-     * simple function for creating prg pattern. 
+     * Simple pattern for creating PRG. 
      * (Keep state when reloading browser and resends forms etc.) 
      * @param int $last
      */

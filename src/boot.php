@@ -127,7 +127,7 @@ class boot {
 
         // run level 2: set locales 
         $ml->runLevel(2);
-
+        
         // set locales
         intl::setLocale();
 
@@ -168,15 +168,17 @@ class boot {
         // load routes if any
         dispatch::setDbRoutes();
 
-        // runlevel 6
-        $ml->runLevel(6);
-        
-        // check db routes or load by defaults
+        // check db routes or load defaults
         $db_route = dispatch::getMatchRoutes();
         if (!$db_route) {
             $ml->setModuleInfo();
             $ml->initModule();
         }
+        
+        // runlevel 6
+        $ml->runLevel(6);
+        
+        // Override module ini settings 
         
         // Init layout. Sets template name
         // load correct CSS. St menus if any. Etc. 

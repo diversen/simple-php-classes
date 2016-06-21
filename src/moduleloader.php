@@ -471,7 +471,7 @@ class moduleloader {
         }
 
         // check if stage settings exists.
-        if ((isset($module_ini['stage']) && conf::getEnv() =='stage' ) ){
+        if (isset($module_ini['stage']) && conf::getEnv() =='stage' ){
                 conf::$vars['coscms_main']['module'] =
                         array_merge(
                         conf::$vars['coscms_main']['module'],

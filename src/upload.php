@@ -121,6 +121,31 @@ class upload {
     }
     
     /**
+     * Transforms greek (e.g.102MB or 20GB) to bytes
+     * Found on: http://stackoverflow.com/questions/11807115/php-convert-kb-mb-gb-tb-etc-to-bytes
+     * @param string $from
+     * @return int $bytes
+     */
+    public static function greekToBytes($from) {
+
+        $number = substr($from, 0, -2);
+        switch (strtoupper(substr($from, -2))) {
+            case "KB":
+                return $number * 1024;
+            case "MB":
+                return $number * pow(1024, 2);
+            case "GB":
+                return $number * pow(1024, 3);
+            case "TB":
+                return $number * pow(1024, 4);
+            case "PB":
+                return $number * pow(1024, 5);
+            default:
+                return $from;
+        }
+    }
+
+    /**
      * return max size for file upload in bytes
      * @return int $bytes
      */

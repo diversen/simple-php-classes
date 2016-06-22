@@ -1198,12 +1198,28 @@ $(document).ready(function() {
         
         
         if (method_exists('mainTemplate', 'createLink')) {
-            return \mainTemplate::createLink($url, $title, $options);
+            
+            // Override link in template
+            $link = \mainTemplate::createLink($url, $title, $options);
+        } else {
+            // Default link
+            $options = self::parseExtra($options);
+            $link = "<a href=\"$url\" $options >$title</a>";
+            
         }
         
-        $options = self::parseExtra($options);
-        $link = "<a href=\"$url\" $options >$title</a>";
         return $link;
+    }
+    
+    /**
+     * Generate link to be used in forms
+     * @param string $url
+     * @param string $title
+     * @param array $options attr
+     */
+    public static function createFormLink ($url, $title, $options = array ()) {
+        $link = self::createLink($url, $title, $options);
+        self::$fields[] = array ('value' => $link);
     }
 
     /**

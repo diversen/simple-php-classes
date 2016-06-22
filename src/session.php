@@ -288,6 +288,7 @@ class session {
         }
         
         else {
+            // Session Cookie
             $cookie_time = 0;
         }
         

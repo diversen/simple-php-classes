@@ -827,7 +827,7 @@ $(document).ready(function() {
     public static function checkboxClean ($name, $value = 0, $extra = array ()) {        
         $value = self::setValue($name, $value);
         if ($value){
-            $extra['checked'] = "yes";
+            $extra['checked'] = "checked";
         } 
         $extra = self::parseExtra($extra);
         $str = "<input type=\"checkbox\" name=\"$name\" id=\"$name\" value=\"1\" $extra />" . self::$br . "\n";
@@ -933,22 +933,13 @@ $(document).ready(function() {
         }
         
         foreach ($extra as $key => $val){
-            if ($key == 'checked') {
-                $str.= ' checked ';
-                continue;
-            }
             
-            // action is special - e.g. for cloud storage, so this is parsed in 
-            // getAction
-            if ($key == 'action') {
-                continue;
+            if ($val == '') {
+                $str.= " $key  ";
+            } else {
+                $str.= " $key = \"$val\" ";
             }
 
-            if ($key == 'disabled') {
-                $str.= ' disabled ';
-            }
-            
-            $str.= " $key = \"$val\" ";
         }
         return $str;
     }
@@ -956,7 +947,7 @@ $(document).ready(function() {
 
 
     /**
-     * method for setting a drop down box. This will be colleted in the HTML::fields[]
+     * Method for setting a drop down box. This will be colleted in the HTML::fields[]
      * If you just want a select box use selectClean
      * @param   string  $name the name of the select field
      * @param   array   $rows the rows making up the ids and names of the select field

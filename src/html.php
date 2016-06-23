@@ -1214,17 +1214,6 @@ $(document).ready(function() {
     }
 
     /**
-     * method for getting url fro e.g. creating a link. If rewrite manip is enabled
-     * we will fetch the rewritten link from database
-     * @deprecated
-     * @param  string $url
-     * @return string $url rewritten if rewrite url entered url exists
-     */
-    public static function getUrl ($url) {
-        return $url;
-    }
-
-    /**
      * method for creating an image html tag
      * @param string $src the source of the image
      * @param array  $options for setting e.g. css class array ('class' => 'popup')

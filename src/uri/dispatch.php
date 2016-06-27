@@ -32,7 +32,23 @@ class dispatch {
     }
    
     /**
-     * method for calling function or static method
+     * Include a module based on an array with method to call
+     * @param array $call
+     * @return boolean $res
+     */
+    public static function includeModule ($call) {
+        $ary = explode('::', $call);
+        $module = $ary[0];
+
+        if (moduleloader::moduleExists($module)) {
+            moduleloader::includeModule($module);
+            moduleloader::$running = $module;
+            return true;
+        }
+        return false;
+    }
+    /**
+     * Method for calling function or static method
      * @param type $call
      * @param type $matches
      * @return boolean $res if no function or method is found return false. 
@@ -51,8 +67,6 @@ class dispatch {
             $method = $ary[1];
             
             $class = self::getModuleName($module);
-            moduleloader::includeModule($module);
-            moduleloader::$running = $module;
             
             if (method_exists($class, $method)) {
                 $call_exists = 1;

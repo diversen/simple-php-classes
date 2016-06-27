@@ -173,13 +173,13 @@ class boot {
         if (!$db_route) {
             $ml->setModuleInfo();
             $ml->initModule();
+        } else {
+            dispatch::includeModule($db_route['method']);
         }
         
         // runlevel 6
         $ml->runLevel(6);
-        
-        // Override module ini settings 
-        
+
         // Init layout. Sets template name
         // load correct CSS. St menus if any. Etc. 
         $layout = new layout();

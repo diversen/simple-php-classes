@@ -1460,6 +1460,21 @@ $(document).ready(function() {
         return $str;
     }
 
+    /* Gets a html warning message. Can be overridden in template
+     * @param type $message
+     * @return string $html
+     */           
+    public static function getWarning ($warning) {
+        if (method_exists('mainTemplate', 'getWarning')) {
+            return \mainTemplate::getWarning($warning);
+        }
+        
+        $str = '<div class="form_warning">';
+        $str.= "<p>$warning</p>\n";
+        $str.= "</div>";
+        return $str;
+    }
+
     /**
      * echo an html error message. This can be overridden in template
      * @param string $error message

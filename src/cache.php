@@ -108,7 +108,7 @@ class cache {
         if (!$row) {
             return null;
         }
-        if ($max_life_time) {
+        if ($max_life_time OR $max_life_time === 0) {
             $expire = $row['unix_ts'] + $max_life_time;
             if ($expire < time()) {
                 self::delete($module, $md5);

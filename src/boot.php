@@ -177,7 +177,8 @@ class boot {
             dispatch::includeModule($db_route['method']);
         }
         
-        // runlevel 6
+        // After module has been loaded.
+        // You can e.g. override module ini settings
         $ml->runLevel(6);
 
         // Init layout. Sets template name

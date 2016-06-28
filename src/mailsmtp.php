@@ -70,7 +70,7 @@ class mailsmtp {
     
     
     /**
-     * mail using smtp 
+     * Mail using smtp 
      * @param string $to
      * @param string $subject
      * @param string $text

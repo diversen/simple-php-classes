@@ -189,7 +189,7 @@ EOF;
             return;
         }
 
-        $mod_loader = new moduleloader();
+        $ml = new moduleloader();
         $modules = moduleloader::getAllModules();
            
         foreach ($modules as $val){         

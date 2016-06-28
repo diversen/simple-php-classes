@@ -75,8 +75,6 @@ class session {
             ini_set("session.save_path", $session_save_path);
         }
         
-        
-        
         // session time
         $session_time = conf::getMainIni('session_time');
         if (!$session_time) { 

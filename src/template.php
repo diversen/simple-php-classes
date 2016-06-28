@@ -9,16 +9,7 @@ use diversen\template\assets;
 use diversen\template\meta;
 
 /**
- * File containing template class. 
- * 
- * @package template
- */
-
-/**
- * simple template class for cos cms
- * which will be used for display the page
- * 
- * @package template
+ * Template class
  */
 class template {
 

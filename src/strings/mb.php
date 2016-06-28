@@ -64,7 +64,7 @@ class mb {
     }
     
     /**
-     * convets a string from UTF-8 to given charset
+     * Converts a string from UTF-8 to given charset
      * @param string $content UTF-8 string
      * @param string $charset e.g. ISO-8859-1
      * @return string $content the string converted to specified charset
@@ -75,7 +75,7 @@ class mb {
     } 
     
     /**
-     * converts a array of strings to utf8
+     * Converts an array of strings to utf8
      * @param array $ary input array
      * @return array  $ary utf8 array
      */

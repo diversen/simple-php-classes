@@ -64,33 +64,18 @@ class upload {
     }
     
     /**
-     * return bytes from greek e.g. 2M or 100K
+     * Return bytes from greek e.g. 2M or 100K
+     * @deprecated since v1.4.*
      * @param type $val
      * @return int $val bytes
      */
     public static function getBytesFromGreek ($val) {
-        $val = trim($val);
-        $last = strtolower($val[strlen($val)-1]);
-        switch($last) {
-        // The 'G' modifier is available since PHP 5.1.0
-            case 'g':
-                $val *= 1024;
-            case 'm':
-                $val *= 1024;
-            case 'k':
-                $val *= 1024;
-        }
-
-        return $val;
+        return self::greekToBytes($val);
     }
     
    /**
-    * found on:
-    * 
-    * http://codeaid.net/php/convert-size-in-bytes-to-a-human-readable-format-%28php%29
-    * 
-    * Convert bytes to human readable format
-    *
+    * Found on: http://codeaid.net/php/convert-size-in-bytes-to-a-human-readable-format-%28php%29
+    * Method that converts bytes to human readable format, e.g. to 1MB or 2GB
     * @param int $bytes Size in bytes to convert
     * @param int $precision 
     * @return string $bytes as string
@@ -150,8 +135,8 @@ class upload {
      * @return int $bytes
      */
     public static function getNativeMaxUpload () {
-        $upload_max_filesize = upload::getBytesFromGreek(ini_get('upload_max_filesize'));
-        $post_max_size = upload::getBytesFromGreek(ini_get('post_max_size'));
+        $upload_max_filesize = self::greekToBytes(ini_get('upload_max_filesize'));
+        $post_max_size = self::greekToBytes(ini_get('post_max_size'));
         if ($upload_max_filesize >= $post_max_size) {
             return $post_max_size;
         } else {

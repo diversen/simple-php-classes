@@ -3,8 +3,7 @@
 namespace diversen;
 
 /**
- * 
- * Class for doing string operations
+ * Class for manipulating strings
  */
 class strings {
     
@@ -89,7 +88,7 @@ class strings {
     
     /**
      * Found on: http://www.php.net/manual/en/function.utf8-encode.php#102382
-     * Simple way to convert a string to UTF-8
+     * Simple method to convert a string to UTF-8
      * @param string $content
      * @return string $str
      */
@@ -102,11 +101,9 @@ class strings {
         } 
         return $content;
     } 
-    
 
-    
     /**
-     * simple sanitize function where only thing removed is /
+     * Simple sanitize method where only thing removed is /*#
      * in order to not confuse the url
      * @param string $string string to sanitize
      * @return string $string sanitized string
@@ -121,7 +118,6 @@ class strings {
      * tiny words (length 3 by default) are included on the result.
      *  "..." is added if result do not reach original string length
      * Found on php.net
-     *
      * @param   string  $str string to operate on
      * @param   int     $length the maxsize of the string to return
      * @param   int     $minword minimum size of word to cut from
@@ -150,7 +146,7 @@ class strings {
     }
     
     /**
-     * checks if mb_stlen is available. 
+     * Strlen that checks if mb_stlen is available. 
      * If not we use strlen
      * @param string $str
      * @return int $strlen
@@ -165,7 +161,7 @@ class strings {
     }
     
     /**
-     * function for removing extra white space, and only have 'one space' left
+     * Method that removes extra white space, and only have 'one space' left
      * @param string $str the string to operate on
      * @return string $str the transformed string 
      */
@@ -175,7 +171,7 @@ class strings {
     }
     
     /** 
-     * slightly modified from: 
+     * Remove extra newlines. Slightly modified from: 
      * http://stackoverflow.com/a/816102/464549
      * removes all newlines except one
      * @param string $str
@@ -186,7 +182,7 @@ class strings {
     }
 
     /**
-     * encrypts a string
+     * Encrypts a string
      * @url http://stackoverflow.com/a/4244629
      * @param string $text
      * @param string $salt
@@ -197,7 +193,7 @@ class strings {
     } 
 
     /**
-     * returns a decrypted string
+     * Decrypts a string
      * @url http://stackoverflow.com/a/4244629
      * @param string $text
      * @param string $salt
@@ -208,11 +204,8 @@ class strings {
     } 
 
     /**
-     * method for counting occurences of a set of chars
-     * modified from: 
-     * 
-     * http://stackoverflow.com/a/4736123/464549
-     * 
+     * Method for counting occurences of a set of chars
+     * modified from:  http://stackoverflow.com/a/4736123/464549
      * @param string $char_string
      * @param string $haystack
      * @param boolean $case_sensitive

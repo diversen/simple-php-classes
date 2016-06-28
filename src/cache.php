@@ -4,8 +4,6 @@ namespace diversen;
 
 use diversen\db\q;
 
-
-
 /**
  * Class cache. 3 methods set, get, and delete
  * 

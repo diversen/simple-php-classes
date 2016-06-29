@@ -504,6 +504,18 @@ class q extends connect {
     }
     
     /**
+     * Exec and return lastInsertId or 0
+     * @return int $res
+     */
+    public static function execLastInsertId() {
+        $res = self::exec();
+        if (!$res) {
+            return 0;
+        }
+        return self::lastInsertId();
+    }
+    
+    /**
      * Get last insert id
      * @return int $id last insert id
      */

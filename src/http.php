@@ -1,11 +1,18 @@
 <?php
 
 namespace diversen;
+
 use diversen\session;
 use diversen\html;
 
 /**
+ * File with common HTTP methods
+ * @package http
+ */
+
+/**
  * Class with common HTTP methods
+ * @package http
  */
 class http {
     
@@ -34,6 +41,7 @@ class http {
         }
         return $ret;
     }
+    
     /**
      * Simple pattern for creating PRG. 
      * (Keep state when reloading browser and resends forms etc.) 
@@ -79,7 +87,7 @@ class http {
     }
     
     /**
-     * simple function for creating prg pattern. 
+     * Simple function for creating prg pattern. 
      * (Keep state when reloading browser and resends forms etc.) 
      * @param int $last
      */
@@ -116,10 +124,8 @@ class http {
         }
     }
 
-    
     /**
-     * 
-     * method for sending cache headers when e.g. sending images from db
+     * Method for sending cache headers when e.g. sending images from db
      * @param int $expires the expire time in seconds
      */
     public static function cacheHeaders ($expires = null){

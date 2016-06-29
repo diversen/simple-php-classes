@@ -7,6 +7,7 @@ use diversen\cli;
 use diversen\cli\common;
 use diversen\conf;
 use diversen\db;
+use diversen\db\q;
 use diversen\db\admin;
 use diversen\file;
 use diversen\intl;
@@ -65,7 +66,10 @@ class main extends cli {
 
         // Load config file 
         conf::load();
-
+        
+        // set public file folder in file
+        file::$basePath = conf::getFullFilesPath();
+        
         // Set log level - based on config.ini
         log::setErrorLog();
         log::setLogLevel();
@@ -185,21 +189,32 @@ EOF;
     public static function loadDbModules (){        
           
         if (!self::tablesExists()) {
-            common::echoMessage('No tables exists. We can not load modules in modules dir');
+            common::echoMessage('No tables exists. We can not load modules in modules/ dir');
             return;
         }
 
         $ml = new moduleloader();
+        
+        // select all db settings and merge them with ini file settings
+        $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
+
+        // merge db settings with config/config.ini settings
+        // db settings override ini file settings
+        conf::$vars['coscms_main'] = array_merge(conf::$vars['coscms_main'], $db_settings);
+
         $modules = moduleloader::getAllModules();
-           
-        foreach ($modules as $val){         
-            if (isset($val['is_shell']) && $val['is_shell'] == 1){
-                moduleloader::includeModule($val['module_name']);               
-                $path =  conf::pathModules() . "/$val[module_name]/$val[module_name].inc";           
-                if (file_exists($path)) {
-                    include_once $path;
-                }             
+        foreach ($modules as $val) {
+            moduleloader::setModuleIniSettings($val['module_name']);
+            $path = conf::pathModules() . "/$val[module_name]/$val[module_name].inc";
+            if (file_exists($path)) {
+                include_once $path;
             }
+        }
+
+        // Override any setting with configdb setting if module exists
+        if (moduleloader::moduleExists('configdb')) {
+            $c = new \modules\configdb\module();
+            $c->overrideAll();
         }
     }
     

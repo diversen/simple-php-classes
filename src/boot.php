@@ -60,7 +60,7 @@ class boot {
         // load config file 
         conf::load();
         
-        // set public file folder in file
+        // set public file folder in file class
         file::$basePath = conf::getFullFilesPath();
 
         // set log level - based on config.ini

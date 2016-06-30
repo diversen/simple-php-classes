@@ -43,7 +43,8 @@ function cos_chmod_files(){
     $files_path = conf::pathFiles() . " ";
     $files_path.= conf::pathBase() . '/logs ';
     $files_path.= conf::pathBase() . '/private ';
-    $files_path.= conf::pathBase() . '/config/multi';
+    $files_path.= conf::pathBase() . '/config/multi ';
+    $files_path.= conf::pathBase() . '/config/config.ini ';
     $command = "chown -R $owner:$group $files_path";
     common::execCommand($command);
     $command = "chmod -R 770 $files_path";
@@ -96,6 +97,12 @@ function cos_rm_files(){
  */
 function cos_create_files(){
     $files_path = conf::pathBase() . '/logs/coscms.log';
+    if (!file_exists($files_path)){
+        $command = "touch $files_path";
+        common::execCommand($command);
+    }
+    
+    $files_path = conf::pathBase() . '/logs/cron.log';
     if (!file_exists($files_path)){
         $command = "touch $files_path";
         common::execCommand($command);

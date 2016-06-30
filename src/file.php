@@ -173,7 +173,7 @@ class file {
     public static $basePath = '/';
 
     /**
-     * Method for creating a directory. It takes into
+     * Method for creating a directory. NOTE: It takes into
      * consideration the self::$basePath
      * @param boolean $res
      */
@@ -186,6 +186,29 @@ class file {
         }
         $res = @mkdir($dir, $perms, true);
         return $res;
+    }
+    
+    /**
+     * Test if a dir exists, if not mkdir - and copy file 
+     * @param string $from
+     * @param string $to
+     * @return boolean $res
+     */
+    public static function mkdirDirectCopy ($from, $to) {
+        $path = pathinfo($to);
+        $path_dir = $path['dirname'];
+        
+        // Can not overwrite a file and will not copy a file
+        // to a file
+        if (file_exists($path_dir) && !is_dir($path_dir)) {
+            return false;
+        } 
+
+        
+        $res = self::mkdirDirect($path_dir);
+        $res = copy($from, $to);
+        return $res;
+
     }
     
     /**

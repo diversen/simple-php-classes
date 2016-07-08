@@ -1,16 +1,11 @@
 <?php
 
 namespace diversen\strings;
-/**
- * File contains contains with strings methods
- * @package strings
- */
+
 
 /**
  * Class contains strings methods
- * @package strings
  */
-
 class lines {
 
     /**

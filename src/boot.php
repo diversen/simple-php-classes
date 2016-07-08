@@ -16,7 +16,7 @@ use diversen\uri\dispatch;
  * simple-php-framework *boot* method. 
  * Will set up complete system, and load all geneeric modules
  * @example
-~~~
+~~~php
 // default index.php
 use diversen\boot;
 use diversen\conf;

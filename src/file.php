@@ -204,7 +204,6 @@ class file {
             return false;
         } 
 
-        
         $res = self::mkdirDirect($path_dir);
         $res = copy($from, $to);
         return $res;

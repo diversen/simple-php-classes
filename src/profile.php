@@ -381,15 +381,26 @@ class profile  {
         foreach ($templates as $key => $val){
 
             $source = conf::pathHtdocs() . "/templates/$val[module_name]/$val[module_name].ini";
-            $dest = $profile_dir . "/$val[module_name].ini-dist";
+
+            // if no ini we just skip           
+            if (!file_exists($source)) { 
+                continue;
+            }
             
-            // templates does not need to have an ini file
-            if (file_exists($source)) {
-                if (copy($source, $dest)){
-                    $this->confirm[] = "Copied $source to $dest";
-                } else {
-                    $this->error[] = "Could not copy $source to $dest";
-                }
+            $ary = conf::getIniFileArray($source, true);
+            $ary = $this->iniArrayPrepare($ary);               
+            $config_str = conf::arrayToIniFile($ary);
+
+            // Module ini file
+            $dest = $profile_dir . "/$val[module_name].ini-dist";
+            file_put_contents($dest, $config_str);
+
+            // PHP config file
+            $source = conf::pathHtdocs() . "/templates/$val[module_name]/config.php";
+            $dest = $profile_dir . "/$val[module_name].php-dist";
+
+            if (file_exists($source)){
+                copy($source, $dest);
             }
         }       
     }
@@ -549,11 +560,21 @@ class profile  {
         foreach ($this->profileTemplates as $key => $val){
             $source = $profile_dir . "/$val[module_name].ini-dist";
             $dest = conf::pathHtdocs() . "/templates/$val[module_name]/$val[module_name].ini";
-    
-            $path_template = conf::pathHtdocs() . "/templates/$val[module_name]";
-            if (!file_exists($path_template)){
+            
+            $path_module = conf::pathHtdocs() . "/templates/$val[module_name]";
+            if (!file_exists($path_module)){
+
                 continue;
             }
+            
+            if (file_exists($source)) {
+                copy($source, $dest);
+                $this->confirm[] = "Copy $source to $dest";
+            }
+
+            // If a PHP config.php file exists, then copy that too.
+            $source = $profile_dir . "/$val[module_name].php-dist";
+            $dest = conf::pathHtdocs() . "/templates/$val[module_name]/config.php";
             
             if (file_exists($source)){
                 copy($source, $dest);

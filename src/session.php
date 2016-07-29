@@ -314,8 +314,8 @@ class session {
     }
     
     /**
-     * try to get system cookie
-     * @return false|string     retruns cookie md5 or false    
+     * Try to get system cookie
+     * @return false|string $_COOKIE return system_cookie md5 or false    
      */
     public static function getSystemCookie (){
         if (isset($_COOKIE['system_cookie'])){
@@ -323,6 +323,24 @@ class session {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Fetch system cookie row from db
+     * 
+     * @return array $row array empty if no match between system_cookie and $_COOKIE['systen_cookie']    
+     */
+    public static function getSystemCookieDb ($user_id){
+        $cookie = self::getSystemCookie();
+        if (!$cookie) {
+            return [];
+        }
+        
+        return q::select('system_cookie')->filter('cookie_id =', $cookie)->condition('AND')->
+                filter('account_id =', $user_id)->
+                fetchSingle();
+        
+        
     }
 
     /**
@@ -647,6 +665,10 @@ class session {
         if ($user_id) {
             $a = q::select('account')->filter('id =', $user_id)->fetchSingle();
             
+            if (!self::getSystemCookieDb($user_id)) {
+                self::killSessionAll($user_id);
+                return false;
+            }
             // user may have been deleted
             if (empty($a)) {
                 self::killSessionAll($user_id);

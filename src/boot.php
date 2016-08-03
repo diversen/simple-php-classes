@@ -139,9 +139,21 @@ class boot {
 
         // start session
         session::initSession();
+        
+        // Se if user is logged in with SESSION
+        if (!session::isUser()) {      
+            // If not logged in check system cookie
+            // This will start the session, if an appropiate cookie exists
+            session::checkSystemCookie();
+            
+        }
+        
+        // Check account
         $res = session::checkAccount();
         if (!$res) {
-            // To prevent 
+            
+            // Redirect to main page if user is not allowed
+            // With current SESSION or COOKIE
             http::locationHeader('/');
         }
 

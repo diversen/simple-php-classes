@@ -23,7 +23,6 @@ class session {
     
     /**
      * method for initing a session
-     * set in_session and start_time of session
      * checks if we use memcached which is a good idea
      */
     public static function initSession(){
@@ -31,25 +30,6 @@ class session {
         self::setSessionIni(); 
         self::setSessionHandler();
         session_start();
-        self::checkSystemCookie();
-
-        // if 'started' is set for previous request
-        //we truely know we are in 'in_session'
-        if (isset($_SESSION['started'])){
-            $_SESSION['in_session'] = 1;
-        }
-
-        // if not started we do not know for sure if session will work
-        // we destroy 'in_session'
-        if (!isset($_SESSION['started'])){
-            $_SESSION['started'] = 1;
-            $_SESSION['in_session'] = null;
-        }
-
-        // we set a session start time
-        if (!isset($_SESSION['start_time'])){
-            $_SESSION['start_time'] = time();
-        }
     }
     
     /**
@@ -66,7 +46,6 @@ class session {
         if ($session_host){
             ini_set("session.cookie_domain", $session_host);
         }
-        
         
         $session_save_path = conf::getMainIni('session_save_path');
         if ($session_save_path) { 
@@ -142,71 +121,56 @@ class session {
         
         if (isset($_COOKIE['system_cookie'])){
             
-            // user is in session. Can only be this after first request. 
+            // Check against cookie from DB
+            // User may have logged out of all devices
+            $row = self::getSystemCookieDb();
             
-            if (isset($_SESSION['in_session'])){
+            if (empty($row)) {
                 return;
             }
 
-            if (isset($_SESSION['id'])){
-                // user is logged in we return
-                return;
-            }
-            
-            // get a system cookie if any
-            $row = q::select('system_cookie')->
-                    filter('cookie_id =', @$_COOKIE['system_cookie'])->
-                    fetchSingle();
             
             // we got a cookie that equals one found in database
-            if (!empty($row)){
-                $days = self::getCookiePersistentDays();
-                
-                // delete system_cookies that are out of date. 
-                $now = date::getDateNow();
-                $last = date::substractDaysFromTimestamp($now, $days);
-                q::delete('system_cookie')->
-                        filter('account_id =', $row['account_id'])->condition('AND')->
-                        filter('last_login <', $last)->
-                        exec();
+            $days = self::getCookiePersistentDays();
 
-                // on every cookie login we update the cookie id              
-                $last_login = date::getDateNow(array('hms' => true));
-                $new_cookie_id = random::md5();
-                $values = array (
-                    'account_id' => $row['account_id'],
-                    'cookie_id' => $new_cookie_id,
-                    'last_login' => $last_login);
-                
-                q::delete('system_cookie')->
-                        filter('cookie_id=', @$_COOKIE['system_cookie'])->
-                        exec();
-                
-                q::insert('system_cookie')->
-                        values($values)->
-                        exec();
-                        //filter('cookie_id =' , $new_cookie_id)->condition('AND')->
-                        //filter('last_login =', $last_login)->exec();
-                
-                // set the new cookie
-                self::setCookie('system_cookie', $new_cookie_id);
-                
-                // get account which is connected to account id
-                $account = self::getAccount($row['account_id']);
-                
-                // user with account
-                if (!empty($account)){
-                    
-                    $_SESSION['id'] = $account['id'];
-                    $_SESSION['admin'] = $account['admin'];
-                    $_SESSION['super'] = $account['super'];
-                    $_SESSION['type'] = $account['type'];
-                                        
-                } else {
-                    // keep anon user in session
-                    $_SESSION['id'] = 0;
-                    $_SESSION['type'] = 'anon';
-                }
+            // delete system_cookies that are out of date. 
+            $now = date::getDateNow();
+            $last = date::substractDaysFromTimestamp($now, $days);
+            q::delete('system_cookie')->
+                    filter('account_id =', $row['account_id'])->condition('AND')->
+                    filter('last_login <', $last)->
+                    exec();
+
+            // on every cookie login we update the cookie id              
+            $last_login = date::getDateNow(array('hms' => true));
+            $new_cookie_id = random::md5();
+            $values = array(
+                'account_id' => $row['account_id'],
+                'cookie_id' => $new_cookie_id,
+                'last_login' => $last_login);
+
+            q::delete('system_cookie')->
+                    filter('cookie_id=', $_COOKIE['system_cookie'])->
+                    exec();
+
+            q::insert('system_cookie')->
+                    values($values)->
+                    exec();
+
+            // set the new cookie
+            self::setCookie('system_cookie', $new_cookie_id);
+
+            // get account which is connected to account id
+            $account = self::getAccount($row['account_id']);
+
+            // user with account
+            if (!empty($account)) {
+                 
+                $_SESSION['id'] = $account['id'];
+                $_SESSION['admin'] = $account['admin'];
+                $_SESSION['super'] = $account['super'];
+                $_SESSION['type'] = $account['type'];
+
             } 
         }
     }
@@ -241,7 +205,13 @@ class session {
         } else {
             $secure = false;
         }        
-        setcookie($name, $value, $timestamp, $path, $session_host, $secure);
+        $res = setcookie($name, $value, $timestamp, $path, $session_host, $secure);
+
+        // Make $_COOKIE available in this request
+        // Why is this not the default behavior as in SESSION
+        // XXX
+        $_COOKIE[$name] = $value;        
+        return $res;
     }
 
     /**
@@ -330,17 +300,15 @@ class session {
      * 
      * @return array $row array empty if no match between system_cookie and $_COOKIE['systen_cookie']    
      */
-    public static function getSystemCookieDb ($user_id){
+    public static function getSystemCookieDb (){
         $cookie = self::getSystemCookie();
         if (!$cookie) {
             return [];
         }
         
-        return q::select('system_cookie')->filter('cookie_id =', $cookie)->condition('AND')->
-                filter('account_id =', $user_id)->
-                fetchSingle();
-        
-        
+        return q::select('system_cookie')->
+                filter('cookie_id =', $cookie)->
+                fetchSingle(); 
     }
 
     /**
@@ -402,29 +370,7 @@ class session {
         
     }
 
-    /**
-     * method for testing if user is in session or not
-     * @return  boolean true or false
-     */
-    static public function isInSession(){
-        if (isset($_SESSION['in_session'])){
-            return true;
-        } else {
-            return false;
-        }
-    }
 
-    /**
-     * method for getting how long user has been in session
-     * @return int $secs time in session measured in secs
-     */
-    static public function getSessionTime(){
-        if (!isset($_SESSION['start_time'])){
-            return 0;
-        } else {
-            return time() - $_SESSION['start_time'];
-        }
-    }
     
     /**
      * sets a persistent session var
@@ -523,23 +469,6 @@ class session {
     }
 
     /**
-     * Method for getting users level (user, admin, super - or null)
-     * return   null|string   $res null or 'user', 'admin' or 'super'.
-     */
-    public static function getUserLevel(){
-        if (self::isSuper()){
-            return "super";
-        }
-        if (self::isAdmin()){
-            return "admin";
-        }
-        if (self::isUser()){
-            return "user";
-        }
-        return null;
-    }
-    
-    /**
      * method for testing if user is loged in or not
      *
      * @return  boolean true or false
@@ -559,11 +488,17 @@ class session {
      * @return  mixed $res false if no user id or the users id. 
      */
     static public function getUserId(){
-        if (!isset($_SESSION['id']) || empty($_SESSION['id']) ){
+        
+        if (!isset($_SESSION['id'])) {
             return false;
-        } else {
-            return $_SESSION['id'];
         }
+        
+        if ($_SESSION['id'] == 0 ){
+            return false;
+        } 
+        
+        return $_SESSION['id'];
+        
     }
 
     /**
@@ -662,24 +597,29 @@ class session {
      */
     public static function checkAccount () {
         $user_id = session::getUserId();
+
         if ($user_id) {
-            $a = q::select('account')->filter('id =', $user_id)->fetchSingle();
-            
+
             if (!self::getSystemCookieDb($user_id)) {
                 self::killSessionAll($user_id);
                 return false;
             }
+            
+            $a = q::select('account')->filter('id =', $user_id)->fetchSingle();            
+
             // user may have been deleted
             if (empty($a)) {
                 self::killSessionAll($user_id);
                 return false;
             } 
             
+            // User is locked
             if ($a['locked'] == 1) {
                 self::killSessionAll($user_id);
                 return false;
             }
         }
+
         return true;
     } 
     

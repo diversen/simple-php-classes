@@ -684,7 +684,6 @@ class session {
             $_SESSION['return_to'] = $_SERVER['REQUEST_URI'];
             session::setActionMessage($message);
             http::locationHeader('/account/login/index');
-            die;
         }
     }
 }

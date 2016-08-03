@@ -352,7 +352,7 @@ class q extends connect {
     /**
      * SQL for preparing IN queries where we use an array of values
      * to create our filter from. 
-     * @param string $filter waht to filter from, e.g. "ID in"
+     * @param string $filter to filter from, e.g. "ID in"
      * @param array $values the values which we will use, e.g. array(1, 2, 3) 
      * @return self
      */

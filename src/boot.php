@@ -144,8 +144,7 @@ class boot {
         if (!session::isUser()) {      
             // If not logged in check system cookie
             // This will start the session, if an appropiate cookie exists
-            session::checkSystemCookie();
-            
+            session::checkSystemCookie();  
         }
         
         // Check account

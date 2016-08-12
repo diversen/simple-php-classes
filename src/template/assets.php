@@ -461,7 +461,7 @@ class assets extends template {
     }
     
     /**
-     * Set CSS from a module name and a CSS file. This can then be overridded
+     * Set CSS from a module name and a CSS file. This can then be overridden
      * in a template 
      * @param   string   $module the module in context, e.g. account
      * @param   string   $css the CSS file in context, e.g. /assets/style.css
@@ -478,23 +478,6 @@ class assets extends template {
             return;
         }        
         self::setInlineCss($module_css);
-    }
-    
-    /**
-     * method for parsing a css file and substituing css var with
-     * php defined values
-     * @param string $css
-     * @param array  $vars
-     * @param int    $order
-     */
-    public static function setParseVarsCss($css, $vars, $order = null){
-        $str = self::getFileIncludeContents($css, $vars);
-        //$str = file_get_contents($css);
-        if (isset($order)){
-            self::$inlineCss[$order] = $str;
-        } else {
-            self::$inlineCss[] = $str;
-        }
     }
 
     /**
@@ -536,33 +519,37 @@ class assets extends template {
             }
         }
     }
-    
-    
-    /**
-     * checks if a css style is registered. If not
-     * we use common.css in template folder.
-     * 
-     * @param string $template
-     * @param int $order
-     * @param string $version
-     */
-    public static function setTemplateCss ($template = '', $order = 0){
 
+    /**
+     * Get a `<link rel="stylesheet" href="/link/to/css.css" .. </link>`  
+     * @param string $css path to CSS
+     * @return string $css link
+     */
+    public function getCssLink ($css) {
+        $css = \diversen\html::specialEncode($css);
+        return  '<link rel="stylesheet" href="'.$css.'" />"';
+    }
+
+
+    /**
+     * Get template CSS from conf setting `template` and `css`
+     * If nothing has been set return default template with default css
+     * @return string|false $css or false if no CSS has been set
+     */
+    public static function getTemplateCss (){
+
+        $template = conf::getMainIni('template');
         $css = conf::getMainIni('css');
-        if (!$css) {
-            // If no css, use default/default.css
-            self::setCss("/templates/$template/default/default.css", $order);
-            return;
+        if (!$css) {            
+            return false;
         }
         
         $css = "/templates/$template/$css/$css.css";
-        self::setCss($css, $order);
-
-
+        return $css;
     }
     
     /**
-     * sets template css from template css ini files
+     * Sets template CSS `conf` settings from a ini file in a CSS folder in a template
      * @param string $template
      * @param string $css
      */

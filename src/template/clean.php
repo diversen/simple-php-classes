@@ -93,7 +93,6 @@ class clean {
 
 echo template::getEndHTML();
 echo assets::getCompressedJs();
-echo assets::getInlineJs();
 
 ?>
 </body>

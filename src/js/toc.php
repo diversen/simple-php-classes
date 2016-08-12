@@ -24,11 +24,11 @@ class toc {
             $options['selectors'] = 'h1,h2,h3,h4';
         }
         if (!isset($options['container'])) {
-            $options['container'] = '#content';
+            $options['container'] = '.article-content';
         }
         $str = <<<EOF
     $(document).ready(function() {
-        $('#toc').toc({selectors: '{$options['selectors']}' , container: '{$options['container']}', prefix: 'toc', 'smoothScrolling': false});
+        $('#toc').toc({selectors: '{$options['selectors']}' , container: '{$options['container']}',  'smoothScrolling': false});
     });
 EOF;
         assets::setStringJs($str);

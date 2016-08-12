@@ -111,7 +111,13 @@ function cos_git_clone($options, $type){
     }
 
     // get module name
-    $module_name = git::getModulenameFromRepo($options['repo']);
+    if (isset($options['module_name'])) {
+        $module_name = $options['module_name'];
+    } else {
+        $module_name = git::getModulenameFromRepo($options['repo']);
+    }
+    
+    
     $module_path = "$clone_path/$module_name";
 
     // if dir exists we check if it is a git repo
@@ -127,11 +133,11 @@ function cos_git_clone($options, $type){
             $git_command = "cd $repo_dir && git checkout master && git pull && git checkout $checkout";
         } else {
             // no git repo - empty dir we presume.
-            $git_command = "cd $clone_path && git clone $options[repo] && cd $module_name && git checkout $checkout";
+            $git_command = "cd $clone_path && git clone $options[repo] $module_name && cd $module_name && git checkout $checkout";
         }
         $ret = common::execCommand($git_command);
     } else {
-        $git_command = "cd $clone_path && git clone $options[repo] && cd $module_name && git checkout $checkout";
+        $git_command = "cd $clone_path && git clone $options[repo] $module_name && cd $module_name && git checkout $checkout";
         $ret = common::execCommand($git_command);
     }
 

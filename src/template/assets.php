@@ -543,14 +543,13 @@ class assets extends template {
         }
         
         $template = conf::getMainIni('template');
-        $css_path = "/templates/$template/$css/$css.css"; 
-        
+        $css_path = "/templates/$template/$css/$css.css";     
         $real_path = conf::pathHtdocs() . $css_path;
         
         if (!file_exists($real_path)) {
             return false;
         }
-        // echo $css_path; die;
+
         return $css_path;
     }
     

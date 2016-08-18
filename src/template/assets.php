@@ -536,16 +536,22 @@ class assets extends template {
      * If nothing has been set return default template with default css
      * @return string|false $css or false if no CSS has been set
      */
-    public static function getTemplateCss (){
-
-        $template = conf::getMainIni('template');
-        $css = conf::getMainIni('css');
-        if (!$css) {            
+    public static function getTemplateCss ($css){
+        
+        if (!$css) {
             return false;
         }
         
-        $css = "/templates/$template/$css/$css.css";
-        return $css;
+        $template = conf::getMainIni('template');
+        $css_path = "/templates/$template/$css/$css.css"; 
+        
+        $real_path = conf::pathHtdocs() . $css_path;
+        
+        if (!file_exists($real_path)) {
+            return false;
+        }
+        // echo $css_path; die;
+        return $css_path;
     }
     
     /**

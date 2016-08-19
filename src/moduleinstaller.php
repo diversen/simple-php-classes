@@ -573,7 +573,7 @@ class moduleinstaller  {
 
             $sql_ary = explode("\n\n", $sql);
             foreach ($sql_ary as $sql_val) {
-                db::$dbh->exec($sql_val);
+                $this->execSql($sql_val, $version);
             }
         }
     }
@@ -674,7 +674,7 @@ class moduleinstaller  {
                         $version, 
                         'down');
                 
-                $this->executeSqlDown($sql);
+                $this->executeSqlDown($sql, $version);
             }
         }
     }
@@ -683,12 +683,23 @@ class moduleinstaller  {
      * Execute a single SQL from a single file, statement by statement 
      * @param string $sql
      */
-    public function executeSqlDown($sql) {
+    public function executeSqlDown($sql, $version) {
         if (isset($sql)) {
             $sql_ary = explode("\n\n", $sql);
             foreach ($sql_ary as $sql_val) {
-                db::$dbh->query($sql_val);
+                $this->execSql($sql_val, $version);
             }
+        }
+    }
+    
+    public function execSql($sql_val, $version) {
+        try {
+            db::$dbh->exec($sql_val);
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+            echo "Error: $sql_val" . PHP_EOL;
+            echo "Version: $version" . PHP_EOL;
+            die();
         }
     }
 
@@ -780,8 +791,7 @@ class moduleinstaller  {
             if (empty($sql_val)) {
                 continue;
             }
-
-            db::$dbh->query($sql_val);
+            $this->execSql($sql_val, $version);
         }
     }
 }

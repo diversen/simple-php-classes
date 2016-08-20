@@ -7,8 +7,8 @@ use diversen\cli;
 use diversen\cli\common;
 use diversen\conf;
 use diversen\db;
-use diversen\db\q;
 use diversen\db\admin;
+use diversen\db\q;
 use diversen\file;
 use diversen\intl;
 use diversen\lang;
@@ -196,8 +196,10 @@ EOF;
         $ml = new moduleloader();
         
         // select all db settings and merge them with ini file settings
-        $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
-
+        $db_settings = [];
+        if (admin::tableExists('settings')) {
+            $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
+        }
         // merge db settings with config/config.ini settings
         // db settings override ini file settings
         conf::$vars['coscms_main'] = array_merge(conf::$vars['coscms_main'], $db_settings);

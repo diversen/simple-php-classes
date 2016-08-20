@@ -119,8 +119,11 @@ class boot {
         $ml->runLevel(1);
 
         // select all db settings and merge them with ini file settings
-        $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
-
+        $db_Settings = [];
+        if (moduleloader::moduleExists('settings')) {
+            $db_settings = q::select('settings')->filter('id =', 1)->fetchSingle();
+        }
+        
         // merge db settings with config/config.ini settings
         // db settings override ini file settings
         conf::$vars['coscms_main'] = array_merge(conf::$vars['coscms_main'], $db_settings);

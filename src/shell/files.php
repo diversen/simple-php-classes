@@ -18,34 +18,18 @@ use diversen\conf;
  * @return int $res value from exec command
  */
 function cos_chmod_files(){
-    
+
+    // Get group
     $group = conf::getServerUser();
-    if (!$group) {
-        common::echoMessage('Servername is not set in config.ini', 'r');
-        common::echoMessage('Set it, and try again', 'y');
-        return 1;
-    }
-
-    // Try to get login username
-    // As it is easier for the current user to examine
-    // the files which belongs to the web user
-    if (function_exists('posix_getlogin')){
-        $owner = posix_getlogin();
-    } else {
-        $owner = exec('whoami');
-    }
     
-    if (!$owner) {
-        $owner = $group;
-    }
-
     common::needRoot();
+    
     $files_path = conf::pathFiles() . " ";
     $files_path.= conf::pathBase() . '/logs ';
     $files_path.= conf::pathBase() . '/private ';
     $files_path.= conf::pathBase() . '/config/multi ';
     $files_path.= conf::pathBase() . '/config/config.ini ';
-    $command = "chown -R $owner:$group $files_path";
+    $command = "chgrp -R $group $files_path";
     common::execCommand($command);
     $command = "chmod -R 770 $files_path";
     common::execCommand($command);

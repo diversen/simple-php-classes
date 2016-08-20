@@ -14,10 +14,10 @@ class upload {
      * @return string $str html and script
      */
     public function fileHtml5($url) {
-        assets::setJs('/js/jquery.html5_upload.js');
+        assets::setJs('/bower_components/jquery-html5-upload/jquery.html5_upload.js');
         $js = $this->getJs($url);
-        assets::setStringJs($js);
-        return $this->getHtml();
+        $script = $this->getJs($url);
+        return $script . $this->getHtml();
         
     }
     
@@ -41,9 +41,11 @@ class upload {
 
         ob_start();
         ?>
+        <script>
             $(function () {
                 $("#html5_upload_field").html5_upload({
                     url: '<?= $url ?>',
+                    autostart: false,
                     fieldName: 'file',
                     sendBoundary: window.FormData || $.browser.mozilla,
                     onStart: function (event, total) {
@@ -69,7 +71,7 @@ class upload {
                     }
                 });
             });
-
+</script>
         <?php
         return ob_get_clean();
     }

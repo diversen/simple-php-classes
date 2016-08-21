@@ -837,8 +837,10 @@ class conf {
         if (!$server_name) {
             return false;
         }
-        $url = 'http://' . $server_name . '/whoami.php';
-        $str = file_get_contents($url);
+        
+        $server = conf::getSchemeWithServerName();
+        $url = $server . '/whoami.php';
+        $str = @file_get_contents($url);
         return $str;
 
     }

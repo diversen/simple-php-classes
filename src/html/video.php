@@ -65,7 +65,7 @@ EOF;
         $mp4 = $formats['mp4'];
         $str = <<<EOF
 <div class="video">
-<video width="600" preload="none" controls="controls">
+<video width="100%" preload="none" controls="controls">
   <source src="$mp4" type="video/mp4" /> 
   Your browser does not support HTML5 video.
 </video>

@@ -5,7 +5,8 @@ namespace diversen;
 use diversen\html\common;
 use diversen\html\helpers;
 use diversen\lang;
-use diversen\upload;
+use diversen\bytes;
+
 
 common::defineConstants();
 
@@ -735,7 +736,7 @@ EOF;
      */
     public static function fileWithLabel ($filename, $max_bytes, $options = array()) { 
 
-        $bytes = upload::getNativeMaxUpload();
+        $bytes = bytes::getNativeMaxUpload();
         if ($max_bytes < $bytes) {
             $bytes = $max_bytes;
         } 
@@ -744,7 +745,7 @@ EOF;
         
         
         $label = lang::translate('Max size per file') . ". ";
-        $size = upload::bytesToGreek($bytes);
+        $size = bytes::bytesToGreek($bytes);
         
         $label.= $size;
         if (isset($options['multiple'])) {

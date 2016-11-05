@@ -61,8 +61,6 @@ function cos_chmod_files_owner(){
 
     common::needRoot();
     
-    $files_path = cos_files_group();
-    
     $command = "chown -R $owner:$owner $files_path";
     common::execCommand($command);
     $command = "chmod -R 770 $files_path";

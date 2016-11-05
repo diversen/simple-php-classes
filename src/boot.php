@@ -60,6 +60,12 @@ class boot {
         // load config file 
         conf::load();
         
+        if (conf::getMainIni('debug')) {
+            ini_set('display_startup_errors', 1);
+            ini_set('display_errors', 1);
+            error_reporting(-1);
+        }
+        
         // set public file folder in file class
         file::$basePath = conf::getFullFilesPath();
 

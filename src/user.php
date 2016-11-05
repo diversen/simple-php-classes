@@ -155,9 +155,8 @@ class user {
     }
     
     /**
-     * Get a html link to a profile
-     * @param int|array $user_id or $account array
-     * @return string $str
+     * get a link to a profile page
+     * @return type
      */
     public static function getProfileLink ($user) {
                 

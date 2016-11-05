@@ -5,6 +5,7 @@ namespace diversen\upload;
 use diversen\file;
 use diversen\lang;
 use diversen\upload;
+use diversen\bytes;
 
 /**
  * class for doing a upload of a blob to db
@@ -80,7 +81,7 @@ class blob extends upload {
             if($size > $options['maxsize'] ){
                 $error = lang::translate('File is too large.');
                 $error.= lang::translate('Max size is ') . 
-                        upload::bytesToGreek($options['maxsize']);
+                        bytes::bytesToGreek($options['maxsize']);
                 error_log($error);
                 self::$errors[] = $error; 
                 return false;

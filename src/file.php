@@ -156,7 +156,7 @@ class file {
     }
 
     /**
-     * Return the prim mime type of a file
+     * Return the prim mime type of a file, e.g. 'image'
      * @param string $file
      * @return string $mime
      */
@@ -164,6 +164,17 @@ class file {
         $str = self::getMime($file);
         $ary = explode('/', $str);
         return $ary[0];
+    }
+    
+    /**
+     * Return the short name of the mime type of a file, e.g. 'png'
+     * @param string $file
+     * @return string $mime
+     */
+    public static function getSecMime($file) {
+        $str = self::getMime($file);
+        $ary = explode('/', $str);
+        return $ary[1];
     }
     
     /**

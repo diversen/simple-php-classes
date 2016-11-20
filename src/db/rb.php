@@ -5,10 +5,7 @@ namespace diversen\db;
 use diversen\conf;
 use diversen\db\connect;
 use Exception;
-use R;
-
-include_once "vendor/diversen/redbean-composer/rb.php";
-
+use RedBeanPHP\R;
 
 /**
  * RB contains some helpers methods for RB. 

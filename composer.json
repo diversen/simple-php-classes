@@ -13,5 +13,8 @@
         "branch-alias": {
             "dev-master": "1.4.x-dev"
         }
+    },
+    "require": {
+        "diversen/php-prg-pattern": "dev-master"
     }
 }

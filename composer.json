@@ -3,7 +3,7 @@
     "description": "A collection of simple classes",
     "homepage": "http://github.com/diversen/simple-php-classes",
     "keywords": ["lib", "framework"],
-    "license": "BSD-3-Clause",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "diversen\\": "src/"

@@ -4,43 +4,12 @@ namespace diversen;
 
 use diversen\session;
 use diversen\html;
+use diversen\prg;
 
 /**
- * File with common HTTP methods
- * @package http
- */
-
-/**
- * Class with common HTTP methods
- * @package http
+ * Some common HTTP methods
  */
 class http {
-    
-    /**
-     * Generate redirect for use in prg
-     * @return string $path path and query
-     */
-    private static function getRedirect(){
-
-        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $ary = array();
-        foreach($_GET as $key => $val) {
-            if ($key == 'q') {
-                continue;
-            }
-            
-            if ($key =='prg' OR $key == 'uniqid') {
-                continue;
-            }
-            $ary[$key] = $val;
-        }
-        $query = http_build_query($ary);
-        $ret = $path . '?' . $query;
-        if (!empty($ary)) {
-            $ret.='&';
-        }
-        return $ret;
-    }
     
     /**
      * Simple pattern for creating PRG. 
@@ -53,37 +22,9 @@ class http {
             http::locationHeader('/error/accessdenied', 'Bad request');
             return;
         }
-        // genrate a session var holding the _POST
-        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $uniqid = uniqid();
-            $_SESSION['post'][$uniqid] = $_POST;
-            $_SESSION['post'][$uniqid]['prg_time'] = time();            
-            $_SESSION['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-
-            header("HTTP/1.1 303 See Other");
-            
-            $location = self::getRedirect() . 'prg=1&uniqid=' . $uniqid;
-            self::locationHeader($location);
-        }
-
         
-        if (!isset($_SESSION['REQUEST_URI'])){
-            $_SESSION['post'] = null;
-        } else {
-            if (isset($_GET['prg'])){
-                $uniqid = $_GET['uniqid'];
-                
-                if (isset($_SESSION['post'][$uniqid])) {
-                    if ( $max_time && ($_SESSION['post'][$uniqid]['prg_time'] + $max_time) < time() ) {
-                        unset($_SESSION['post'][$uniqid]);
-                    } else {           
-                        $_POST = $_SESSION['post'][$uniqid];
-                    }
-                }
-            } else {
-                @$_SESSION['REQUEST_URI'] = null;
-            }
-        }
+        prg::prg($max_time);
+ 
     }
     
     /**
@@ -92,36 +33,7 @@ class http {
      * @param int $last
      */
     public static function prgSinglePost (){
-        
-        // POST
-        // genrate a session var holding the _POST
-        if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-            $uniqid = uniqid();
-            $_SESSION['post'][$uniqid] = $_POST;
-            $_SESSION['post'][$uniqid]['prg_time'] = time();            
-            $_SESSION['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
-
-            header("HTTP/1.1 303 See Other");
-            $location = self::getRedirect() . 'prg=1&uniqid=' . $uniqid;
-            self::locationHeader($location);
-        }
-
-        
-        if (!isset($_SESSION['REQUEST_URI'])){
-            $_SESSION['post'] = null;
-        } else {
-            if (isset($_GET['prg'])){
-                $uniqid = $_GET['uniqid'];
-                
-                if (isset($_SESSION['post'][$uniqid])) {        
-                    $_POST = $_SESSION['post'][$uniqid];
-                    unset($_SESSION['post'][$uniqid]);
-                }
-                
-            } else {
-                @$_SESSION['REQUEST_URI'] = null;
-            }
-        }
+        prg::prgSinglePost();
     }
 
     /**
@@ -235,4 +147,3 @@ EOF;
         die();
     }
 }
-

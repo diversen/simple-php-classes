@@ -333,6 +333,28 @@ function cos_git_tag_all ($options){
     }
 }
 
+function cos_git_compare_master () {
+    $profile = new profile();
+    //$version = common::readSingleline('Enter tag version to use ');
+    $modules = $profile->getModules();
+    foreach ($modules as $key => $val){
+
+        $tags = git::getTagsModule($val['module_name'], 'module');
+        $latest = array_values(array_slice($tags, -1))[0];
+        
+        common::execCommand("cd ./modules/$val[module_name] && git diff $latest --raw");
+    }
+
+    $templates = $profile->getTemplates();
+    foreach ($templates as $key => $val){
+        
+        $tags = git::getTagsModule($val['module_name'], 'template');
+        $latest = array_values(array_slice($tags, -1))[0];
+        
+        common::execCommand("cd ./htdocs/templates/$val[module_name] && git diff $latest --raw");
+    }
+}
+
 /**
  * function for tagging a module or all modules
  * @param array $val
@@ -549,6 +571,14 @@ self::setOption('cos_git_tag_all', array(
     'description' => 'Will tag and push tags for all modules and templates in one try.',
     'action'      => 'StoreTrue'
 ));
+
+self::setOption('cos_git_compare_master', array(
+    'long_name'   => '--compare',
+    'description' => 'Will compare latest tag and master.',
+    'action'      => 'StoreTrue'
+));
+
+// cos_git_compare_master
 
 
 self::setArgument(

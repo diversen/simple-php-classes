@@ -60,6 +60,11 @@ class git {
         return array_pop($ary);
     }
 
+    public function getTagsModuleLatest ($module, $type = 'module') {
+        $tags = self::getTagsModule($module, $type);
+        print_r($tags);
+    }
+    
     /**
      * Get tags for a module or template
      * @param string $module

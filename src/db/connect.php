@@ -51,7 +51,6 @@ class connect {
 
         
         if (!isset($options['url'])){
-            trigger_error('You should connect with url as a part of the connection array');
             return false;
         }
         

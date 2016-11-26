@@ -144,3 +144,4 @@ class connect {
         return self::$debug;
     }
 }
+

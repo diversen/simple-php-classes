@@ -77,3 +77,4 @@ class fulltext extends connect {
 
     }
 }
+

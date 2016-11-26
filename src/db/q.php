@@ -2,9 +2,7 @@
 
 namespace diversen\db;
 
-use diversen\conf;
 use diversen\db\connect;
-use diversen\log;
 use Exception;
 use PDO;
 
@@ -443,7 +441,7 @@ class q extends connect {
         try {
             self::$debug[] = self::$query;
             self::init();
-            self::$stmt = self::$dbh->prepare(self::$query);
+            self::$stmt = self::$dbh->prepare(self::$query );
             self::prepare();
 
             self::$stmt->execute();
@@ -455,11 +453,11 @@ class q extends connect {
             }
             self::unsetVars();
         } catch (Exception $e) {
-            $message = $e->getTraceAsString();
-            log::error($message);
-            $last = self::getLastDebug();
-            log::error($last);
-            die();
+            $error = $e->getMessage() . PHP_EOL;
+            $error.= $e->getTraceAsString(). PHP_EOL;
+            $error.= self::getLastDebug() . PHP_EOL;
+            trigger_error($error, E_USER_ERROR);
+            exit();
             
         }
         if (self::$method == 'num_rows') {
@@ -491,12 +489,11 @@ class q extends connect {
             self::prepare(); 
             $res = self::$stmt->execute();
         } catch (Exception $e) {
-            $message = $e->getMessage();
-            $message.= $e->getTraceAsString();
-            log::debug($message);
-            $last = self::getLastDebug();
-            log::debug($last);
-            die;
+            $error = $e->getMessage() . PHP_EOL;
+            $error.= $e->getTraceAsString(). PHP_EOL;
+            $error.= self::getLastDebug() . PHP_EOL;
+            trigger_error($error, E_USER_ERROR);
+            exit();
             
         }
         self::unsetVars();

@@ -2,7 +2,6 @@
 
 namespace diversen\db;
 
-use diversen\conf;
 use PDO;
 use PDOException;
 
@@ -48,31 +47,27 @@ class connect {
      * @param array $options 
      * @return void|string void or 'NO_DB_CON' if fail on connect
      */
-    public static function connect($options = null){
+    public static function connect($options = []){
 
-        self::$debug[] = "Trying to connect with " . conf::getMainIni('url');
         
-        if (isset($options['url'])) {
-            $url = $options['url'];
-            $username = $options['username'];
-            $password = $options['password'];
-        } else {
-            $url = conf::getMainIni('url');
-            $username = conf::getMainIni('username');
-            $password = conf::getMainIni('password');
-        }
-
-        if (conf::getMainIni('db_dont_persist') == 1) {
-            $con_options = array();
-        } else {
-            $con_options = array('PDO::ATTR_PERSISTENT' => true);
+        if (!isset($options['url'])){
+            trigger_error('You should connect with url as a part of the connection array');
+            return false;
         }
         
+        self::$debug[] = "Trying to connect with " . $options['url'];
+
+        // Dfault is to persist
+        if (!isset($options['db_dont_persist'])) {
+            $options['PDO::ATTR_PERSISTENT'] =  true;
+        }
+        
+        // Try and connect
         try {    
             self::$dbh = new PDO(
-                $url,
-                $username,
-                $password, 
+                $options['url'],
+                $options['username'],
+                $options['password'], 
                 $options
             );
             
@@ -80,23 +75,21 @@ class connect {
             self::$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
             // set SSL
-            self::setSsl();
+            self::setSsl($options);
 	    
             // init
-            if (conf::getModuleIni('db_init')) {
-                self::$dbh->exec(conf::getModuleIni('db_init'));
+            if (isset($options['db_init'])) {
+                self::$dbh->exec($options['db_init']);
             }
 
         // Catch Exception
         } catch (PDOException $e) {
-            if (!$options){
+            if (!isset($options['dont_die'])){
                 self::fatalError ('Connection failed: ' . $e->getMessage());
             } else {
-                if (isset($options['dont_die'])){
-                    self::$debug[] = $e->getMessage();
-                    self::$debug[] = 'No connection';
-                    return "NO_DB_CONN";
-                }
+                self::$debug[] = $e->getMessage();
+                self::$debug[] = 'No connection';
+                return "NO_DB_CONN";
             }
         }
         self::$con = true;
@@ -104,16 +97,15 @@ class connect {
     }
     
     /**
-     * Set SSL for mysql if SSL is set in the configuration,
+     * Set SSL for MySQL if SSL is set in the configuration,
      * experimental
      * @return void
      */
-    public static function setSsl() {
-        $attr = conf::getMainIni('mysql_attr');
-        if (isset($attr['mysql_attr'])) {
-            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_KEY, $attr['ssl_key']);
-            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_CERT, $attr['ssl_cert']);
-            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_CA, $attr['ssl_ca']);
+    public static function setSsl($options) {
+        if (isset($options['mysql_ssl'])) {
+            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_KEY, $options['ssl_key']);
+            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_CERT, $options['ssl_cert']);
+            self::$dbh->setAttribute(PDO::MYSQL_ATTR_SSL_CA, $options['ssl_ca']);
         }
     }
     

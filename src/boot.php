@@ -5,6 +5,7 @@ namespace diversen;
 use diversen\autoloader\modules;
 use diversen\conf;
 use diversen\file;
+use diversen\db\connect;
 use diversen\db\q;
 use diversen\html\common;
 use diversen\intl;
@@ -61,16 +62,11 @@ class boot {
         conf::load();
         
         if (conf::getMainIni('debug')) {
-            ini_set('display_startup_errors', 1);
-            ini_set('display_errors', 1);
-            error_reporting(-1);
+            log::enableDebug () ;
         }
         
         // set public file folder in file class
         file::$basePath = conf::getFullFilesPath();
-
-        // set log level - based on config.ini
-        log::setLogLevel();
 
         // utf-8
         ini_set('default_charset', 'UTF-8');
@@ -113,7 +109,20 @@ class boot {
         ob_start();
 
         // Create a db connection
-        q::connect();
+        $db_conn = array (
+            'url' => conf::getMainIni('url'),
+            'username' => conf::getMainIni('username'),
+            'password' => conf::getMainIni('password'),
+            'db_init' => conf::getMainIni('db_init')
+            
+        );
+        
+        // Other options
+        // db_dont_persist = 0
+        // dont_die = 0 // Set to one and the connection don't die because of 
+        // e.g. no database etc. This will return NO_DB_CONN as string
+        //$url = conf::getMainIni('url');
+        connect::connect($db_conn);
 
         // init module loader. 
         $ml = new moduleloader();

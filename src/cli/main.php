@@ -9,6 +9,7 @@ use diversen\conf;
 use diversen\db;
 use diversen\db\admin;
 use diversen\db\q;
+use diversen\db\connect;
 use diversen\file;
 use diversen\intl;
 use diversen\lang;
@@ -71,8 +72,12 @@ class main extends cli {
         file::$basePath = conf::getFullFilesPath();
         
         // Set log level - based on config.ini
-        log::setErrorLog();
-        log::setLogLevel();
+        
+        $log_file = conf::pathBase() . '/logs/coscms.log';
+        log::setErrorLogFile($log_file);
+        if (conf::getMainIni('debug')) {
+            log::enableDebug();
+        }
 
         // Set locales
         intl::setLocale();
@@ -192,6 +197,8 @@ EOF;
             common::echoMessage('No tables exists. We can not load modules in modules/ dir');
             return;
         }
+        
+        
 
         $ml = new moduleloader();
         
@@ -241,11 +248,20 @@ EOF;
      */
     public static function tablesExists () {
 
-        $db = new db();
-        $ret = $db->connect(array('dont_die' => 1));
+        $db_conn = array (
+            'url' => conf::getMainIni('url'),
+            'username' => conf::getMainIni('username'),
+            'password' => conf::getMainIni('password'),
+            'db_init' => conf::getMainIni('dont_die'),
+            'dont_die' => 1     
+        );
+        
+        $ret = connect::connect($db_conn);
         if ($ret == 'NO_DB_CONN'){
             return false;
         }
+        
+        $db = new db();
         
         $info = admin::getDbInfo();
         if (!$info) {

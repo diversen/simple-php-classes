@@ -1,7 +1,6 @@
 <?php
 
 namespace diversen;
-use diversen\conf;
 
 /**
  * class log contains methods for doing 
@@ -11,83 +10,84 @@ class log {
 
     /**
      * Var holding log file for CLI mode
+     * In Server mode e.g. apache2, we will use the system system log
+     * facilities
      * Default is default.log
      * @var string $logfile
      */
-    public static $cliLog = 'default.log';
+    public static $logFile = 'default.log';
     
     /**
-     * logs an error. Will always be written to log file
+     * Debug flag
+     * var boolean $debug default is false
+     */
+    public static $debug = false;
+    
+    /**
+     * Enable debug flag
+     */
+    public static function enableDebug () {
+        self::$debug = true;
+    }
+    
+    /**
+     * Logs an error. Will always be written to log file
      * if using a web server it will be logged to the default
-     * error file. If CLI it will be placed in logs/coscms.log
+     * server error file. If cli it will be written in 'default.log'
+     * or a log file you may set yourself
      * @param string $message
      * @param boolean $write_file
      */
     public static function error ($message) {
-              
-        
+
         if (!is_string($message)) {
             $message = var_export($message, true);
         }
 
-        if (conf::getMainIni('debug')) {
-            if (conf::isCli()) {
+        if (self::$debug) {
+            if (self::isCli()) {
                 echo $message . PHP_EOL;
             } else {
                 echo "<pre>" . $message . "</pre>";
             }
         }
 
-        if (conf::isCli()) {
-            error_log($message . PHP_EOL, 3, self::$cliLog);
+        if (self::isCli()) {
+            error_log($message . PHP_EOL, 3, self::$logFile);
         } else {
             error_log($message, 4);
         }
     }
     
+    /**
+     * Checks if we are in CLI mode
+     * @return boolean $res true if we are and false
+     */
+    public static function isCli () {
+        if (isset($_SERVER['SERVER_NAME'])){
+            return false;
+        }
+        return true;
+    }
     
     /**
-     * debug a message. Writes to stdout and to log file 
-     * if debug = 1 is set in config
+     * Debug a message. Writes to stdout and to log file 
+     * if debug = 1 is set in config - else any message is ignored
      * @param string $message 
      */
     public static function debug ($message) {       
-        if (conf::getMainIni('debug')) {
+        if (self::$debug) {
             self::error($message);
             return;
         } 
     }
 
     /**
-     * set log file. 
-     * Can be used for CLI
+     * Set log file. 
+     * Is used for CLI - as CLI does not have a default log file
      * @param string $file
      */    
-    public static function setErrorLog($file = null) {
-        if (!$file) {
-            self::$cliLog =  conf::pathBase() . '/logs/coscms.log';
-        } else {
-            self::$cliLog = $file;
-        }
-    }
-
-    /**
-     * Set a log level based on env and debug
-     */
-    public static function setLogLevel() {
-        
-        $env = conf::getEnv();
-        if ($env == 'development') {
-            error_reporting(E_ALL);
-        }
-
-        // check if we are in debug mode and display errors
-        if (conf::getMainIni('debug')) {
-            ini_set('display_errors', 1);
-        }
-        
-        if (conf::isCli()) {
-            self::setErrorLog();
-        }
+    public static function setErrorLogFile($file) {
+        self::$logFile = $file;
     }
 }

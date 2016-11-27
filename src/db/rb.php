@@ -10,8 +10,6 @@ use RedBeanPHP\R;
 /**
  * RB contains some helpers methods for RB. 
  * Methods for connecting, converting array to beans
- * 
- * In order to use this class you need to do: *composer require diversen/redbean-composer*
  * @see http://www.redbeanphp.com/index.php
  * @example: 
 <code>

@@ -20,7 +20,7 @@ class admin {
     public static function changeDB ($database = null) {
         $db = new db();
         if (!$database) {
-            $db_curr = self::getDbInfo(); 
+            $db_curr = self::getDbInfo(conf::getMainIni('url')); 
             if (!$db_curr) {
                 return false;
             }
@@ -35,10 +35,7 @@ class admin {
      * @return array|false $ary with info or false if no url 
      * does not exists in the configuration
      */
-    public static function getDbInfo($url = null) {
-        if (!$url) {
-            $url = conf::getMainIni('url'); 
-        }
+    public static function getDbInfo($url) {
         
         if (empty($url)) {
             return false;
@@ -166,16 +163,6 @@ class admin {
      */
     public static function createDB ($options = array()) {
         
-        $db = admin::getDbInfo();
-        if (!$db) {
-            return db_no_url();
-        }
-
-        $command = "mysqladmin -u" . conf::$vars['coscms_main']['username'] .
-                " -p" . conf::$vars['coscms_main']['password'] . " -h$db[host] ";
-
-        $command.= "--default-character-set=utf8 ";
-        $command.= "CREATE $db[dbname]";
-        return $ret = common::execCommand($command, $options);
+        
     }
 }

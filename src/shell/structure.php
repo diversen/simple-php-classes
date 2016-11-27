@@ -10,7 +10,7 @@ use diversen\cli\common;
  * dumps entire structure
  */
 function cos_structure_dump () {
-    $ary = admin::getDbInfo();
+    $ary = admin::getDbInfo(conf::getMainIni('url'));
     if (!$ary) {
         return db_no_url();    
     }
@@ -26,7 +26,7 @@ function cos_structure_dump () {
  * @param array $options
  */
 function cos_structure_dump_table ($options) {
-    $ary = admin::getDbInfo();
+    $ary = admin::getDbInfo(conf::getMainIni('url'));
     if (!$ary) {
         return db_no_url();    
     }
@@ -66,7 +66,7 @@ function cos_db_dump_table ($options = null){
     }
     
     $dump_name = "backup/sql/$options[table]/" . time() . ".sql";  
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -104,7 +104,7 @@ function cos_db_load_table($options){
     }
         
     $latest = "backup/sql/$options[table]/" . $latest . ".sql";
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }

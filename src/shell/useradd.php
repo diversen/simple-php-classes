@@ -3,6 +3,7 @@
 use diversen\db;
 use diversen\db\admin;
 use diversen\cli\common;
+use diversen\conf;
 
 
 /**
@@ -89,7 +90,7 @@ function useradd_admin ($options = null){
  * @return  boolean $res
  */
 function useradd_db_insert ($values){
-    $database = admin::getDbInfo();
+    $database = admin::getDbInfo(conf::getMainIni('url'));
     if (!$database) {
         return db_no_url();
     }

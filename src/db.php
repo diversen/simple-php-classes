@@ -84,7 +84,7 @@ class db extends connect {
      */
     public function fieldExists($table, $field) {
                
-        $info = admin::getDbInfo();
+        $info = admin::getDbInfo(conf::getMainIni('url'));
         if (!$info) {
             return false;
         }

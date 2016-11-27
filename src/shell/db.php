@@ -33,20 +33,39 @@ function db_no_url () {
  * @param type $options
  */
 function db_show_con_info ($options) {
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();
     }
     print_r($db);
 }
 
-
 /**
  * function for creating a database for creds in config.ini
  * @return int $res  the executed commands shell status 0 on success.
  */
 function create_db($options = array()){
-    return admin::createDB();
+    return db_create_db();
+}
+
+/**
+ * Create a database
+ * @param array $options
+ * @return int $res 0 on success else a positive int
+ */
+function db_create_db ($options = []) {
+    
+        $db = admin::getDbInfo(conf::getMainIni('url'));
+        if (!$db) {
+            return db_no_url();
+        }
+
+        $command = "mysqladmin -u" . conf::$vars['coscms_main']['username'] .
+                " -p" . conf::$vars['coscms_main']['password'] . " -h$db[host] ";
+
+        $command.= "--default-character-set=utf8 ";
+        $command.= "CREATE $db[dbname]";
+        return $ret = common::execCommand($command, $options);
 }
 
 /**
@@ -55,7 +74,7 @@ function create_db($options = array()){
  */
 function drop_db_default($options = array()){
  
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -74,7 +93,7 @@ function drop_db_default($options = array()){
  */
 function load_db_default(){
 
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -95,7 +114,7 @@ function load_db_default(){
  * @return  int     the executed commands shell status 0 on success.
  */
 function connect_db(){
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -127,7 +146,7 @@ function dump_db_file ($options = null){
         $dump_name = $options['File'];
     }   
 
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -163,7 +182,7 @@ function load_db_file($options){
             common::abort("No such file: $file");
         }
     }
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     if (!$db) {
         return db_no_url();    
     }
@@ -203,7 +222,7 @@ function clone_db ($options = array ()) {
     if (!isset($options['File'])){
         common::abort('Specify new database name');
     }
-    $db = admin::getDbInfo();
+    $db = admin::getDbInfo(conf::getMainIni('url'));
     $old = $db['dbname'];
     $new_name = $options['File'];
     admin::cloneDB($old, $new_name);

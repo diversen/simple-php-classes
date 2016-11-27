@@ -18,7 +18,7 @@ function db_to_sqlite ($options = array ()) {
     }
     
     $ok = false;
-    $info = admin::getDbInfo();
+    $info = admin::getDbInfo(conf::getMainIni('url'));
     if (!$info) {
         return db_no_url();    
     }

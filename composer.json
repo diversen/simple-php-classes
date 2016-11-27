@@ -10,7 +10,9 @@
         }
     },
     "require": {
-        "diversen/minimal-log": "^1.0"
+        "diversen/minimal-log": "^1.0",
+        "gabordemooij/redbean": "^4.3",
+        "diversen/minimal-query-builder": "^1.0"
     },
     "extra": {
         "branch-alias": {

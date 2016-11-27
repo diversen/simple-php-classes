@@ -83,7 +83,6 @@ function useradd_admin ($options = null){
     }
 }
 
-
 /**
  * function for inserting user
  * @param   array   $values
@@ -95,8 +94,6 @@ function useradd_db_insert ($values){
         return db_no_url();
     }
 
-
-    admin::changeDB($database['dbname']);
     $db = new db();
     $res = $db->insert('account', $values);
     return $res;

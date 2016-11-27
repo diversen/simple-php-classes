@@ -3,3 +3,5 @@ tests/*
 /nbproject/*
 composer.lock
 /api/*
+composer-master.json
+composer-master.lock

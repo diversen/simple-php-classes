@@ -43,6 +43,7 @@ include_once "vendor/autoload.php";
 
 use diversen\conf;
 use diversen\db;
+use diversen\db\connect;
 
 conf::setMainIni('base_path', realpath('.'));
 
@@ -67,9 +68,16 @@ EOF;
     echo $str;
     exit(1);
 }
-        
-$db = new db();
-$db->connect();
+ 
+$db_conn = array(
+    'url' => conf::getMainIni('url'),
+    'username' => conf::getMainIni('username'),
+    'password' => conf::getMainIni('password'),
+    'db_init' => conf::getMainIni('db_init')
+);
+
+connect::connect($db_conn);
+
 
 function get_tables_db () {
     $db = new db();
@@ -112,10 +120,13 @@ function column_has_text ($ary) {
     return false;
 }
 
+$db = new db();
 $tables = get_tables_db();
+
 foreach ($tables as $table ) {
 
     $create = get_table_create($table);
+    
 
     foreach ($create as $column) {
         if (column_has_text($column)) {

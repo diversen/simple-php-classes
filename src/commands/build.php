@@ -27,6 +27,7 @@ class build {
         }
         common::execCommand("mkdir -p ./build/$name");
 
+
         $htdocs = "cp -rf htdocs/* ./build/$name";
         common::execCommand($htdocs);
 
@@ -42,6 +43,7 @@ class build {
         common::execCommand($config);
 
         $tmp_dir = "mkdir -p ./build/$name/tmp";
+
         common::execCommand($tmp_dir);
 
         $profiles = "cp -rf profiles ./build/$name";
@@ -81,6 +83,7 @@ class build {
         if (!$module_dir) {
             $module_dir = 'modules';
         }
+
         $modules = "cp -rf $module_dir ./build/$name";
         common::execCommand($modules);
 

@@ -45,10 +45,6 @@ class moduleinstaller  {
      */
     public function __construct($options = null){
         
-        
-        $db = new db();
-        $db->connect();
-        
         if (isset($options)){
             return $this->setInstallInfo($options);
         }
@@ -219,7 +215,6 @@ class moduleinstaller  {
      */
     public static function getModules(){
         $db = new db();
-        $db->connect();
         $modules = $db->selectAll('modules');
         return $modules;
     }

@@ -4,6 +4,7 @@ use diversen\conf;
 use diversen\moduleinstaller;
 use diversen\profile;
 use diversen\cli\common;
+use diversen\db\connect;
 
 /**
  * function for installing coscms from a profile
@@ -27,6 +28,15 @@ function cos_install($options = false) {
     // load default base sql.
     load_db_default();
 
+    // Connect to db
+    $db_conn = array(
+    'url' => conf::getMainIni('url'),
+    'username' => conf::getMainIni('username'),
+    'password' => conf::getMainIni('password'),
+    'db_init' => conf::getMainIni('db_init')
+);
+    connect::connect($db_conn);
+    
     // Set up profile to install
     $pro = new profile();
     $pro->setProfileInfo($options['profile']);

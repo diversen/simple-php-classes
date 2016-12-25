@@ -74,7 +74,6 @@ class profile  {
      */
     public static function getModules(){      
         $db = new db();
-        $db->connect();
         $modules = $db->selectAll('modules');
         return self::getModulesInfo($modules);
     }

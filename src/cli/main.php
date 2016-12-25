@@ -252,7 +252,7 @@ EOF;
             'url' => conf::getMainIni('url'),
             'username' => conf::getMainIni('username'),
             'password' => conf::getMainIni('password'),
-            'db_init' => conf::getMainIni('dont_die'),
+            'db_init' => conf::getMainIni('db_init'),
             'dont_die' => 1     
         );
         

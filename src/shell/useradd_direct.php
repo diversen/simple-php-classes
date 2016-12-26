@@ -20,7 +20,7 @@ function useradd_direct_add ($options = null){
     $values['super'] = 1;
     $values['type'] = 'email';
     
-    $res = useradd_db_insert($values);
+    $res = useraddInsert($values);
     if ($res) { 
         return 0;
     } else {
@@ -43,7 +43,7 @@ function useradd_direct_add_admin ($options = null){
     $values['super'] = 0;
     $values['type'] = 'email';
     
-    $res = useradd_db_insert($values);
+    $res = useraddInsert($values);
     if ($res) { 
         return 0;
     } else {

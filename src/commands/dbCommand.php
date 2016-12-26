@@ -8,7 +8,7 @@ use diversen\file;
 use diversen\time;
 use diversen\cli\common;
 
-class db {
+class dbCommand {
 
     public function getHelp() {
         return

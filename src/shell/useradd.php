@@ -27,7 +27,7 @@ function useradd_super ($options = null){
     $values['super'] = 1;
     
     $values['type'] = 'email';
-    $res = useradd_db_insert($values);
+    $res = useraddInsert($values);
     if ($res) { 
         return 0;
     } else {
@@ -51,7 +51,7 @@ function useradd_user ($options = null){
     $values['super'] = 0;
     
     $values['type'] = 'email';
-    $res = useradd_db_insert($values);
+    $res = useraddInsert($values);
     if ($res) { 
         return 0;
     } else {
@@ -75,7 +75,7 @@ function useradd_admin ($options = null){
     $values['super'] = 0;
     
     $values['type'] = 'email';
-    $res = useradd_db_insert($values);
+    $res = useraddInsert($values);
     if ($res) { 
         return 0;
     } else {
@@ -88,7 +88,7 @@ function useradd_admin ($options = null){
  * @param   array   $values
  * @return  boolean $res
  */
-function useradd_db_insert ($values){
+function useraddInsert ($values){
     $database = admin::getDbInfo(conf::getMainIni('url'));
     if (!$database) {
         return db_no_url();

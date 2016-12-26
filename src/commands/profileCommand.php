@@ -170,7 +170,6 @@ class profileCommand {
         
         $m = new \diversen\commands\module();
         foreach ($modules as $module) {
-            //print_r($module);
             if (!$pro->isModuleInProfile($module['module_name'])) {
                 $m->purgeModule($module['module_name']); 
             }
@@ -181,7 +180,6 @@ class profileCommand {
         foreach ($temps as $template) {
             if (!$pro->isTemplateInProfile($template)) {
                 $t->purgeTemplate($template);
-
             }
         }
     }

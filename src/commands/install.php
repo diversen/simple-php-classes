@@ -67,7 +67,7 @@ class install {
         $f->createLogs();
         // cos_create_files();
 
-        $d = new \diversen\commands\db;
+        $d = new \diversen\commands\dbCommand();
         $d->dropDb(array('silence' => 1));
 
         // create database

@@ -59,9 +59,12 @@ class promptInstall {
 
         common::echoMessage("Loading the profile '$profile'");
 
-        load_profile(array('profile' => $profile, 'config_only' => true));
-        common::echoMessage("Main configuration (placed in config/config.ini) for '$profile' is loaded");
+        // Load config.ini
+        $p = new \diversen\profile();
+        $p->loadConfigIni($profile);
 
+        common::echoMessage("Main configuration (placed in config/config.ini) for '$profile' is loaded");
+        
         // Keep base path. Ortherwise we will lose it when loading profile    
         $base_path = conf::pathBase();
 
@@ -99,14 +102,22 @@ class promptInstall {
         $options = array();
         $options['profile'] = $profile;
         if ($tag == 'master') {
-            $options['master'] = true;
+            // $options['master'] = true;
+            conf::setMainIni('git_use_master', 1);
+            echo conf::getMainIni('git_use_master');
         }
 
         common::echoMessage("Will now clone and install all modules");
-        cos_install($options);
+        
+        $i = new \diversen\commands\install();
+        $i->installSystem($profile);
+        // cos_install($options);
 
         common::echoMessage("Create a super user");
-        useradd_super();
+        
+        $u = new \diversen\commands\useradd();
+        $u->useraddSuper();
+        // useradd_super();
 
         $login = "http://$server_name/account/login/index";
 

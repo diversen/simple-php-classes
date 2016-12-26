@@ -80,7 +80,7 @@ class templateinstaller extends moduleinstaller {
                 $this->installInfo['RUN_LEVEL'] = 0;
             } 
         } else {
-            common::echoMessage ("Notice: No template dir: $template_dir\n");
+            common::echoMessage ("Notice: No template dir: $template_dir");
         }
     }
     

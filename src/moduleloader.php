@@ -93,19 +93,6 @@ class moduleloader {
      * @return array $ary array with all rows from modules table
      */
     public static function getAllModules (){
-
-        if (!empty(self::$modules)) {
-            return self::$modules;
-        }
-        
-        static $modules = null;
-        if ($modules) { 
-            return $modules;
-        }
-        
-        // we connect here because this should be 
-        // the first time we use the database
-        // in the system
         
         $db = new db();
         return $db->selectAll('modules');

@@ -61,7 +61,7 @@ class module {
         }
         
         if ($args->getFlag('purge')) {
-            return $this->purge_module($module);
+            return $this->purgeModule($module);
         }
         
         if ($args->getFlag('list')) {
@@ -148,7 +148,7 @@ class module {
      * function for purging a module
      * @param   string  $module
      */
-    public function purge_module($module) {
+    public function purgeModule($module) {
         
         // check if module exists
         $module_path = conf::pathModules() . '/' . $module;

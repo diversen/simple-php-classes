@@ -239,7 +239,7 @@ class gitCommand {
         $p = new profile();
         if ($this->isRepo($path)) {
             $mod = $p->getTemplate($template);
-            $this->upgradeTemplateFromDbValues($mod);
+            $this->upgradeTemplateFromArray($mod);
         } else {
             common::echoStatus('ERROR', 'r', "--temp-up needs a template name, e.g. 'clean'. The module must exists in the module dir");
         }
@@ -265,7 +265,7 @@ class gitCommand {
             
             // Get module from database
             $ary = $p->getModule($module);
-            $this->upgradeModuleFromDbValues($ary);
+            $this->upgradeModuleFromArray($ary);
         } else {
             common::echoStatus('ERROR', 'r', "Mdule needs to be a git repo");
         }
@@ -276,7 +276,7 @@ class gitCommand {
      * @param array $val module array with public repo path set
      * @param string $version
      */
-    public function upgradeModuleFromDbValues($val) {
+    public function upgradeModuleFromArray($val) {
         
         if (isset(conf::$vars['git_use_master'])) {
             $tag = 'master';
@@ -285,7 +285,7 @@ class gitCommand {
         }
 
         if (($tag == 'master') OR ( $tag != $val['module_version'])) {
-            $this->upgradeFromDbValues($val, $tag, 'module');
+            $this->upgradeFromArray($val, $tag, 'module');
         } else {
             common::echoStatus('NOTICE', 'y', "Nothing to upgrade. Module '$val[module_name]' is latest version: $tag");
         }
@@ -295,7 +295,7 @@ class gitCommand {
      * upgrade a template
      * @param type $val
      */
-    public function upgradeTemplateFromDbValues($val) {
+    public function upgradeTemplateFromArray($val) {
         if (isset(conf::$vars['git_use_master'])) {
             $tag = 'master';
         } else {
@@ -303,7 +303,7 @@ class gitCommand {
         }
 
         if (($tag == 'master') OR ( $tag != $val['module_version'])) {
-            $this->upgradeFromDbValues($val, $tag, 'template');
+            $this->upgradeFromArray($val, $tag, 'template');
         } else {
             common::echoStatus('NOTICE', 'y', "Nothing to upgrade: Version is: $tag");
         }
@@ -321,12 +321,12 @@ class gitCommand {
         $modules = $profile->getModules();
 
         foreach ($modules as $key => $val) {
-            $this->upgradeModuleFromDbValues($val);
+            $this->upgradeModuleFromArray($val);
         }
 
         $templates = $profile->getTemplates();
         foreach ($templates as $key => $val) {
-            $this->upgradeTemplateFromDbValues($val);
+            $this->upgradeTemplateFromArray($val);
         }
     }
 
@@ -478,11 +478,9 @@ class gitCommand {
     }
 
     /**
-     * function for upgrading a module, template or profile according to latest tag
-     * or master
+     * function for commiting a module
      *
      * @param array     with module options
-     * @param string    tag with wersion or 'master'
      * @param string    module, templatee or profile.
      */
     public function commitModuleFromDbValues($val, $type = 'module') {
@@ -525,7 +523,7 @@ class gitCommand {
      * @param string    tag with wersion or 'master'
      * @param string    module, templatee or profile. 
      */
-    public function upgradeFromDbValues($val, $tag = 'master', $type = 'module') {
+    public function upgradeFromArray($val, $tag = 'master', $type = 'module') {
 
         if (!isset($val['module_name'])) {
             $val['module_name'] = git::getModulenameFromRepo($val['repo']);

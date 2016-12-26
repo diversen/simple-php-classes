@@ -19,7 +19,7 @@ class backup {
                         '--full-restore' => 'Restore all files from a backup and regenerate original ownership. If no file is given when restoring backup, then the backup with latest timestamp will be used',
                         '--public-restore' => "Restore public htdocs/files from a backup and preserve ownership"),
                     'arguments' => array(
-                        'File' => 'Specify an optional filename for the backup'
+                        'file' => 'Specify an optional filename for the backup'
                     )
         );
     }

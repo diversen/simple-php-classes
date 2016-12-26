@@ -8,42 +8,7 @@ use diversen\time;
 use diversen\cli\common;
 
 class structure {
-    /*
-     * if (conf::isCli()){
 
-      self::setCommand('structure', array(
-      'description' => 'Dump structure of a db table',
-      ));
-
-      self::setOption('cos_structure_dump', array(
-      'long_name'   => '--db',
-      'description' => 'Outputs table structure for complete database',
-      'action'      => 'StoreTrue'
-      ));
-
-      self::setOption('cos_structure_dump_table', array(
-      'long_name'   => '--table',
-      'description' => 'Outputs table structure for a single table',
-      'action'      => 'StoreTrue'
-      ));
-
-      self::setOption('cos_db_dump_table', array(
-      'long_name'   => '--backup-table',
-      'description' => 'Backup single DB table',
-      'action'      => 'StoreTrue'
-      ));
-
-      self::setOption('cos_db_load_table', array(
-      'long_name'   => '--load-table',
-      'description' => 'Create single table from latest backup',
-      'action'      => 'StoreTrue'
-      ));
-
-      self::setArgument('table',
-      array('description'=> 'Specify table to dump structure of',
-      'optional' => true));
-      }
-     */
 
     public function getHelp() {
         return
@@ -56,7 +21,7 @@ class structure {
                         '--load-table' => 'Load a dump of a table. If no file is specfied then use lateset backup of the table'
                         ),
                     'arguments' => array(
-                        'Table' => 'The table to output structure of'
+                        'table' => 'The table to output structure of'
                     )
         );
     }

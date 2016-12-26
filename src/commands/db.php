@@ -25,7 +25,7 @@ class db {
                         '--save-dump' => 'Dump database to file. Will place dump in backup/sql if no file argument is specified'
                     ),
                     'arguments' => array(
-                        'File|Database' => 'Specify a file or database name'
+                        'file|database' => 'Specify a file or a database name'
                     )
         );
     }
@@ -105,7 +105,7 @@ class db {
 
         $command .= "--default-character-set=utf8 ";
         $command .= "CREATE $db[dbname]";
-        return $ret = common::execCommand($command, $options);
+        return $ret = common::execCommand($command);
     }
 
     /**

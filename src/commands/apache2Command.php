@@ -19,7 +19,7 @@ class apache2Command {
                     '--disable' => 'Will disable current directory as an apache2 virtual host, and remove sitename from /etc/hosts files',
                     '--ssl' => 'Set this flag and enable SSL mode'),
                 'arguments' => array (
-                    'Hostname' => 'Specify the apache hostname to be used for install or uninstall. yoursite will be http://yoursite'
+                    'hostname' => 'Specify the apache hostname to be used for install or uninstall. yoursite will be http://yoursite'
                 )
             );
     }

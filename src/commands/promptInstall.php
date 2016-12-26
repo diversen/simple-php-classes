@@ -33,6 +33,8 @@ class promptInstall {
      * is a wrapper around other shell functions.
      */
     public function prompt_install() {
+        global $argv;
+        
         common::echoMessage('Pick a version to install:');
 
         $tags = git::getTagsInstallLatest() . PHP_EOL;
@@ -104,7 +106,6 @@ class promptInstall {
         if ($tag == 'master') {
             // $options['master'] = true;
             conf::setMainIni('git_use_master', 1);
-            echo conf::getMainIni('git_use_master');
         }
 
         common::echoMessage("Will now clone and install all modules");
@@ -124,7 +125,9 @@ class promptInstall {
         common::echoMessage("If there was no errors you will be able to login at $login");
         common::echoMessage("Remember to change file permissions. This will require super user");
         common::echoMessage("E.g. like this:");
-        common::echoMessage("sudo ./coscli.sh file --chmod-files");
+        
+        $program = $argv[0];
+        common::echoMessage("sudo $program file --chmod-files");
     }
 
     public function get_password() {

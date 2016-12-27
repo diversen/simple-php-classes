@@ -5,23 +5,13 @@ namespace diversen\commands;
 use diversen\cli\common;
 use diversen\conf;
 
-/**
- * Function for changing group settings on some files, which the server needs to 
- * have read and write access to. 
- * 
- * Change these files, so anon users does not have any access to them. 
- *
- * We read the user under which the web server is running. This is done by fetching
- * the `htdocs/whoami.php` script from the server. 
- *
- * @return void
- */
+
 class fileSystem {
 
     public function getHelp() {
         return 
             array (
-                'usage' => 'Basic files commands',
+                'usage' => 'Basic files commands. Set correct ownership after install',
                 'options' => array (
                     '--chmod-system' => 'Chmod and chown of htdocs/files to be used by server-user',
                     '--chmod-user' => 'Chmod and chown of htdocs/files to be used by current user',

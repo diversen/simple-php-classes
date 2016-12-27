@@ -13,7 +13,7 @@ class structure {
     public function getHelp() {
         return
                 array(
-                    'usage' => 'MySQL database commands',
+                    'usage' => 'Dump structure of MySQL database or single tables. Take backup of single tables.',
                     'options' => array(
                         '--db' => 'Outputs complete table structure for the database',
                         '--table' => 'Output table structure for a single table',

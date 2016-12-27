@@ -10,6 +10,10 @@ use diversen\conf;
 
 class upgrade {
 
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -31,7 +35,9 @@ class upgrade {
         }
     }
 
-
+    /**
+     * Run the upgrade command
+     */
     function runUpgrade() {
         moduleloader::includeModule('system');
         $p = new profile();
@@ -97,5 +103,4 @@ class upgrade {
         $p = new profile();
         $p->reloadProfile($profile);
     }
-
 }

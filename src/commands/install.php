@@ -10,7 +10,10 @@ use diversen\db\connect;
 
 class install {
 
-
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -28,7 +31,7 @@ class install {
     }
     
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand($args) {
@@ -65,7 +68,6 @@ class install {
         // create files - logs/ - files/
         $f = new \diversen\commands\fileSystem();
         $f->createLogs();
-        // cos_create_files();
 
         $d = new \diversen\commands\dbCommand();
         $d->dropDb(array('silence' => 1));

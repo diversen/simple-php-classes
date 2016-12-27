@@ -8,7 +8,11 @@ use diversen\cli\common;
 use diversen\git;
 
 class promptInstall {
-    
+
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return 
             array (
@@ -19,12 +23,12 @@ class promptInstall {
     }
 
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand($args) {
         if ($args->getFlag('install')) {
-            $this->prompt_install();
+            $this->promptInstallRun();
         }
     }
 
@@ -32,7 +36,7 @@ class promptInstall {
      * function for doing a prompt install from shell mode
      * is a wrapper around other shell functions.
      */
-    public function prompt_install() {
+    public function promptInstallRun() {
         global $argv;
         
         common::echoMessage('Pick a version to install:');
@@ -104,7 +108,6 @@ class promptInstall {
         $options = array();
         $options['profile'] = $profile;
         if ($tag == 'master') {
-            // $options['master'] = true;
             conf::setMainIni('git_use_master', 1);
         }
 
@@ -112,13 +115,11 @@ class promptInstall {
         
         $i = new \diversen\commands\install();
         $i->installSystem($profile);
-        // cos_install($options);
 
         common::echoMessage("Create a super user");
         
         $u = new \diversen\commands\useradd();
         $u->useraddSuper();
-        // useradd_super();
 
         $login = "http://$server_name/account/login/index";
 
@@ -130,6 +131,10 @@ class promptInstall {
         common::echoMessage("sudo $program file --chmod-files");
     }
 
+    /**
+     * @deprecated 
+     * @return type
+     */
     public function get_password() {
         $site_password = common::readSingleline('Enter system user password, and hit return: ');
         $site_password2 = common::readSingleline('Retype system user password, and hit return: ');

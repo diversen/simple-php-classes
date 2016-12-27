@@ -9,7 +9,10 @@ use diversen\cli\common;
 
 class structure {
 
-
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -26,8 +29,8 @@ class structure {
         );
     }
 
-        /**
-     * 
+    /**
+     * Run the command 
      * @param \diversen\parseArgv $args
      */
     public function runCommand($args) {

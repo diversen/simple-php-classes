@@ -8,7 +8,11 @@ use diversen\templateinstaller;
 use diversen\cli\common;
 
 class template {
-
+    
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -24,7 +28,7 @@ class template {
     }
 
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand($args) {

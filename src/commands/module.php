@@ -7,15 +7,12 @@ use diversen\moduleinstaller;
 use diversen\moduleloader;
 use diversen\cli\common;
 
-/**
- * File containing module functions for shell mode
- * (install, update, delete modules)
- *
- * @package     shell
- */
 class module {
 
-
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -36,7 +33,7 @@ class module {
     }
     
     /**
-     * 
+     * Run command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {

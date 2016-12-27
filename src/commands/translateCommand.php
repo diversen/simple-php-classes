@@ -8,9 +8,12 @@ use diversen\cli\common;
 
 class translateCommand {
 
-
-        public function getHelp() {
-        return
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
+    public function getHelp() {
+            return
                 array(
                     'usage' => 'Auto-extract strings and add them to translation files',
                     'options' => array(
@@ -23,7 +26,7 @@ class translateCommand {
     }
     
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {
@@ -33,7 +36,7 @@ class translateCommand {
             if (!$language) {
                 $language = 'en';
             }
-            $this->translate_all_update($language);
+            $this->updateAll($language);
         }
     }
 
@@ -42,7 +45,7 @@ class translateCommand {
      * will update all translation files in specified language
      * @param array $options
      */
-    public function translate_all_update($language) {
+    public function updateAll($language) {
         $e = new extractor();
         $e->defaultLanguage = $language;
         $e->setDirsInsideDir('modules/');
@@ -54,6 +57,7 @@ class translateCommand {
 
     /**
      * will update all translation files in specified language
+     * @deprecated
      * @param array $options
      */
     public function translate_path($options) {

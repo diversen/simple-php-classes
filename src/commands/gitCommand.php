@@ -11,6 +11,10 @@ use diversen\commands\template;
 
 class gitCommand {
 
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */  
     public function getHelp() {
         return
                 array(
@@ -35,7 +39,7 @@ class gitCommand {
     }
     
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {

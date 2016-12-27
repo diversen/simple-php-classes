@@ -9,7 +9,10 @@ use diversen\conf;
 
 class useradd {
 
-
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -23,7 +26,7 @@ class useradd {
     }
     
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {
@@ -41,7 +44,6 @@ class useradd {
     }
     /**
      * Create a super user from commandline
-     * @param array $options
      * @return int $res
      */
     public function useraddSuper() {
@@ -65,7 +67,6 @@ class useradd {
 
     /**
      * Create a user from commandline
-     * @param array $options
      * @return int $res
      */
     public function useraddUser() {

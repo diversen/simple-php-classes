@@ -6,7 +6,6 @@ use diversen\conf;
 use diversen\file;
 use diversen\layout;
 use diversen\moduleinstaller;
-use diversen\moduleloader;
 use diversen\profile;
 use diversen\cli\common;
 
@@ -16,8 +15,11 @@ use diversen\cli\common;
  * @package     shell
  */
 class profileCommand {
-
-
+    
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */
     public function getHelp() {
         return
                 array(
@@ -40,7 +42,7 @@ class profileCommand {
     }
        
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {
@@ -86,6 +88,10 @@ class profileCommand {
         }
     }
     
+    /**
+     * Check if a profile is set. If not - abort
+     * @param string $profile
+     */
     private function checkProfile ($profile) {
         if (!$profile) {
             common::abort('Specify a profile');
@@ -109,7 +115,7 @@ class profileCommand {
 
     /**
      * Upgrade from profile
-     * @param type $options array ('profile' => 'default', 'clone_only' => false) 
+     * @param string $profile
      */
     public function upgradeFromProfile($profile) {
 

@@ -8,7 +8,10 @@ use diversen\cli\common;
 
 class googleTranslate {
 
-    
+    /**
+     * Define shell command and options
+     * @return array $ary
+     */    
     public function getHelp() {
         return
                 array(
@@ -23,7 +26,7 @@ class googleTranslate {
     }
     
     /**
-     * 
+     * Run the command
      * @param \diversen\parseArgv $args
      */
     public function runCommand ($args) {
@@ -41,6 +44,11 @@ class googleTranslate {
         
     }
 
+    /**
+     * Update translation from target and source
+     * @param string $target
+     * @param string $source
+     */
     public function update($target, $source) {
 
         $t = new google();
@@ -57,6 +65,10 @@ class googleTranslate {
         $t->updateLang();
     }
 
+    /**
+     * @deprecated 
+     * @param type $options
+     */
     function google_translate_path($options) {
         if (!isset($options['path'])) {
             common::abort('You need to specify path to translate');

@@ -763,7 +763,7 @@ class moduleinstaller  {
             $this->confirm.= "Version '" . $specific . "' installed. ";
             
             $this->confirm.= "Upgraded from $current_version";
-            $this->confirm = common::colorOutput($this->confirm);
+            // $this->confirm = common::colorOutput($this->confirm);
             
             return true;
         } else {

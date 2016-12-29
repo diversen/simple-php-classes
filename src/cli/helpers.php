@@ -2,7 +2,7 @@
 
 namespace diversen\cli;
 
-// use diversen\autoloader\modules;
+use diversen\autoloader\modules;
 use diversen\conf;
 use diversen\db;
 use diversen\db\admin;
@@ -16,12 +16,17 @@ use diversen\log;
 use diversen\moduleloader;
 use modules\configdb\module;
 
+/**
+ * Helper class to minimal-cli-framework
+ */
+
 class helpers {
 
     public function bootCLi() {
-        // Autoload modules
-        //$m = new modules();
-        //$m->autoloadRegister();
+        // The following enables the auto-loading of loading of \modules
+        // It is commented away as it should be 
+        $m = new modules();
+        $m->autoloadRegister();
 
         // Define all essential paths. 
         // base_path has been enabled, and based on this we 

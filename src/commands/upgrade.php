@@ -14,7 +14,7 @@ class upgrade {
      * Define shell command and options
      * @return array $ary
      */
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Upgrade existing system',

@@ -141,7 +141,7 @@ class profile  {
     public static function getCloneUrlFromPath ($path) {
 
         $command = "cd $path && git config --get remote.origin.url";
-        $ret = common::execCommand($command, array('silence' => 1), 0);
+        $ret = common::execCommand($command, 0, 0);
         if ($ret == 0) {
             $git_url = shell_exec($command);
             return trim($git_url);

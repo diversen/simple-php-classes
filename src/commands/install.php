@@ -14,7 +14,7 @@ class install {
      * Define shell command and options
      * @return array $ary
      */
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'install complete system. Note: prompt-install is easier',

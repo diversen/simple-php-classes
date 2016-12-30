@@ -15,7 +15,7 @@ use diversen\cli\common;
  */
 class dev {
 
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Dev commands for testing and checking',

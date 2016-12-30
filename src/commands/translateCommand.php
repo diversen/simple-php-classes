@@ -12,7 +12,7 @@ class translateCommand {
      * Define shell command and options
      * @return array $ary
      */
-    public function getHelp() {
+    public function getCommand() {
             return
                 array(
                     'usage' => 'Auto-extract strings and add them to translation files',

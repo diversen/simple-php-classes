@@ -13,7 +13,7 @@ use diversen\cli\common;
  */
 class cache {
     
-    public function getHelp() {
+    public function getCommand() {
         return 
             array (
                 'usage' => 'Commands for clearing caches',

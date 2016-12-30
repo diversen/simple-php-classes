@@ -15,7 +15,7 @@ class gitCommand {
      * Define shell command and options
      * @return array $ary
      */  
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Git module management. Install latest version of a module or template',

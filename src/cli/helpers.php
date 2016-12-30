@@ -145,7 +145,7 @@ class helpers {
                 $class = '\modules\\' . "$val[module_name]\command";
                 $obj = new $class();
                 // die;
-                $help = $obj->getHelp();
+                $help = $obj->getCommand();
                 $name = $help['name'];
 
 

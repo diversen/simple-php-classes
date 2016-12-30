@@ -8,7 +8,7 @@ use diversen\conf;
 
 class fileSystem {
 
-    public function getHelp() {
+    public function getCommand() {
         return 
             array (
                 'usage' => 'Basic files commands. Set correct ownership after install',

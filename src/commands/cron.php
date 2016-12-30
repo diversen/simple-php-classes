@@ -9,7 +9,7 @@ use diversen\date;
 
 class cron {
     
-    public function getHelp() {
+    public function getCommand() {
         return 
             array (
                 'usage' => "Cron command for running all module's cron jobs",

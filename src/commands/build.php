@@ -8,7 +8,7 @@ use diversen\cli\common;
 
 class build {
 
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Build distro ',

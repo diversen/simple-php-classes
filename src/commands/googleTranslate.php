@@ -12,7 +12,7 @@ class googleTranslate {
      * Define shell command and options
      * @return array $ary
      */    
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Translate application into another language using Googles Translate API',

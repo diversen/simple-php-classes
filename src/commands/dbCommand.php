@@ -10,7 +10,7 @@ use diversen\cli\common;
 
 class dbCommand {
 
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'MySQL database commands',

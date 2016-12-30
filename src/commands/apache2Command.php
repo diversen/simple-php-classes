@@ -10,7 +10,7 @@ use diversen\apache2;
  */
 class apache2Command {
 
-    public function getHelp() {
+    public function getCommand() {
         return 
             array (
                 'usage' => 'Apache2 commands (For Linux). Install, remove hosts.',

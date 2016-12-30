@@ -9,7 +9,7 @@ use diversen\cli\common;
 
 class backup {
 
-    public function getHelp() {
+    public function getCommand() {
         return
                 array(
                     'usage' => 'Create and restore file and MySQL backups.',

@@ -154,11 +154,9 @@ class profileCommand {
             // No DB operations. Only clone to specific version.
             $g = new \diversen\commands\gitCommand();
             if ($module->isInstalled($val['module_name'])) {
-                
                 $g->upgradeFromArray($val, $val['version'], 'template');
             } else {
                 $g->installMod($val['public_clone_url'], $val['version'], 'template');
-                
             }
         }
     }

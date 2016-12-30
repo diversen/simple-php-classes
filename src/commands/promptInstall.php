@@ -128,7 +128,7 @@ class promptInstall {
         common::echoMessage("E.g. like this:");
         
         $program = $argv[0];
-        common::echoMessage("sudo $program file --chmod-files");
+        common::echoMessage("sudo $program file --chmod-system");
     }
 
     /**

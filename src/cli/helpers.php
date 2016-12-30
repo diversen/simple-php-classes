@@ -9,7 +9,7 @@ use diversen\db\admin;
 use diversen\db\connect;
 use diversen\db\q;
 use diversen\file;
-use diversen\html\common;
+use diversen\cli\common;
 use diversen\intl;
 use diversen\lang;
 use diversen\log;
@@ -86,14 +86,15 @@ class helpers {
 
     public function tablesExists() {
         $db = new db();
-        $ret = $db->connect(array('dont_die' => 1));
-        if ($ret == 'NO_DB_CONN') {
-            return false;
-        }
+        //$ret = $db->connect(array('dont_die' => 1));
+        //if ($ret == 'NO_DB_CONN') {
+        //    return false;
+        //}
 
         $info = admin::getDbInfo(conf::getMainIni('url'));
         if (!$info) {
             common::echoMessage('No databse url in config.ini');
+            return false;
         }
         if ($info['scheme'] == 'mysql' || $info['scheme'] == 'mysqli') {
             $rows = $db->selectQuery("SHOW TABLES");

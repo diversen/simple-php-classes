@@ -157,7 +157,7 @@ class profileCommand {
                 
                 $g->upgradeFromArray($val, $val['version'], 'template');
             } else {
-                $g->installMod($val['public_clone_url'], $val['version'], 'module');
+                $g->installMod($val['public_clone_url'], $val['version'], 'template');
                 
             }
         }

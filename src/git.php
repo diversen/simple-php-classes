@@ -30,6 +30,21 @@ class git {
         }
         return $module_name;
     }
+    
+    
+    /**
+     * Get a repo name from repo url
+     * e.g. https://github.com/diversen/php-git-to-book.git should
+     * return php-git-to-book
+     * @param string $url
+     * @return string $name
+     */
+    public static function getRepoName($url) {
+        $ary = parse_url($url);
+        $parts = explode('/', $ary['path']);
+        $last = array_pop($parts);
+        return str_replace('.git', '', $last);
+    }
 
     /**
      * Get all tags as a string for install

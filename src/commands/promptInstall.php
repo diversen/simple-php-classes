@@ -41,7 +41,7 @@ class promptInstall {
         
         common::echoMessage('Pick a version to install:');
 
-        $tags = git::getTagsInstallLatest() . PHP_EOL;
+        $tags = git::getTagLatest() . PHP_EOL;
         $tags .= "master";
 
         common::echoMessage($tags);

@@ -2,8 +2,6 @@
 
 namespace diversen;
 
-use diversen\conf;
-
 class git {
     
     /**
@@ -18,16 +16,16 @@ class git {
      * @param string $repo url
      * @return string $module_name
      */
-    public static function getModulenameFromRepo($repo) {
+    public static function getRepoNameFromRepoUrl($repo) {
         $url = parse_url($repo);
         $parts = explode('/', $url['path']);
 
-        $module_name = array_pop($parts);
+        $name = array_pop($parts);
         
-        if (strstr($module_name, '.git')) {
-            $module_name = substr($module_name, 0, -4);
+        if (strstr($name, '.git')) {
+            $name = substr($name, 0, -4);
         }
-        return $module_name;
+        return $name;
     }
     
     
@@ -38,39 +36,41 @@ class git {
      * @param string $url
      * @return string $name
      */
+    /*
     public static function getRepoName($url) {
+        return self::getRepoNameFromRepoUrl($url);
         $ary = parse_url($url);
         $parts = explode('/', $ary['path']);
         $last = array_pop($parts);
         return str_replace('.git', '', $last);
-    }
+    }*/
 
     /**
-     * Get all tags as a string for install
+     * Get all tags as a string from currenct path
      * @return string $tags tags as a string
      */
-    public static function getTagsInstall() {
+    public static function getTagsAsString() {
         $command = "git tag -l";
         $ret = exec($command, $output);
         return implode(PHP_EOL, $output);
     }
     
     /**
-     * Get all tags for install or update
+     * Get all tags for current path as an array
      * @return array $tags
      */
-    public static function getTagsInstallAsArray () {
-        $tags = self::getTagsInstall();
+    public static function getTagAsArray () {
+        $tags = self::getTagsAsString();
         $ary = explode("\n", $tags);
         return array_filter($ary);
     }
     
     /**
-     * Get latest install tag. 
-     * @return string $tags
+     * Get latest tag from current path 
+     * @return string $tag
      */
-    public static function getTagsInstallLatest () {
-        $ary = self::getTagsInstallAsArray();
+    public static function getTagLatest () {
+        $ary = self::getTagAsArray();
         return array_pop($ary);
     }
 

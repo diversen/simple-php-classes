@@ -601,7 +601,7 @@ class profile  {
      * @return boolean $res
      */
     public function upgradePossible () {
-        $locale = git::getTagsInstallLatest();
+        $locale = git::getTagLatest();
         $repo = conf::getModuleIni('system_repo');
         $remote = git::getTagsRemoteLatest($repo);
         if ($remote > $locale) {

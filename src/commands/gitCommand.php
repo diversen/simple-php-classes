@@ -124,7 +124,7 @@ class gitCommand {
         $mod = new module();
         $temp = new template();
         
-        $module_name = git::getModulenameFromRepo($repo);
+        $module_name = git::getRepoNameFromRepoUrl($repo);
         if (!$module_name) {
             common::abort('Install command need a valid repo name');
         }
@@ -189,7 +189,7 @@ class gitCommand {
         }
 
         
-        $module_name = git::getModulenameFromRepo($repo);
+        $module_name = git::getRepoNameFromRepoUrl($repo);
         $module_path = "$clone_path/$module_name";
 
         // if dir exists we check if it is a git repo
@@ -570,7 +570,7 @@ class gitCommand {
     public function upgradeFromArray($val, $tag = 'master', $type = 'module') {
 
         if (!isset($val['module_name'])) {
-            $val['module_name'] = git::getModulenameFromRepo($val['repo']);
+            $val['module_name'] = git::getRepoNameFromRepoUrl($val['repo']);
         }
 
         $repo_path = $this->getRepoPath($val['module_name'], $type);

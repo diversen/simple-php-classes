@@ -56,7 +56,7 @@ class upgrade {
                 $this->upgradeTo($remote);
             }
         } else {
-            $locale = git::getTagsInstallLatest();
+            $locale = git::getTagLatest();
             common::echoMessage("Latest version/tag: $locale", 'y');
 
             $continue = common::readlineConfirm('Continue. Maybe your upgrade was interrupted. ');

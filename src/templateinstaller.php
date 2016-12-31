@@ -86,7 +86,7 @@ class templateinstaller extends moduleinstaller {
     
     public function setInstallInfoFromGit() {
 
-        $tags = git::getTagsModule($this->installInfo['NAME'], 'template');
+        $tags = \diversen\commands\gitCommand::getTagsModule($this->installInfo['NAME'], 'template');
         if (empty($tags)) {
             $latest = 'master';
         } else {

@@ -2,7 +2,6 @@
 
 namespace diversen;
 
-use diversen\cli\common;
 use diversen\conf;
 
 class git {
@@ -53,7 +52,7 @@ class git {
     public static function getTagsInstall() {
         $command = "git tag -l";
         $ret = exec($command, $output);
-        return common::parseShellArray($output);
+        return implode(PHP_EOL, $output);
     }
     
     /**
@@ -75,49 +74,7 @@ class git {
         return array_pop($ary);
     }
 
-    public function getTagsModuleLatest ($module, $type = 'module') {
-        $tags = self::getTagsModule($module, $type);
-        print_r($tags);
-    }
-    
-    /**
-     * Get tags for a module or template
-     * @param string $module
-     * @param string $type 'module' or 'template'
-     * @return array|false a array or false 
-     */
-    public static function getTagsModule($module, $type = 'module') {
 
-        if ($type == 'module') {
-            $path = conf::pathModules() . "/$module";
-        }
-
-        if ($type == 'template') {
-            $path = conf::pathHtdocs() . "/templates/$module";
-        }
-
-        $command = "cd $path && git tag -l";
-        exec($command, $ary, $ret);
-
-        // ok
-        if ($ret == 0) {
-            $str = shell_exec($command);
-
-            $ary = explode("\n", $str);
-            $tags = array();
-            foreach ($ary as $line) {
-                trim($line);
-                if (empty($line)){
-                    continue;
-                }
-                $tags[] = $line;
-            }
-        } else {
-            return false;
-        }
-
-        return $tags;
-    }
 
     /**
      * Get remote tags

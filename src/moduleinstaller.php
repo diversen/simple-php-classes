@@ -167,7 +167,7 @@ class moduleinstaller  {
      */
     public function setInstallInfoFromGit() {
                
-        $tags = git::getTagsModule($this->installInfo['NAME'], 'module');
+        $tags = \diversen\commands\gitCommand::getTagsModule($this->installInfo['NAME'], 'module');
         if (empty($tags)) {
             $latest = 'master';
         } else {

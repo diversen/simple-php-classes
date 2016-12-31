@@ -245,7 +245,7 @@ class profile  {
                 if (isset($_INSTALL['VERSION'])) {
                     $val['module_version'] = "$_INSTALL[VERSION]";
                 } else {
-                    $tags = git::getTagsModule($template, 'template');
+                    $tags = \diversen\commands\gitCommand::getTagsModule($template, 'template');
                     $val['module_version'] = array_pop($tags);
                 }
             } else {
@@ -254,7 +254,7 @@ class profile  {
             $val['module_name'] = $template;
         } else { 
 
-            $tags = git::getTagsModule($template, 'template');
+            $tags = \diversen\commands\gitCommand::getTagsModule($template, 'template');
             $latest = array_pop($tags);
             if (self::$master OR !$latest) {
                 $val['module_version'] = "master";

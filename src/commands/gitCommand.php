@@ -391,6 +391,46 @@ class gitCommand {
         $mod = $p->getTemplate($options['repo']);
         $this->commitModuleFromDbValues($mod, 'template');
     }
+    
+        
+    /**
+     * Get tags for a module or template
+     * @param string $module
+     * @param string $type 'module' or 'template'
+     * @return array|false a array or false 
+     */
+    public static function getTagsModule($module, $type = 'module') {
+
+        if ($type == 'module') {
+            $path = conf::pathModules() . "/$module";
+        }
+
+        if ($type == 'template') {
+            $path = conf::pathHtdocs() . "/templates/$module";
+        }
+
+        $command = "cd $path && git tag -l";
+        exec($command, $ary, $ret);
+
+        // ok
+        if ($ret == 0) {
+            $str = shell_exec($command);
+
+            $ary = explode("\n", $str);
+            $tags = array();
+            foreach ($ary as $line) {
+                trim($line);
+                if (empty($line)){
+                    continue;
+                }
+                $tags[] = $line;
+            }
+        } else {
+            return false;
+        }
+
+        return $tags;
+    }
 
     /**
      * function for tagging all modules and templates
@@ -402,7 +442,7 @@ class gitCommand {
         $modules = $profile->getModules();
         foreach ($modules as $key => $val) {
 
-            $tags = git::getTagsModule($val['module_name'], 'module');
+            $tags = self::getTagsModule($val['module_name'], 'module');
             if (in_array($version, $tags)) {
                 common::echoStatus('NOTICE', 'y', "Tag already exists local for module '$val[module_name]'.");
             }
@@ -414,7 +454,7 @@ class gitCommand {
         $templates = $profile->getTemplates();
         foreach ($templates as $key => $val) {
 
-            $tags = git::getTagsModule($val['module_name'], 'template');
+            $tags = self::getTagsModule($val['module_name'], 'template');
             if (in_array($version, $tags)) {
                 common::echoStatus('NOTICE', 'y', "Tag already exists local for template '$val[module_name]'");
             }
@@ -430,7 +470,7 @@ class gitCommand {
         $modules = $profile->getModules();
         foreach ($modules as $key => $val) {
 
-            $tags = git::getTagsModule($val['module_name'], 'module');
+            $tags = self::getTagsModule($val['module_name'], 'module');
             $latest = array_values(array_slice($tags, -1))[0];
 
             common::execCommand("cd ./modules/$val[module_name] && git diff $latest --raw");
@@ -439,7 +479,7 @@ class gitCommand {
         $templates = $profile->getTemplates();
         foreach ($templates as $key => $val) {
 
-            $tags = git::getTagsModule($val['module_name'], 'template');
+            $tags = self::getTagsModule($val['module_name'], 'template');
             $latest = array_values(array_slice($tags, -1))[0];
 
             common::execCommand("cd ./htdocs/templates/$val[module_name] && git diff $latest --raw");

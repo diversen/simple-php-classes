@@ -44,7 +44,7 @@ class fileSystem {
     public function chmodSystem() {
 
         // Get group
-        echo $group = conf::getServerUser();
+        $group = conf::getServerUser();
         if (!$group) {
             common::abort('Could not fetch server user. Check if server_name is set in config/config.ini, and check if this server is running');
         }

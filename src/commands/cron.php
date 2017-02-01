@@ -7,7 +7,6 @@ use diversen\conf;
 use diversen\moduleloader;
 use diversen\date;
 
-
 class cron {
     
     public function getCommand() {

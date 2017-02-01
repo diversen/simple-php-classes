@@ -14,7 +14,7 @@ class cron {
             array (
                 'usage' => "Cron command for running all module's cron jobs",
                 'options' => array (
-                    '--run' => 'Will disable current directory as an apache2 virtual host, and remove sitename from /etc/hosts files',
+                    '--run' => 'Run all cron jobs implemented in all modules',
                     '--install' => 'See how to install cron line in crontab for this system')
             );
     }

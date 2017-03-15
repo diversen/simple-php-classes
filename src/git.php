@@ -18,8 +18,10 @@ class git {
      */
     public static function getRepoNameFromRepoUrl($repo) {
         $url = parse_url($repo);
+        
+        $url['path'] = rtrim($url['path'], '/');
         $parts = explode('/', $url['path']);
-
+        
         $name = array_pop($parts);
         
         if (strstr($name, '.git')) {

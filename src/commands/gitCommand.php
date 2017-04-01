@@ -22,6 +22,7 @@ class gitCommand {
                     'options' => array(
                         '-s' => 'Silence all questions',
                         '-m' => 'Use master',
+                        '--master' => 'Use master',
                         '--mod-in' => 'Clone specified remote module url with latest version and install',
                         '--mod-up' => 'Check out latest tag of a module. If remote version is higher it will be checked out and installed',
                         '--mod-commit' => 'Commit single module',
@@ -51,7 +52,7 @@ class gitCommand {
             $this->silence();
         }
         
-        if ($args->getFlag('m')) {
+        if ($args->getFlag('m') || $args->getFlag('master') ) {
             $this->master();
         }
  

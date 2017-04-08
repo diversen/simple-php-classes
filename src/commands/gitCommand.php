@@ -472,7 +472,10 @@ class gitCommand {
         foreach ($modules as $key => $val) {
 
             $tags = self::getTagsModule($val['module_name'], 'module');
+            
+            if (empty($tags)) continue;
             $latest = array_values(array_slice($tags, -1))[0];
+            
 
             common::execCommand("cd ./modules/$val[module_name] && git diff $latest --raw");
         }

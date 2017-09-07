@@ -702,7 +702,6 @@ EOF;
     public static function file ($name, $extra = array()) {
         //get unique id
         $up_id = uniqid();
-        echo self::apcJs($up_id);
         
         //template::setStringJs($js);
         if (!isset($extra['size'])){
@@ -768,43 +767,6 @@ EOF;
         self::file($filename, $options);
     }
     
-    // Progress bar from: 
-    // http://www.johnboy.com/php-upload-progress-bar/
-    /**
-     * sets a apc js string
-     * @param string $apc_id
-     * @return string $apc_string
-     */
-    public static function apcJs ($apc_id) {
-            
-        $form_id = self::$internal['form_id'];
-                ob_start (); ?>
-
-<!--display bar only if file is chosen-->
-<script>
-$(document).ready(function() { 
-    //show the progress bar only if a file field was clicked
-    var show_bar = 0;
-    $('input[type="file"]').click(function(){
-        show_bar = 1;
-    });
-
-    //show iframe on form submit
-    $("#<?=$form_id?>").submit(function(){
-        if (show_bar === 1) { 
-            $('#upload_frame').show();
-                function set () {
-                    $('#upload_frame').attr('src','/upload.php?up_id=<?=$apc_id?>');
-                }
-            setTimeout(set);
-        }
-    });
-});
-</script>
-    <?php
-        return ob_get_clean();
-    }
-
     /**
      * method for getting a checkbox
      * @param string $name the name of the input

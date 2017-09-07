@@ -174,6 +174,9 @@ class file {
     public static function getSecMime($file) {
         $str = self::getMime($file);
         $ary = explode('/', $str);
+        if (!isset($ary[1])) { 
+            return false;
+        }
         return $ary[1];
     }
     

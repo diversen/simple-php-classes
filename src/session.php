@@ -686,4 +686,22 @@ class session {
             http::locationHeader('/account/login/index');
         }
     }
+
+        /**
+     * Method for getting users level (user, admin, super - or null)
+     * return   null|string   $res null or 'user', 'admin' or 'super'.
+     */
+    public static function getUserLevel(){
+        if (self::isSuper()){
+            return "super";
+        }
+        if (self::isAdmin()){
+            return "admin";
+        }
+        if (self::isUser()){
+            return "user";
+        }
+        return null;
+    }
+
 }

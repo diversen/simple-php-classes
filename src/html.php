@@ -121,6 +121,7 @@ class html {
      * @param string $trigger the trigger value which tells the object to
      *               stop using the initial set values. Normal 'submit' as
      *               this is normal the name of submit buttom
+     * @param boolean $autoencode
      */
     public static function init ($values = array (), $trigger = null, $autoencode = false) {        
         
@@ -1351,10 +1352,6 @@ EOF;
      */
     public static function getHeadlineEncoded ($message, $tag = 'h3') {
         return self::getHeadline(self::specialEncode($message), $tag);
-    }
-    
-    public static function tableBegin ($class = 'table_class') {
-        return "<table class=\"$class\">";
     }
     
     /**

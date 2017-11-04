@@ -650,7 +650,7 @@ class session {
     }
     
     /**
-     * check access clean. This means from the tree main groups of users
+     * check access clean. This means from the three main groups of users
      * 'user', 'admin', 'super'
      * @param string $type
      * @return boolean $res true if success or false on failure

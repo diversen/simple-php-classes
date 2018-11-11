@@ -2,10 +2,10 @@
 
 namespace diversen\mailer;
 
-use cebe\markdown\GithubMarkdown;
 use diversen\conf;
 use diversen\html;
 use diversen\log;
+use Michelf\Markdown as MichelfMarkdown;
 
 class markdown {
         
@@ -28,10 +28,8 @@ class markdown {
         if ($this->titleInBody) {
             $body = "# " . $title . PHP_EOL . PHP_EOL . $body;
         }
-        
-        
-        $parser = new GithubMarkdown();
-        $body = $parser->parse($body);
+
+        $body = MichelfMarkdown::defaultTransform($body);
         $subject = html::specialEncode($title);
         $str = str_replace(array('{title}', '{content}'), array ($subject, $body), $template);
         return $str;
